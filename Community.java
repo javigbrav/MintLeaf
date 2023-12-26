@@ -1,3 +1,6 @@
+import java.awt.*;
+import javax.swing.*;
+
 public class Community{
   private double rating = 0;
   public Community(){
@@ -5,7 +8,7 @@ public class Community{
   }
 
   public void recommendationQuiz() {
-        
+	  SurveySystem ss =  new SurveySystem(new Frame());
     }
 
     public void rateStory() {
@@ -30,7 +33,8 @@ public class Community{
     }
 
     public boolean isApproved() {
-        
+    	
+        boolean approved = false;
         return approved;
     }
 }
