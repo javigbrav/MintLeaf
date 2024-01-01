@@ -8,7 +8,7 @@ public class Community{
   }
 
   public void recommendationQuiz() {
-	  SurveySystem ss =  new SurveySystem(new Frame());
+	  new RecommendationQuiz();
     }
 
     public void rateStory() {
