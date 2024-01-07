@@ -1,9 +1,7 @@
-package Homepage;
-
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 05, 2024
+ * Last Modified: January 06, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
@@ -55,9 +53,9 @@ public class RecommendationQuiz {
     /* Method Name: createContentPanel 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: December 31, 2023
-	 * Modified Date: ????????????????
-	 * Description: Creates a JPanel that contains all the question panels for the user to interact with.
-	 * @Parameters: n/a
+	 * Modified Date: January 06, 2024
+	 * Description: Creates a JPanel that contains all the question panels for the user to interact with, and updates a user's preference list.
+	 * @Parameters: User userToTrack
 	 * @Return Value: JPanel
 	 * Data Type: ???? 
 	 * Dependencies: ?????
@@ -231,11 +229,11 @@ public class RecommendationQuiz {
     /* Method Name: questionPanel 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: December 30, 2023
-	 * Modified Date: ????????????????
-	 * Description: ???
-	 * @Parameters: ??????
+	 * Modified Date: January 05, 2024
+	 * Description: Creates a JPanel that has a question, choices with checkboxes, and a button to confirm choice
+	 * @Parameters: JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames
 	 * @Return Value: JPanel
-	 * Data Type: ???? 
+	 * Data Type: ????
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */
@@ -260,9 +258,9 @@ public class RecommendationQuiz {
     /* Method Name: clearComponentBackground 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: January 05, 2024
-	 * Modified Date: ????????????????
-	 * Description: ???
-	 * @Parameters: ??????
+	 * Modified Date: January 05, 2024
+	 * Description: Makes the given JPanel's components clear
+	 * @Parameters: JPanel panel
 	 * @Return Value: void
 	 * Data Type: n/a
 	 * Dependencies: ?????
