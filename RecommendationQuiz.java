@@ -34,7 +34,7 @@ public class RecommendationQuiz {
     public static String[] preferences = new String[4];
     
     RecommendationQuiz(User userToTrack) {
-        f.setSize(450, (int)(420 * 1.5));
+        f.setSize(450, 630);
         f.getContentPane().setBackground(new Color(0, 242, 206));
 
         // panel to add scrollable panel to
@@ -100,7 +100,6 @@ public class RecommendationQuiz {
                 }
                 if(preferences[0] == null) {
                 	preferences[0] = genreResult;
-                	System.out.println("Survey result: " + genreResult);
                 }
             }
         });
@@ -131,7 +130,6 @@ public class RecommendationQuiz {
                 }
                 if(preferences[1] == null) {
                 	preferences[1] = regionResult;
-                	System.out.println("Survey result: " + regionResult);
                 }            
             }
         });
@@ -163,7 +161,6 @@ public class RecommendationQuiz {
 
                 if(preferences[2] == null) {
                 	preferences[2] = ageRangeResult;
-                	System.out.println("Survey result: " + ageRangeResult);
                 } 
             }
         });
@@ -195,7 +192,6 @@ public class RecommendationQuiz {
 
                 if(preferences[3] == null) {
                 	preferences[3] = storyLengthResult;
-                	System.out.println("Survey result: " + storyLengthResult);
                 }
             }
         });
@@ -208,7 +204,6 @@ public class RecommendationQuiz {
         finishedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	f.dispose();
-            	System.out.println(f.isVisible());
         		System.out.println(LoginPage.logininfo.entrySet());
         		Homepage.homepageFrame.setVisible(true);
         		userToTrack.updatePreferences(preferences);
