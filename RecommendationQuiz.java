@@ -202,7 +202,7 @@ public class RecommendationQuiz {
         
 
         /* Finish Button to submit preferences*/
-        contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 30))); // add 10 pixels of vertical space
         JButton finishedButton = new JButton("Finished?");
         contentPanel.add(finishedButton);
         finishedButton.addActionListener(new ActionListener() {
