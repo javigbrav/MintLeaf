@@ -13,7 +13,6 @@ import java.awt.event.*;
 public class RecommendationQuiz {	
 	
 	static JFrame f = new JFrame("Recommendation Quiz");
-	final static Object sync = new Object();
 
 	/*Genre tracking*/
     private static String[] genreNames = {"Fantasy", "Horror", "Romance", "Adventure", "Mystery", "Historical", "Non-Fiction", "Drama", "Sci-Fi"};
@@ -33,7 +32,6 @@ public class RecommendationQuiz {
 
     /*Array of tracked preferences*/
     public static String[] preferences = new String[4];
-    public static boolean doneQuiz = false;
     
     RecommendationQuiz(User userToTrack) {
         f.setSize(450, (int)(420 * 1.5));
