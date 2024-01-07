@@ -35,9 +35,9 @@ public class RecommendationQuiz {
 
     /*Array of tracked preferences*/
     public static String[] preferences = new String[4];
-    public static boolean doneQuiz;
+    public static boolean doneQuiz = false;
     
-    RecommendationQuiz() {
+    RecommendationQuiz(User userToTrack) {
         f.setSize(450, (int)(420 * 1.5));
         f.getContentPane().setBackground(new Color(0, 242, 206));
 
@@ -46,7 +46,7 @@ public class RecommendationQuiz {
         f.getContentPane().add(panel);
                 
         // Scrollable panel
-        JScrollPane scrollPane = new JScrollPane(createContentPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        JScrollPane scrollPane = new JScrollPane(createContentPanel(userToTrack), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         panel.add(scrollPane);
 
         f.setVisible(true);
@@ -63,7 +63,7 @@ public class RecommendationQuiz {
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */    
-    static JPanel createContentPanel() {
+    static JPanel createContentPanel(User userToTrack) {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0)); // left, top, right, bottom
@@ -215,7 +215,7 @@ public class RecommendationQuiz {
             	System.out.println(f.isVisible());
         		System.out.println(LoginPage.logininfo.entrySet());
         		Homepage.homepageFrame.setVisible(true);
-        		doneQuiz = true;
+        		userToTrack.updatePreferences(preferences);
             }
         });
         finishedButton.setFont(new Font("Impact", Font.PLAIN, 15));
