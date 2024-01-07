@@ -1,3 +1,4 @@
+package Homepage;
 import java.util.HashMap;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
@@ -10,7 +11,7 @@ public class User {
 	
 	/*Globals*/
 	HashMap<String, String> logininfo = new HashMap<String, String>(); // temp storage of username and password
-	String[] preferences = new String[10]; // change to how many items there are in here
+	public String[] preferences = new String[10]; // change to how many items there are in here
 	
 	/*Constructor*/
 	User(String username, String userPassword){
@@ -21,5 +22,9 @@ public class User {
 	// temporary -- need to combine with MySQL
 	public HashMap<String, String> getLoginInfo() {
 		return logininfo;
+	}
+	
+	public void updatePreferences(String[] preferences){
+		this.preferences = preferences;
 	}
 } // end User
