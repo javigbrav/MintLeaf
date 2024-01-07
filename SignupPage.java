@@ -16,7 +16,6 @@ public class SignupPage implements ActionListener {
 	private JTextField usernameField;
 	private JPasswordField userPasswordField;
 	public JButton signupButton = new JButton("SIGN UP");
-	public JButton quizButton = new JButton("Recommendations Quiz");
 	private JLabel warningLabel = new JLabel();
 	User newUser;
 	
