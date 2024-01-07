@@ -1,3 +1,5 @@
+package Homepage;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -115,17 +117,10 @@ public class SignupPage implements ActionListener {
 				System.out.println("test2");
 			}
 			else { 
-				User u = new User(username, userPassword);
-				signupFrame.dispose();
-				RecommendationQuiz rc = new RecommendationQuiz();
+				newUser = new User(username, userPassword);
+				RecommendationQuiz rc = new RecommendationQuiz(newUser);
 				Homepage h = new Homepage(username);
-				
-				/**Currently a problem: Need to update user preference once rec quiz is done**/
-				if (rc.doneQuiz) {
-					u.updatePreferences(rc.preferences);
-					System.out.println(u.preferences);
-					System.out.println("MANAMN");
-				}
+				signupFrame.dispose();
 			}
 
 		}
