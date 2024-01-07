@@ -1,3 +1,11 @@
+/***********************************************************************************
+ * Author: Fardin Abbassi
+ * Date: December 29, 2023 
+ * Last Modified: January 06, 2024
+ * Last Modified by: Fardin Abbassi
+ * Description: Creates a quiz that tracks a user's preferences throughout the program
+ ***********************************************************************************/
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -5,7 +13,7 @@ import java.awt.event.*;
 public class RecommendationQuiz {	
 	
 	static JFrame f = new JFrame("Recommendation Quiz");
-	
+
 	/*Genre tracking*/
     private static String[] genreNames = {"Fantasy", "Horror", "Romance", "Adventure", "Mystery", "Historical", "Non-Fiction", "Drama", "Sci-Fi"};
     private static String genreResult;
@@ -22,43 +30,52 @@ public class RecommendationQuiz {
     private static String[] storyLengths = {"Short Story", "Novella", "Novel", "Epic"};
     private static String storyLengthResult;
 
+    /*Array of tracked preferences*/
+    public static String[] preferences = new String[4];
+    
+    RecommendationQuiz(User userToTrack) {
+        f.setSize(450, 630);
+        f.getContentPane().setBackground(new Color(0, 242, 206));
 
-    RecommendationQuiz() {
-        f.setSize(420, (int)(420 * 1.5));
+        // panel to add scrollable panel to
+        JPanel panel = new JPanel(new BorderLayout());
+        f.getContentPane().add(panel);
+                
+        // Scrollable panel
+        JScrollPane scrollPane = new JScrollPane(createContentPanel(userToTrack), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        panel.add(scrollPane);
 
-        // Important: Here is where we add the scrollable panel
-        JScrollPane scrollPane = new JScrollPane(createContentPanel(), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        f.add(scrollPane);
-
-        f.setBackground(new Color(0, 242, 206));
         f.setVisible(true);
     }
 
     /* Method Name: createContentPanel 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: December 31, 2023
-	 * Modified Date: ????????????????
-	 * Description: ???
-	 * @Parameters: n/a
+	 * Modified Date: January 06, 2024
+	 * Description: Creates a JPanel that contains all the question panels for the user to interact with, and updates a user's preference list.
+	 * @Parameters: User userToTrack
 	 * @Return Value: JPanel
 	 * Data Type: ???? 
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */    
-    static JPanel createContentPanel() {
+    static JPanel createContentPanel(User userToTrack) {
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0)); // left, top, right, bottom
 
         /*Title Panel*/
         JLabel title = new JLabel("Recommendation Quiz", SwingConstants.CENTER);
-        title.setFont(new Font("Sans Serif", Font.BOLD, 25));
+        title.setFont(new Font("Impact", Font.PLAIN, 30));
         contentPanel.add(title);
         JLabel description = new JLabel("Please take your time in answering a few questions.", SwingConstants.CENTER);
-        description.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        description.setFont(new Font("Calibri", Font.PLAIN, 18));
+        description.setForeground(new Color(0, 128, 64));
         description.setAlignmentX(Component.LEFT_ALIGNMENT);
         contentPanel.add(description);        
         
         /*Question 1: Genre*/
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
         JLabel question1 = new JLabel("Which genre best represents your taste in literature?");
         JCheckBox[] genres = new JCheckBox[genreNames.length];
         ButtonGroup genreGroup = new ButtonGroup();        
@@ -81,12 +98,14 @@ public class RecommendationQuiz {
                             genres[j].setVisible(false);
                     }
                 }
-
-                System.out.println("Survey result: " + genreResult);
+                if(preferences[0] == null) {
+                	preferences[0] = genreResult;
+                }
             }
         });
 
         /*Question 2: Region*/
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
         JLabel question2 = new JLabel("Which region would you like to see some folk tales from?");
         JCheckBox[] regions = new JCheckBox[regionNames.length];
         ButtonGroup regionGroup = new ButtonGroup();
@@ -109,12 +128,14 @@ public class RecommendationQuiz {
                             regions[j].setVisible(false);
                     }
                 }
-
-                System.out.println("Survey result: " + regionResult);
+                if(preferences[1] == null) {
+                	preferences[1] = regionResult;
+                }            
             }
         });
 
         /*Question 3: Age Range*/
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
         JLabel question3 = new JLabel("What age range represents the stories you read?");
         JCheckBox[] ranges = new JCheckBox[ageRanges.length];
         ButtonGroup rangeGroup = new ButtonGroup();
@@ -138,11 +159,14 @@ public class RecommendationQuiz {
                     }
                 }
 
-                System.out.println("Survey result: " + ageRangeResult);
+                if(preferences[2] == null) {
+                	preferences[2] = ageRangeResult;
+                } 
             }
         });
         
         /*Question 4: Story Length*/
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
         JLabel question4 = new JLabel("Which best represents the lengths of the stories you like to read?");
         JCheckBox[] lengths = new JCheckBox[storyLengths.length];
         ButtonGroup lengthGroup = new ButtonGroup();
@@ -166,20 +190,43 @@ public class RecommendationQuiz {
                     }
                 }
 
-                System.out.println("Survey result: " + storyLengthResult);
+                if(preferences[3] == null) {
+                	preferences[3] = storyLengthResult;
+                }
             }
-        });    
+        });
+        
+
+        /* Finish Button to submit preferences*/
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 30))); // add 10 pixels of vertical space
+        JButton finishedButton = new JButton("Finished?");
+        contentPanel.add(finishedButton);
+        finishedButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	f.dispose();
+        		System.out.println(LoginPage.logininfo.entrySet());
+        		Homepage.homepageFrame.setVisible(true);
+        		userToTrack.updatePreferences(preferences);
+            }
+        });
+        finishedButton.setFont(new Font("Impact", Font.PLAIN, 15));
+        finishedButton.setBackground(new Color(98, 163, 57));
+        
+        clearComponentBackground(contentPanel);
+        contentPanel.setBackground(new Color(220, 242, 206));
+        contentPanel.setOpaque(true);
+        finishedButton.setOpaque(true);
         return contentPanel;
     }
     
     /* Method Name: questionPanel 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: December 30, 2023
-	 * Modified Date: ????????????????
-	 * Description: ???
-	 * @Parameters: ??????
+	 * Modified Date: January 05, 2024
+	 * Description: Creates a JPanel that has a question, choices with checkboxes, and a button to confirm choice
+	 * @Parameters: JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames
 	 * @Return Value: JPanel
-	 * Data Type: ???? 
+	 * Data Type: ????
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */
@@ -191,8 +238,33 @@ public class RecommendationQuiz {
             choices[i] = new JCheckBox(choiceNames[i]);
             choiceGroup.add(choices[i]);
             questionPanel.add(choices[i]);
+            choices[i].setFont(new Font("Calibri", Font.PLAIN, 15));
         }
         questionPanel.add(submitButton);
+        clearComponentBackground(questionPanel);
+        submitButton.setBackground(new Color(115, 201, 61));
+        submitButton.setOpaque(true);
+        submitButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
     	return questionPanel;
+    }
+    
+    /* Method Name: clearComponentBackground 
+	 * Author: Fardin Abbassi 
+	 * Creation Date: January 05, 2024
+	 * Modified Date: January 05, 2024
+	 * Description: Makes the given JPanel's components clear
+	 * @Parameters: JPanel panel
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: ?????
+	 * Throws/Exceptions: ????
+	 */
+    static void clearComponentBackground(JPanel panel) {
+    	for(int j = panel.getComponentCount() - 1; j > 0; j--) {
+    		Component comp = panel.getComponents()[j];
+    		if (comp instanceof JComponent) {
+    			((JComponent) comp).setOpaque(false);
+    		}
+    	}
     }
 }

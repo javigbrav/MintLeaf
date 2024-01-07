@@ -4,8 +4,8 @@ import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 26, 2023 
- * Last Modified:
- * Last Modified by: 
+ * Last Modified: January 06, 2024
+ * Last Modified by: Fardin Abbassi
  * Description: Allow a user to create an account
  ***********************************************************************************/
 public class SignupPage implements ActionListener {
@@ -18,16 +18,16 @@ public class SignupPage implements ActionListener {
 	public JButton signupButton = new JButton("SIGN UP");
 	private JLabel warningLabel = new JLabel();
 	User newUser;
+	
 	/*Constructor*/
 	SignupPage(){
-		System.out.println(LoginPage.logininfo.entrySet());
 
 		// set frame
 		signupFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		signupFrame.setSize(420, 420);
 		signupFrame.getContentPane().setBackground(new Color(220, 242, 206));
 		signupFrame.getContentPane().setLayout(null);
-		title.setBounds(20, 20, 91, 38);
+		title.setBounds(20, 20, 100, 38);
 		
 		// title
 		title.setText("Sign up");
@@ -36,7 +36,7 @@ public class SignupPage implements ActionListener {
 		signupFrame.getContentPane().add(title);
 		
 		// username
-		JLabel usernameLabel = new JLabel("username:");
+		JLabel usernameLabel = new JLabel("Username:");
 		usernameLabel.setForeground(new Color(66, 66, 66));
 		usernameLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		usernameLabel.setBounds(56, 121, 88, 29);
@@ -49,7 +49,7 @@ public class SignupPage implements ActionListener {
 		usernameField.setColumns(10);
 		
 		// password
-		JLabel passwordLabel = new JLabel("password:");
+		JLabel passwordLabel = new JLabel("Password:");
 		passwordLabel.setForeground(new Color(66, 66, 66));
 		passwordLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
 		passwordLabel.setBounds(56, 167, 84, 29);
@@ -62,34 +62,32 @@ public class SignupPage implements ActionListener {
 		signupFrame.getContentPane().add(userPasswordField);
 		
 		// welcome directions
-		JLabel welcomeLabel = new JLabel("Welcome! Create an account to continue");
+		JLabel welcomeLabel = new JLabel("Welcome! Create an account to continue.");
 		welcomeLabel.setForeground(new Color(0, 128, 64));
 		welcomeLabel.setFont(new Font("Calibri", Font.PLAIN, 18));
 		welcomeLabel.setBounds(56, 74, 315, 34);
 		signupFrame.getContentPane().add(welcomeLabel);
-		
-		// recommendations quiz directions
-		JButton quizButton = new JButton("Recommendations Quiz!");
-		quizButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		quizButton.setBackground(new Color(115, 201, 61));
-		quizButton.setForeground(new Color(0, 0, 0));
-		quizButton.setBounds(100, 254, 213, 23);
-		signupFrame.getContentPane().add(quizButton);
-		
-		JLabel directionsLabel = new JLabel("Personalize your homepage with this");
+
+		JLabel directionsLabel = new JLabel("Once you're done signing up, feel free to set up your");
 		directionsLabel.setFont(new Font("Calibri", Font.PLAIN, 15));
-		directionsLabel.setBounds(90, 220, 251, 23);
-		
+		directionsLabel.setBounds(40, 225, 321, 23);
+		directionsLabel.setForeground(new Color(75, 75, 75));
+		JLabel directionsLabel2 = new JLabel("preferences by taking a survey (or not, if you'd like)");
+		directionsLabel2.setFont(new Font("Calibri", Font.PLAIN, 15));
+		directionsLabel2.setBounds(40, 240, 321, 23);
+		directionsLabel2.setForeground(new Color(75, 75, 75));
+
 		// sign up button
 		signupButton.setBackground(new Color(115, 201, 61));
 		signupButton.setForeground(new Color(0, 0, 0));
 		signupButton.setFont(new Font("Impact", Font.PLAIN, 15));
-		signupButton.setBounds(161, 316, 89, 23);
+		signupButton.setBounds(160, 280, 100, 30);
 		signupFrame.getContentPane().add(signupButton);
 		signupButton.addActionListener(this);
 		
 		// set up frame
 		signupFrame.getContentPane().add(directionsLabel);
+		signupFrame.getContentPane().add(directionsLabel2);
 		signupFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\kashi\\Downloads\\mintleaf_icon.png")); // MintLeaf Logic logo without text
 		signupFrame.setBackground(new Color(220, 242, 206));
 		signupFrame.setForeground(new Color(255, 255, 255));
@@ -113,11 +111,15 @@ public class SignupPage implements ActionListener {
 				warningLabel.setText("Username already exists");
 				warningLabel.setBounds(154, 147, 159, 23);
 				signupFrame.getContentPane().add(warningLabel);
+				System.out.println("test2");
 			}
-			LoginPage.logininfo.put(username, userPassword); // add new user
-			signupFrame.dispose();
-			LoginPage.loginFrame.setVisible(true);
+			else { 
+				newUser = new User(username, userPassword);
+				RecommendationQuiz rc = new RecommendationQuiz(newUser);
+				Homepage h = new Homepage(username);
+				signupFrame.dispose();
+			}
+
 		}
-		// add ^ for recommendation quiz button
 	}
 } // end SignupPage
