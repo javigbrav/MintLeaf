@@ -12,11 +12,12 @@ import java.sql.ResultSet;
 import java.sql.Statement; 
 
 class User {
-	private String username;
-	private String password;
+	private static String username;
+	private static String password;
 	Boolean isPremium;
-	
-	void createConnection(String Username, String Password){
+
+	//creating account
+	void createAccount(String Username, String Password){
 		try {
 			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb","root", "Mlgnoscope106!");
 			System.out.println("Database Connection Successful");
@@ -28,10 +29,17 @@ class User {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
 	}
-	
-	void searchDataBase(String Username, String Password) {
+
+	//looking for account
+	static void searchDataBase(String Username, String Password) {
 		try {
-			
+			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb","root", "Mlgnoscope106!");
+			Statement stat2 = con.createStatement();
+			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '"+Username+"' and passwords like '"+Password+"'");
+			while(rs.next()) {
+				username = rs.getString("users");
+				String password = rs.getString("passwords");
+			}
 		} catch(SQLException e) {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
@@ -65,6 +73,9 @@ class User {
 	private void addBookToLibrary(book Book) {
 		books.add(Book);
 	}
-
+	
+	public static void main(String[] args) {
+		searchDataBase("VICTOR", "MyPassword");
+	}
 	
 }
