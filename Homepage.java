@@ -1,21 +1,70 @@
+package Homepage;
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified:
- * Last Modified by: 
+ * Last Modified: January 8, 2024
+ * Last Modified by: Fardin Abbassi
  * Description: A user's home page in the application
  ***********************************************************************************/
 public class Homepage {
 	
 	JLabel label = new JLabel();
-	JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
+	static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
 	
 	Homepage(String username){
-		label.setBounds(20, 20, Tales.screenW, 35);
+		label.setBounds(20, 420, Tales.screenW, 35);
 		label.setFont(new Font(null, Font.BOLD, 30));
 		label.setText("ADD WHATEVER YOU HAVE FOR HOMEPAGE HERE JAVIERA :)");
+		
+		// title
+		JTextArea title = new JTextArea("Tales Around The World");
+		title.setFont(new Font("SansSerif", Font.PLAIN, 20));
+		title.setLineWrap(true);
+		title.setWrapStyleWord(true);
+		title.setBounds(30, 20, 150, 50);
+		title.setOpaque(false);
+		title.setEditable(false);		
+		
+		
+		// set search bar panel
+		JPanel searchBarPanel = new JPanel();
+		searchBarPanel.setLayout(new FlowLayout());
+	        JTextField searchField = new JTextField(20);
+	        searchField.setText("Type here to search"); // Set the initial placeholder text
+	        searchField.addFocusListener(new FocusListener() {
+	            @Override
+	            public void focusGained(FocusEvent e) {
+	            	 // Clear the placeholder text when the field is focused
+	                if (searchField.getText().equals("Type here to search")) {searchField.setText("");}
+	            }
+	            @Override
+	            public void focusLost(FocusEvent e) {
+	            	 // Restore the placeholder text if the field is not focused and empty
+	                if (searchField.getText().isEmpty()) {searchField.setText("Type here to search");}
+	            }
+	        });
+	
+	        JButton searchButton = new JButton("Search");
+	        searchButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+		        String searchTerm = searchField.getText();
+		        
+	            if (!searchTerm.equals("Type here to search")) {
+		            System.out.println("Performing search for: " +  searchTerm);	
+		            }
+	            else {
+		            System.out.println("Check");
+	            }	            	
+		}});
+	        searchBarPanel.add(searchField);
+	        searchBarPanel.add(searchButton);
+	        searchBarPanel.setBounds(title.getX() + title.getWidth(), 20, 300, 35);
+	        searchBarPanel.setOpaque(false);
+		
 		
 		// set frame
 		homepageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,10 +73,11 @@ public class Homepage {
 		homepageFrame.getContentPane().setBackground(new Color(220, 242, 206));
 		homepageFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\kashi\\Downloads\\mintleaf_icon.png")); // MintLeaf Logic logo without text
 		homepageFrame.setBackground(new Color(220, 242, 206));
-		homepageFrame.setForeground(new Color(255, 255, 255));
-		homepageFrame.setVisible(true);
+		homepageFrame.setForeground(Color.black);
 		
 		// add to frame
 		homepageFrame.add(label);
+		homepageFrame.add(title);
+		homepageFrame.add(searchBarPanel);
 	}
 }
