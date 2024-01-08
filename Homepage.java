@@ -33,32 +33,33 @@ public class Homepage {
 		JPanel searchBarPanel = new JPanel();
 		searchBarPanel.setLayout(new FlowLayout());
 	        JTextField searchField = new JTextField(20);
-	        searchField.setText("Type here to search"); // Set the initial placeholder text
-	        searchField.addFocusListener(new FocusListener() {
-	            @Override
-	            public void focusGained(FocusEvent e) {
-	            	 // Clear the placeholder text when the field is focused
-	                if (searchField.getText().equals("Type here to search")) {searchField.setText("");}
-	            }
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	            	 // Restore the placeholder text if the field is not focused and empty
-	                if (searchField.getText().isEmpty()) {searchField.setText("Type here to search");}
-	            }
+	        searchField.setText("Search for stories here"); // Set the initial placeholder text
+        	searchField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				 // Clear the placeholder text when the field is focused
+				if (searchField.getText().equals("Search for stories here")) {searchField.setText("");}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+			 	// Restore the placeholder text if the field is not focused and empty
+				if (searchField.getText().isEmpty()) {searchField.setText("Search for stories here");}
+			}
 	        });
 	
 	        JButton searchButton = new JButton("Search");
 	        searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		        String searchTerm = searchField.getText();
-		        
-	            if (!searchTerm.equals("Type here to search")) {
-		            System.out.println("Performing search for: " +  searchTerm);	
-		            }
-	            else {
-		            System.out.println("Check");
-	            }	            	
+				String searchTerm = searchField.getText();
+				if (!searchTerm.equals("Search for stories here")) {
+					/**Will add more later**/
+					System.out.println("Performing search for: " +  searchTerm);	
+				    }
+				else {
+					/**Will add more later**/
+					System.out.println("Check");
+				}	            	
 		}});
 	        searchBarPanel.add(searchField);
 	        searchBarPanel.add(searchButton);
