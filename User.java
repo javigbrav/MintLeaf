@@ -18,10 +18,10 @@ class User {
 	
 	void createConnection(String Username, String Password){
 		try {
-			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintLeafDatabase","root", "Mlgnoscope106!");
+			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb","root", "Mlgnoscope106!");
 			System.out.println("Database Connection Successful");
 			Statement stat = con.createStatement();
-			stat.execute("INSERT INTO USERS(UserNames, Passwords) VALUES('" + Username+"', '" + Password + "'");
+			stat.execute("INSERT INTO USERNAMES(users, passwords) VALUES('" + Username+"', '" + Password + "'");
 			stat.close();
 			
 		} catch(SQLException e) {
