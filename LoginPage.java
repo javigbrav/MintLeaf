@@ -105,6 +105,8 @@ public class LoginPage implements ActionListener {
 					messageLabel.setText("Welcome back!");
 					loginFrame.dispose();
 					Homepage homepage = new Homepage(username);
+					homepage.homepageFrame.setVisible(true);
+
 				} else {
 					messageLabel.setForeground(mintRed);
 					messageLabel.setText("Wrong password");
