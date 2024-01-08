@@ -1,29 +1,70 @@
-import java.util.HashMap;
-/***********************************************************************************
- * Author: Zainab Siddiqui 
- * Date: December 20, 2023 
- * Last Modified:
- * Last Modified by: 
- * Description: Store a user's login information and story preferences
- ***********************************************************************************/
-public class User {
+package mintLeaf;
+
+import java.util.List;
+import java.awt.print.Book;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement; 
+
+class User {
+	private String username;
+	private String password;
+	Boolean isPremium;
 	
-	/*Globals*/
-	HashMap<String, String> logininfo = new HashMap<String, String>(); // temp storage of username and password
-	public String[] preferences = new String[10]; // change to how many items there are in here
-	
-	/*Constructor*/
-	User(String username, String userPassword){
-		LoginPage.logininfo.put(username, userPassword);
-		logininfo.put("Mint_Leaf", "logic4"); // need to add new user with this info to database so we can demo someone's account
+	void createConnection(String Username, String Password){
+		try {
+			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintLeafDatabase","root", "Mlgnoscope106!");
+			System.out.println("Database Connection Successful");
+			Statement stat = con.createStatement();
+			stat.execute("INSERT INTO USERS(UserNames, Passwords) VALUES('" + Username+"', '" + Password + "'");
+			stat.close();
+			
+		} catch(SQLException e) {
+			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+		}
 	}
 	
-	// temporary -- need to combine with MySQL
-	public HashMap<String, String> getLoginInfo() {
-		return logininfo;
+	void searchDataBase(String Username, String Password) {
+		try {
+			
+		} catch(SQLException e) {
+			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+		}
 	}
 	
-	public void updatePreferences(String[] preferences){
-		this.preferences = preferences;
+	List <Book> books = new ArrayList<book>();
+	User(){
+		username = "";
+		password = "";		
+		isPremium = false;
 	}
-} // end User
+	
+	User(String Username, String Password, boolean IsPremium){
+		username = Username;
+		password = Password;
+		isPremium = IsPremium;
+	}
+	
+	private void changeUsername(String Username) {
+		username = Username;
+	}
+	
+	private void changePassword(String Password) {
+		password = Password;
+	}
+	
+	private void upgradeUser(String Username, String Password) {
+		isPremium = true;
+	}
+	
+	private void addBookToLibrary(book Book) {
+		books.add(Book);
+	}
+
+	
+}
