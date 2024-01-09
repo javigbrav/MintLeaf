@@ -9,73 +9,142 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
-import java.sql.Statement; 
+import java.sql.Statement;
 
 class User {
 	private static String username;
 	private static String password;
-	Boolean isPremium;
-
-	//creating account
-	void createAccount(String Username, String Password){
+	private static String genre;
+	private static String region;
+	private static int age;
+	private static String storyLength;
+	
+	// add new account
+	void createConnection(String Username, String Password, String Genre, String Region, int Age,
+			String StoryLength) {
 		try {
-			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb","root", "Mlgnoscope106!");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+					"Mlgnoscope106!");
 			System.out.println("Database Connection Successful");
 			Statement stat = con.createStatement();
-			stat.execute("INSERT INTO USERNAMES(users, passwords) VALUES('" + Username+"', '" + Password + "'");
+			stat.execute("INSERT INTO USERNAMES(users, passwords) VALUES('" + Username + "', '" + Password + "', '"
+					+ Genre + "', '" + Region + "', " + age + ", '" + StoryLength + "'");
 			stat.close();
+
+			username = Username;
+			password = Password;
+			genre = Genre;
+			region = Region;
+			age = Age;
+			storyLength = StoryLength;
+
+		} catch (SQLException e) {
+			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+		}
+	}
+	
+	// search database and log in
+	static void searchDataBase(String Username, String Password) {
+		try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+					"Mlgnoscope106!");
+			Statement stat2 = con.createStatement();
+			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '" + Username
+					+ "' and passwords like '" + Password + "'");
+			while (rs.next()) {
+				username = rs.getString("users");
+				password = rs.getString("passwords");
+				genre = rs.getString("genre");
+				region = rs.getString("region");
+				age = rs.getInt("age");
+				storyLength = rs.getString("storyLength");
+			}
 			
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
 	}
 
-	//looking for account
-	static void searchDataBase(String Username, String Password) {
+	// update string columns
+	static void updateDataBase(String column, String New) {
 		try {
-			Connection con  = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb","root", "Mlgnoscope106!");
-			Statement stat2 = con.createStatement();
-			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '"+Username+"' and passwords like '"+Password+"'");
-			while(rs.next()) {
-				username = rs.getString("users");
-				String password = rs.getString("passwords");
-			}
-		} catch(SQLException e) {
-			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+					"Mlgnoscope106!");
+			Statement stat = con.createStatement();
+			stat.execute("UPDATE USERNAMES SET " + column + "= '" + New + "' WHERE users LIKE '" + username+"' AND passwords LIKE '"+password+"'");
+			stat.close();
+		} catch (SQLException e) {
+			System.out.println("ERROR - NO CONNECTION");
 		}
 	}
 	
-	List <Book> books = new ArrayList<book>();
-	User(){
+	//update age
+	static void updateDataBase(int Age) {
+		try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+					"Mlgnoscope106!");
+			Statement stat = con.createStatement();
+			stat.execute("UPDATE USERNAMES SET age = " + Age + "WHERE users LIKE '" + username+"' AND passwords LIKE '" + password + "'");
+			stat.close();
+		} catch(SQLException e) {
+			System.out.println("ERROR - NO CONNECTION");
+		}
+	}
+//	List<Book> books = new ArrayList<book>();
+
+	User() {
 		username = "";
-		password = "";		
-		isPremium = false;
+		password = "";
+		genre = "";
+		region = "";
+		age = 0;
+		storyLength = "";
 	}
-	
-	User(String Username, String Password, boolean IsPremium){
+
+	private static void fillUser(String Username, String Password, String Genre, String Region, int Age, String StoryLength) {
 		username = Username;
 		password = Password;
-		isPremium = IsPremium;
+		genre = Genre;
+		region = Region;
+		age = Age;
+		storyLength = StoryLength;
 	}
-	
-	private void changeUsername(String Username) {
+
+	private static void changeUsername(String Username) {
 		username = Username;
+		updateDataBase("users", Username);
 	}
-	
-	private void changePassword(String Password) {
+
+	private static void changePassword(String Password) {
 		password = Password;
+		updateDataBase("passwords" , Password);
+	}
+
+	private static void changeGenre(String Genre) {
+		genre = Genre;
+		updateDataBase("genre", Genre);
 	}
 	
-	private void upgradeUser(String Username, String Password) {
-		isPremium = true;
+	private static void changeRegion(String Region) {
+		region = Region;
+		updateDataBase("region", Region);
 	}
 	
-	private void addBookToLibrary(book Book) {
-		books.add(Book);
+	private static void changeAge(int Age) {
+		age = Age;
+		updateDataBase(age);
 	}
 	
-	public static void main(String[] args) {
-		searchDataBase("VICTOR", "MyPassword");
+	private static void changeStoryLength(String StoryLength) {
+		storyLength = StoryLength;
+		updateDataBase("storyLength", StoryLength);
 	}
-	
+
+//	private static void addBookToLibrary(book Book) {
+//		books.add(Book);
+//	}
+
+	private static void printAll() {
+		System.out.println(username + " " + password + " " + genre + " " + region + " " + age + " " + storyLength);
+	}
 }
