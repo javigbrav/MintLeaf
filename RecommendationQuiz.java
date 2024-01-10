@@ -1,5 +1,3 @@
-package Homepage;
-
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
@@ -41,7 +39,7 @@ public class RecommendationQuiz {
         // Scrollable panel
         JScrollPane scrollPane = new JScrollPane(createContentPanel(userToTrack), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         f.getContentPane().add(scrollPane);
-
+      
         f.setVisible(true);
     }
 
@@ -57,6 +55,7 @@ public class RecommendationQuiz {
 	 * Throws/Exceptions: ????
 	 */    
     private static JPanel createContentPanel(User userToTrack) {
+
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0)); // left, top, right, bottom

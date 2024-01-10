@@ -1,9 +1,6 @@
-package Homepage;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import Community.*;
 
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
@@ -21,7 +18,7 @@ public class Homepage {
 	JLabel label = new JLabel();
 	static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
 	
-	
+
 	Homepage(String username){
 		label.setBounds(20, 420, Tales.screenW, 35);
 		label.setFont(new Font(null, Font.BOLD, 30));
@@ -34,45 +31,45 @@ public class Homepage {
 		title.setWrapStyleWord(true);
 		title.setBounds(30, 20, 150, 50);
 		title.setOpaque(false);
-		title.setEditable(false);		
-				
+		title.setEditable(false);			
+		
+    
 		// set search bar panel
 		JPanel searchBarPanel = new JPanel();
 		searchBarPanel.setLayout(new FlowLayout());
-        JTextField searchField = new JTextField(20);
-        searchField.setText("Search for stories here"); // Set the initial placeholder text
-        searchField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-            	 // Clear the placeholder text when the field is focused
-                if (searchField.getText().equals("Search for stories here")) {searchField.setText("");}
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
-            	 // Restore the placeholder text if the field is not focused and empty
-                if (searchField.getText().isEmpty()) {searchField.setText("Search for stories here");}
-            }
-        });
-
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new ActionListener() {
+	        JTextField searchField = new JTextField(20);
+	        searchField.setText("Search for stories here"); // Set the initial placeholder text
+        	searchField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				 // Clear the placeholder text when the field is focused
+				if (searchField.getText().equals("Search for stories here")) {searchField.setText("");}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+			 	// Restore the placeholder text if the field is not focused and empty
+				if (searchField.getText().isEmpty()) {searchField.setText("Search for stories here");}
+			}
+	        });
+	
+	        JButton searchButton = new JButton("Search");
+	        searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-		        String searchTerm = searchField.getText();
-		        
-	            if (!searchTerm.equals("Search for stories here")) {
-		            System.out.println("Performing search for: " +  searchTerm);	
-		            }
-	            else {
-		            System.out.println("Check");
-	            }	            	
-			}
-        });
-        searchBarPanel.add(searchField);
-        searchBarPanel.add(searchButton);
-        searchBarPanel.setBounds(title.getX() + title.getWidth(), 20, 300, 35);
-        searchBarPanel.setOpaque(false);
-
+				String searchTerm = searchField.getText();
+				if (!searchTerm.equals("Search for stories here")) {
+					/**Will add more later**/
+					System.out.println("Performing search for: " +  searchTerm);	
+				    }
+				else {
+					/**Will add more later**/
+					System.out.println("Check");
+				}	            	
+		}});
+	        searchBarPanel.add(searchField);
+	        searchBarPanel.add(searchButton);
+	        searchBarPanel.setBounds(title.getX() + title.getWidth(), 20, 300, 35);
+	        searchBarPanel.setOpaque(false);
 		
 		
 		// set frame
