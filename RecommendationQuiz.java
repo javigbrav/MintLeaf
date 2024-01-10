@@ -1,7 +1,7 @@
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 06, 2024
+ * Last Modified: January 09, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
@@ -12,8 +12,6 @@ import java.awt.event.*;
 
 public class RecommendationQuiz {	
 	
-	static JFrame f = new JFrame("Recommendation Quiz");
-
 	/*Genre tracking*/
     private static String[] genreNames = {"Fantasy", "Horror", "Romance", "Adventure", "Mystery", "Historical", "Non-Fiction", "Drama", "Sci-Fi"};
     private static String genreResult;
@@ -30,21 +28,18 @@ public class RecommendationQuiz {
     private static String[] storyLengths = {"Short Story", "Novella", "Novel", "Epic"};
     private static String storyLengthResult;
 
-    /*Array of tracked preferences*/
+    /*Other global variables*/
     public static String[] preferences = new String[4];
+	private static JFrame f = new JFrame("Recommendation Quiz");
     
     RecommendationQuiz(User userToTrack) {
         f.setSize(450, 630);
         f.getContentPane().setBackground(new Color(0, 242, 206));
-
-        // panel to add scrollable panel to
-        JPanel panel = new JPanel(new BorderLayout());
-        f.getContentPane().add(panel);
                 
         // Scrollable panel
         JScrollPane scrollPane = new JScrollPane(createContentPanel(userToTrack), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        panel.add(scrollPane);
-
+        f.getContentPane().add(scrollPane);
+      
         f.setVisible(true);
     }
 
@@ -59,7 +54,8 @@ public class RecommendationQuiz {
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */    
-    static JPanel createContentPanel(User userToTrack) {
+    private static JPanel createContentPanel(User userToTrack) {
+
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0)); // left, top, right, bottom
@@ -230,7 +226,7 @@ public class RecommendationQuiz {
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */
-    static JPanel questionPanel(JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames) {
+    private static JPanel questionPanel(JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames) {
     	JPanel questionPanel = new JPanel();
     	questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS)); // vertically stack the components
         questionPanel.add(question);
@@ -259,7 +255,7 @@ public class RecommendationQuiz {
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */
-    static void clearComponentBackground(JPanel panel) {
+    private static void clearComponentBackground(JPanel panel) {
     	for(int j = panel.getComponentCount() - 1; j > 0; j--) {
     		Component comp = panel.getComponents()[j];
     		if (comp instanceof JComponent) {

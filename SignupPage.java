@@ -114,7 +114,8 @@ public class SignupPage implements ActionListener {
 				System.out.println("test2");
 			}
 			else { 
-				newUser = new User(username, userPassword);
+			/** Need to rework this based on User constructor**/	
+      newUser = new User(username, userPassword, false);
 				RecommendationQuiz rc = new RecommendationQuiz(newUser);
 				Homepage h = new Homepage(username);
 				signupFrame.dispose();

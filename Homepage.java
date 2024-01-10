@@ -1,19 +1,24 @@
-package Homepage;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 8, 2024
+ * Last Modified: January 9, 2024
  * Last Modified by: Fardin Abbassi
  * Description: A user's home page in the application
  ***********************************************************************************/
 public class Homepage {
 	
+	private User profile;
+	private Library browse;
+	private Community community;
+	
 	JLabel label = new JLabel();
 	static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
 	
+
 	Homepage(String username){
 		label.setBounds(20, 420, Tales.screenW, 35);
 		label.setFont(new Font(null, Font.BOLD, 30));
@@ -26,9 +31,9 @@ public class Homepage {
 		title.setWrapStyleWord(true);
 		title.setBounds(30, 20, 150, 50);
 		title.setOpaque(false);
-		title.setEditable(false);		
+		title.setEditable(false);			
 		
-		
+    
 		// set search bar panel
 		JPanel searchBarPanel = new JPanel();
 		searchBarPanel.setLayout(new FlowLayout());
