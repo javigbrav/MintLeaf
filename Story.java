@@ -7,7 +7,16 @@ public class Story{
 	public String author;
 	public String description;
 	public String country; // to make sense with recommendation quiz, maybe add region parameter as well?
+	
+	public String genre;
+	public String region;
 	public String ageGroup; // change from UML: String instead of int
+	public String storyLength;
+	
+	private int priority = 1;
+	public void increasePriority() {priority++;}
+	public int getPriority() {return priority;}
+	
 	public int votes;
 	public LinkedList<Bookmark> bookmarkList;
 	public LinkedList<Annotation> annotationList;
