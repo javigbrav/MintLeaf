@@ -1,11 +1,12 @@
+package Homepage;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 20, 2023 
- * Last Modified:
- * Last Modified by: 
+ * Last Modified: January 09, 2024
+ * Last Modified by: Fardin Abbassi
  * Description: the main/driver for the application
  ***********************************************************************************/
 public class Tales {
@@ -14,14 +15,17 @@ public class Tales {
 	static Rectangle rect = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getBounds();
 	public static int screenW = rect.width; //sets the screen width
     public static int screenH = rect.height; //sets the screen height
+    
     private static LinkedList<User> users;
-    private String username; private String password;
+    private String username; 
+    private String password;
     
     /*Constructor*/
     public Tales(LinkedList<User> users) {
     	this.users = users;
-		User usernameAndPassword = new User(username, password);
-		LoginPage loginpage = new LoginPage(usernameAndPassword.getLoginInfo());
+		User usernameAndPassword = new User(username, password, false);
+		/** NEED TO ADJUST TO DATABASE USAGE **/
+		LoginPage loginpage = new LoginPage(/*usernameAndPassword.getLoginInfo()*/ null);
 	}
 	
 	public static void main(String[] args) {
