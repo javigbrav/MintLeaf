@@ -49,30 +49,32 @@ class User {
 	}
 	
 	// search database and log in
-	static void searchDataBase(String Username, String Password) {
+	static boolean searchDataBase(String Username, String Password) {
 		try {
-			// connecting to database
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
-
-			//searching for log in details in database
 			Statement stat2 = con.createStatement();
 			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '" + Username
-					+ "' and passwords like '" + Password + 
-			// retrieving preferences and adding to this instance
-			while (rs.next()) {
-				username = rs.getString("users");
-				password = rs.getString("passwords");
-				genre = rs.getString("genre");
-				region = rs.getString("region");
-				age = rs.getInt("age");
-				storyLength = rs.getString("storyLength");
+					+ "' and passwords like '" + Password + "'");
+			if (rs.next()) {
+				do {
+
+					username = rs.getString("users");
+					password = rs.getString("passwords");
+					genre = rs.getString("genre");
+					region = rs.getString("region");
+					age = rs.getInt("age");
+					storyLength = rs.getString("storyLength");
+
+				} while (rs.next());
+				return true;
+			} else {
+				System.out.println("user not found");
 			}
-		} 
-		// error connecting to database
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
+		return false;
 	}
 
 	// update string columns
