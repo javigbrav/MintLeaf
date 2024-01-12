@@ -23,22 +23,27 @@ class User {
 	void createConnection(String Username, String Password, String Genre, String Region, int Age,
 			String StoryLength) {
 		try {
+			// trying to connect to database
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
 			System.out.println("Database Connection Successful");
+
+			//saving user log in and preference info to the databae
 			Statement stat = con.createStatement();
 			stat.execute("INSERT INTO USERNAMES(users, passwords) VALUES('" + Username + "', '" + Password + "', '"
 					+ Genre + "', '" + Region + "', " + age + ", '" + StoryLength + "'");
 			stat.close();
 
+			// setting up this instance
 			username = Username;
 			password = Password;
 			genre = Genre;
 			region = Region;
 			age = Age;
 			storyLength = StoryLength;
-
-		} catch (SQLException e) {
+		} 
+		// error connecting to database
+		catch (SQLException e) {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
 	}
@@ -46,11 +51,15 @@ class User {
 	// search database and log in
 	static void searchDataBase(String Username, String Password) {
 		try {
+			// connecting to database
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
+
+			//searching for log in details in database
 			Statement stat2 = con.createStatement();
 			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '" + Username
-					+ "' and passwords like '" + Password + "'");
+					+ "' and passwords like '" + Password + 
+			// retrieving preferences and adding to this instance
 			while (rs.next()) {
 				username = rs.getString("users");
 				password = rs.getString("passwords");
@@ -59,8 +68,9 @@ class User {
 				age = rs.getInt("age");
 				storyLength = rs.getString("storyLength");
 			}
-			
-		} catch (SQLException e) {
+		} 
+		// error connecting to database
+		catch (SQLException e) {
 			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
 		}
 	}
@@ -70,10 +80,14 @@ class User {
 		try {
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
+			// telling database to update a specific column and row
+			// only for strings
 			Statement stat = con.createStatement();
 			stat.execute("UPDATE USERNAMES SET " + column + "= '" + New + "' WHERE users LIKE '" + username+"' AND passwords LIKE '"+password+"'");
 			stat.close();
-		} catch (SQLException e) {
+		} 
+		// error connecting to database
+		catch (SQLException e) {
 			System.out.println("ERROR - NO CONNECTION");
 		}
 	}
@@ -81,26 +95,23 @@ class User {
 	//update age
 	static void updateDataBase(int Age) {
 		try {
+			// connecting to database
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
 			Statement stat = con.createStatement();
+
+			//updating age
 			stat.execute("UPDATE USERNAMES SET age = " + Age + "WHERE users LIKE '" + username+"' AND passwords LIKE '" + password + "'");
 			stat.close();
-		} catch(SQLException e) {
+		} 
+		// error connecting to database
+		catch(SQLException e) {
 			System.out.println("ERROR - NO CONNECTION");
 		}
 	}
 //	List<Book> books = new ArrayList<book>();
 
-	User() {
-		username = "";
-		password = "";
-		genre = "";
-		region = "";
-		age = 0;
-		storyLength = "";
-	}
-
+	// method for testing purposes, so we can make whatever we want the user of this instance
 	private static void fillUser(String Username, String Password, String Genre, String Region, int Age, String StoryLength) {
 		username = Username;
 		password = Password;
@@ -110,16 +121,19 @@ class User {
 		storyLength = StoryLength;
 	}
 
+	// changing client username
 	private static void changeUsername(String Username) {
 		username = Username;
 		updateDataBase("users", Username);
 	}
 
+	// changing client password
 	private static void changePassword(String Password) {
 		password = Password;
 		updateDataBase("passwords" , Password);
 	}
 
+	// methods from here on are used to update preferences
 	private static void changeGenre(String Genre) {
 		genre = Genre;
 		updateDataBase("genre", Genre);
@@ -144,6 +158,7 @@ class User {
 //		books.add(Book);
 //	}
 
+	// testing method to make sure all fields are what they should be 
 	private static void printAll() {
 		System.out.println(username + " " + password + " " + genre + " " + region + " " + age + " " + storyLength);
 	}
