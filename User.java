@@ -12,12 +12,12 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 class User {
-	private static String username;
-	private static String password;
-	private static String genre;
-	private static String region;
-	private static int age;
-	private static String storyLength;
+	public static String username;
+	public static String password;
+	public static String genre;
+	public static String region;
+	public static int age;
+	public static String storyLength;
 	
 	// add new account
 	void createConnection(String Username, String Password, String Genre, String Region, int Age,
