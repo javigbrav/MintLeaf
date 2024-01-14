@@ -1,34 +1,29 @@
-package LogIn;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
+import java.io.*;
 import javax.swing.*;
 
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 12, 2024
- * Last Modified by: Javiera Garrido
+ * Last Modified: January 13, 2024
+ * Last Modified by: Zainab Siddiqui
  * Description: A user's home page in the application
  ***********************************************************************************/
 
 public class Homepage {
 
-    Color WHIRLWIND_PINK = new Color(228, 213, 211);
     Color mintGreen = new Color(220, 242, 206);
-    JMenu menu, subLibrary, subUser;
-    JMenuItem libr, note, fav, user, home;
+	Color mintGreen2 = new Color(88, 153, 47);
+    JMenu menu, libr;
+    private JMenu mnUsername;
+    JMenuItem fav, user, settings, logOut;
     JMenuBar mb = new JMenuBar();
     JTextArea textArea;
     
     static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
 
-    Homepage() {
+    Homepage(String username) {
     	
     	// Create JTextArea
         textArea = new JTextArea(20, 40);
@@ -36,122 +31,13 @@ public class Homepage {
 
         // Create JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
-        // title
-        JTextArea title = new JTextArea("Tales Around The World");
-        title.setFont(new Font("SansSerif", Font.PLAIN, 20));
-        title.setLineWrap(true);
-        title.setWrapStyleWord(true);
-        title.setOpaque(false);
-        title.setEditable(false);
         JPanel titlePanel = new JPanel(); //it was being covered by the search bar, so it needs this
-        titlePanel.add(title);
         titlePanel.setOpaque(false);
+        mb.setMargin(new Insets(30, 5, 0, 0));
+        mb.setFont(new Font("Segoe Print", Font.PLAIN, 30));
+        mb.setBackground(mintGreen2);
 
-        // set search bar panel
-        JPanel searchBarPanel = new JPanel();
-        searchBarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        JTextField searchField = new JTextField(20);
-        searchField.setText("Search for stories here");
-        searchField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (searchField.getText().equals("Search for stories here")) {
-                    searchField.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (searchField.getText().isEmpty()) {
-                    searchField.setText("Search for stories here");
-                }
-            }
-        });
-        
-        //search button
-        JButton searchButton = new JButton("Search");
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String searchTerm = searchField.getText();
-                if (!searchTerm.equals("Search for stories here")) {
-                    System.out.println("Performing search for: " + searchTerm);
-                } else {
-                    System.out.println("Check");
-                }
-            }
-        });
-        //implementing search panel
-        searchBarPanel.add(searchField);
-        searchBarPanel.add(searchButton);
-        searchBarPanel.setOpaque(false);
-
-        // menu choice panel
-        menu = new JMenu("Menu");
-        subLibrary = new JMenu("Library");
-        subUser = new JMenu("Profile");
-        
-         //creating menu items
-        libr = new JMenuItem("Library");
-        fav = new JMenuItem("Favorites");
-        note = new JMenuItem("Annotations");
-        user = new JMenuItem("Profile");
-        home = new JMenuItem ("Homepage");
-        
-        //implementing action listeners to direct to other pages using the same frame
-        libr.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	
-            	Library.setFrame(homepageFrame);
-            	new Library();
-                System.out.println("Redirecting to Library page");
-            }
-        });
-
-        fav.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Redirecting to Favorites page");
-            }
-        });
-
-        note.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Redirecting to Annotations page");
-            }
-        });
-
-        user.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Redirecting to profile");
-            }
-        });
-        
-        home.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	new Homepage();
-                System.out.println("Redirecting to Homepage");
-            }
-        });
-         //adding items to menus
-        subLibrary.add(libr);
-        subLibrary.add(note);
-        subLibrary.add(fav);
-        subUser.add(user);
-
-        menu.setFont(new Font("Helvetica", Font.PLAIN, 14));
-        mb.setBackground(WHIRLWIND_PINK);
-        menu.setForeground(Color.black);
-        menu.add(subUser);
-        menu.add(subLibrary);
-        menu.add(home);
-        mb.add(menu);
-
-        // Create a panel for book buttons with separation from sides, top, and bottom
+        //create a panel for book buttons with separation from sides, top, and bottom
         JPanel bookPanel = new JPanel(new BorderLayout());
         JPanel topSpace = new JPanel();
         JPanel bottomSpace = new JPanel();
@@ -169,8 +55,8 @@ public class Homepage {
         leftSpace.setOpaque(false);
         rightSpace.setOpaque(false);
 
-        leftSpace.setPreferredSize(new Dimension(1, 1)); // Adjust as needed
-        rightSpace.setPreferredSize(new Dimension(170, 1)); // Adjust as needed
+        leftSpace.setPreferredSize(new Dimension(100, 1)); // Adjust as needed
+        rightSpace.setPreferredSize(new Dimension(100, 1)); // Adjust as needed
 
         bookPanel.add(leftSpace, BorderLayout.WEST);
         bookPanel.add(rightSpace, BorderLayout.EAST);
@@ -179,12 +65,13 @@ public class Homepage {
         bookGridPanel.setLayout(new GridLayout(2, 5, 50, 70)); // Adjust the last two parameters for spacing
         bookGridPanel.setBackground(mintGreen);
         
-        
+        bookPanel.add(bookGridPanel, BorderLayout.CENTER);
+        bookPanel.setBackground(mintGreen);
         //book buttons
         for (int i = 1; i <= 10; i++){
             JButton bookButton = new JButton("Book " + i);
             final int bookNumber = i; // Final variable to use in the ActionListener
-            bookButton.setBackground(new Color(158, 30, 30));
+            bookButton.setBackground(mintGreen2);
             bookButton.setPreferredSize(new Dimension(25, 40)); // Adjust size as needed
             bookButton.addActionListener(new ActionListener() {
                 @Override
@@ -197,39 +84,176 @@ public class Homepage {
             bookGridPanel.add(bookButton);
         }
 
-        bookPanel.add(bookGridPanel, BorderLayout.CENTER);
-        bookPanel.setBackground(mintGreen);
         // Set frame
-        homepageFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        homepageFrame.setSize(Tales.screenW, Tales.screenH);
-        homepageFrame.getContentPane().setBackground(mintGreen);
-        //i dont have the image
-        homepageFrame.setIconImage(Toolkit.getDefaultToolkit().getImage("C:\\Users\\kashi\\Downloads\\mintleaf_icon.png")); // MintLeaf Logic logo without text
+        Tales.setFrame(homepageFrame);
         
-//        //I changed the layout, but know the searchbar is covering half the title
-//        homepageFrame.setLayout(new FlowLayout(FlowLayout.LEFT));
-//	    homepageFrame.add(titlePanel); //with the border layout i couldnt make this next to the search bar, it appeared under.
-//	    homepageFrame.add(searchBarPanel);
-//	    homepageFrame.setVisible(true);
-//	    //this way i can control better where each this is.
-//     	homepageFrame.setLayout(new BorderLayout());
-//     	
-//     	homepageFrame.add(bookPanel, BorderLayout.CENTER);
-//     	homepageFrame.setJMenuBar(mb);
-        //Set BorderLayout for the main content panel
-        homepageFrame.setLayout(new BorderLayout());
-
-        // Add components to the main content panel
-        homepageFrame.add(title, BorderLayout.NORTH);
-        homepageFrame.add(searchBarPanel, BorderLayout.WEST);
-        homepageFrame.add(bookPanel, BorderLayout.CENTER);
+        // Set BorderLayout for the main content panel
+        homepageFrame.getContentPane().setLayout(new BorderLayout());
+        homepageFrame.getContentPane().add(bookPanel, BorderLayout.CENTER);
         homepageFrame.setJMenuBar(mb);
-     	
+    	
+    	Label label_1 = new Label("");
+    	mb.add(label_1);
+    	label_1.setMaximumSize(new Dimension(20, 32767));
+        
+        // title
+    	JLabel title = new JLabel("Tales Around The World");
+    	mb.add(title);
+    	title.setBounds(new Rectangle(50, 0, 0, 0));
+    	title.setFont(new Font("Impact", Font.PLAIN, 40));
+    	title.setBounds(30, 20, 391, 50);
+    	title.setOpaque(false);
+    	title.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    	title.addMouseListener(new MouseAdapter() { // return to homepage when you click the title
+			@Override
+			public void mouseClicked(MouseEvent m) {
+				try {
+					System.out.println("Redirecting to Home");
+					new Homepage(Tales.username);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}	
+    	});
+        
+        Label label_2 = new Label("");
+        label_2.setMaximumSize(new Dimension(100, 32767));
+        mb.add(label_2);
+        //FILTER SEARCHES
+    	
+        // set search bar panel
+        JPanel searchBarPanel = new JPanel();
+        searchBarPanel.setMaximumSize(new Dimension(400, 32767));
+        mb.add(searchBarPanel);
+        
+        searchBarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        JTextField searchField = new JTextField(18);
+        searchField.setFont(new Font("MV Boli", Font.PLAIN, 16));
+        searchField.setText("Looking for something...");
+        searchField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchField.getText().equals("Looking for something...")) {
+                    searchField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchField.getText().isEmpty()) {
+                    searchField.setText("Looking for something...");
+                }
+            }
+        });
+        
+        //search button
+        JButton searchButton = new JButton("");
+        searchButton.setIcon(new ImageIcon("C:\\Users\\kashi\\Downloads\\15028-200.png"));
+        searchButton.setFont(new Font("Segoe Print", Font.PLAIN, 18));
+        searchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String searchTerm = searchField.getText();
+                if (!searchTerm.equals("Looking for something...")) {
+                    System.out.println("Searching for: " + searchTerm);
+                } else {
+                    System.out.println("Check");
+                }
+            }
+        });
+        //implementing search panel
+        searchBarPanel.add(searchField);
+        searchBarPanel.add(searchButton);
+        searchBarPanel.setOpaque(false);
+		
+		Label label = new Label("");
+		label.setMaximumSize(new Dimension(100, 32767));
+		mb.add(label);
+		
+		// to filter searches - showing results for a specific genre
+		JLabel filter = new JLabel("Explore");
+		mb.add(filter);
+		filter.setHorizontalAlignment(SwingConstants.TRAILING);
+		filter.setFont(new Font("MV Boli", Font.PLAIN, 18));
+		
+		Label label_3 = new Label("");
+		label_3.setMaximumSize(new Dimension(900, 32767));
+		mb.add(label_3);
+        
+        //menu
+		mnUsername = new JMenu("username");
+		mb.add(mnUsername);
+		mnUsername.setFont(new Font("Segoe Print", Font.BOLD, 15));
+		user = new JMenuItem("Profile");
+		libr = new JMenu("My Library");
+		fav = new JMenuItem("Favourites");
+		settings = new JMenuItem("Settings");
+		logOut = new JMenuItem("Log out");
+		// set font
+		libr.setFont(new Font("Helvetica", Font.BOLD, 15));
+		fav.setFont(new Font("Helvetica", Font.BOLD, 15));
+		user.setFont(new Font("Dialog", Font.BOLD, 15));
+		settings.setFont(new Font("Helvetica", Font.BOLD, 15));
+		logOut.setFont(new Font("Helvetica", Font.BOLD, 15));
+		
+		//implementing action listeners to direct to other pages using the same frame
+		libr.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	Tales.setFrame(homepageFrame);
+		    	new Library();
+		        System.out.println("Redirecting to your Library");
+		    }
+		});
+		
+        user.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Redirecting to your Profile");
+                new Profile();
+            }
+        });
+        
+         fav.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 System.out.println("Redirecting to your Favourites");
+                 new Favourites();
+             }
+         });
+         
+        settings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Redirecting to Settings");
+                new Settings();
+            }
+        });
+        
+        //adding items to menus
+        mnUsername.add(user);
+        mnUsername.add(libr);
+        libr.add(fav);
+        mnUsername.add(settings);
+        mnUsername.add(logOut);
+        
+        Label label_4 = new Label("");
+        label_4.setMaximumSize(new Dimension(100, 32767));
+        mb.add(label_4);
+		        
+        // menu choice panel
+    	menu = new JMenu(username);
+    	
+    	// setting menu panel font
+    	menu.setFont(new Font("Helvetica", Font.BOLD, 15));
+    	
+	    //setting up menu
+	    menu.setFont(new Font("Segoe Print", Font.PLAIN, 18));
+	    menu.setForeground(new Color(255, 255, 255));
         homepageFrame.setVisible(true);
     }
 
     public void readFile(String fileName) {
-		// TODO Auto-generated method stub
     	 try {
              BufferedReader reader = new BufferedReader(new FileReader(fileName));
              StringBuilder content = new StringBuilder();
@@ -246,14 +270,15 @@ public class Homepage {
          }
     	 catch (IOException e) {
     		 JOptionPane.showMessageDialog(null, "Error reading the file", e.toString(), JOptionPane.ERROR_MESSAGE);
-             
+
          }
 	}
 
+    // main
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Homepage();
+                new Homepage(Tales.username);
             }
         });
     }
