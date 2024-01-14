@@ -1,12 +1,19 @@
+package Homepage;
+
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 09, 2024
+ * Last Modified: January 11, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Document;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -21,7 +28,6 @@ public class RecommendationQuiz {
     private static String regionResult;
 	
     /*Reading age range tracking*/
-    private static String[] ageRanges = {"<15", "15 - 19", "20 - 29", "30 - 45", "46 - 65", ">65"};
     private static String ageRangeResult;
     
     /*Story length tracking*/
@@ -31,7 +37,8 @@ public class RecommendationQuiz {
     /*Other global variables*/
     public static String[] preferences = new String[4];
 	private static JFrame f = new JFrame("Recommendation Quiz");
-    
+    static boolean isThereAnAge = false;
+
     RecommendationQuiz(User userToTrack) {
         f.setSize(450, 630);
         f.getContentPane().setBackground(new Color(0, 242, 206));
@@ -39,14 +46,14 @@ public class RecommendationQuiz {
         // Scrollable panel
         JScrollPane scrollPane = new JScrollPane(createContentPanel(userToTrack), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         f.getContentPane().add(scrollPane);
-      
+
         f.setVisible(true);
     }
 
     /* Method Name: createContentPanel 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: December 31, 2023
-	 * Modified Date: January 06, 2024
+	 * Modified Date: January 11, 2024
 	 * Description: Creates a JPanel that contains all the question panels for the user to interact with, and updates a user's preference list.
 	 * @Parameters: User userToTrack
 	 * @Return Value: JPanel
@@ -55,7 +62,6 @@ public class RecommendationQuiz {
 	 * Throws/Exceptions: ????
 	 */    
     private static JPanel createContentPanel(User userToTrack) {
-
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 0)); // left, top, right, bottom
@@ -133,33 +139,77 @@ public class RecommendationQuiz {
         /*Question 3: Age Range*/
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
         JLabel question3 = new JLabel("What age range represents the stories you read?");
-        JCheckBox[] ranges = new JCheckBox[ageRanges.length];
-        ButtonGroup rangeGroup = new ButtonGroup();
+        JTextField ageTextField = new JTextField(2);
         JButton submitButton3 = new JButton("Confirm choice");
-        JPanel ageRangePanel = questionPanel(question3, ranges, rangeGroup, submitButton3, ageRanges);
+        JLabel improperAge = new JLabel("Invalid Entry - Please enter a valid age");
 
-        contentPanel.add(ageRangePanel);
+        ageTextField.setText("");
+        ageTextField.getDocument().addDocumentListener(new DocumentListener() {
+        	public void insertUpdate(DocumentEvent e) {
+                Document doc = e.getDocument();
+                int length = doc.getLength();
+                if (length > 2) {
+                	isThereAnAge = true;
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            doc.remove(e.getOffset(), e.getLength());
+                        } catch (BadLocationException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                }
+            }
+            public void changedUpdate(DocumentEvent e) {
+                // Not used for plain text components
+            }
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub				
+			}
+        });
+        Dimension fixedSize = new Dimension(submitButton3.getPreferredSize().width * 3, ageTextField.getPreferredSize().height);
+        ageTextField.setMaximumSize(fixedSize);
+        ageTextField.setPreferredSize(fixedSize); 
+     
+        submitButton3.setBackground(new Color(115, 201, 61));
+        submitButton3.setFont(new Font("Tahoma", Font.PLAIN, 15));
         submitButton3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                for (int i = 0; i < ranges.length; i++) {
-                    if (ranges[i].isSelected()) {
-                        ageRangeResult = ranges[i].getText();
-                        break;
-                    }
-                }
-
-                if (ageRangeResult != null) {
-                    for (int j = 0; j < ranges.length; j++) {
-                        if (!ranges[j].getText().equals(ageRangeResult))
-                        	ranges[j].setVisible(false);
-                    }
-                }
-
-                if(preferences[2] == null) {
-                	preferences[2] = ageRangeResult;
-                } 
+            	String potentialAge = ageTextField.getText();
+            	int age;
+            	try {
+            		// parse to find a number to use as an age
+            		age = Integer.parseInt(potentialAge);
+            		isThereAnAge = true;
+            	}catch(NumberFormatException ex) {
+            		// if there are non-numerical characters, make the user input numbers
+            		improperAge.setVisible(true);
+            		isThereAnAge = false;
+            	} // end try/catch
+            	
+            	// if/when a correct age is input, lock the text field and set the string array index to the age
+                if (isThereAnAge) {
+                	ageRangeResult = potentialAge;
+                    ageTextField.setEditable(false);
+	                if(preferences[2] == null) {preferences[2] = ageRangeResult;}
+	                improperAge.setVisible(false);
+                } // end if            
             }
         });
+        
+        improperAge.setVisible(false);
+        improperAge.setForeground(Color.red);
+        
+        JPanel ageRangePanel = new JPanel();
+        ageRangePanel.setLayout(new BoxLayout(ageRangePanel, BoxLayout.Y_AXIS)); // vertically stack the components
+        ageRangePanel.add(question3);
+        ageRangePanel.add(ageTextField);
+        ageRangePanel.add(submitButton3);
+        ageRangePanel.add(improperAge);
+        
+        clearComponentBackground(ageRangePanel);
+        contentPanel.add(ageRangePanel);
+        ageTextField.setOpaque(true);
+        submitButton3.setOpaque(true);
         
         /*Question 4: Story Length*/
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
