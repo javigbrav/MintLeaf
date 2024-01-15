@@ -16,6 +16,8 @@ public class LoginPage implements ActionListener {
     static JFrame loginFrame = new JFrame("Tales Around the World - Login");
 
     // set up screen
+	private JLabel title = new JLabel(); // Tales Around the World
+
 	JButton loginButton = new JButton("LOG IN");
 	JButton signupButton = new JButton("SIGN UP");
 
@@ -26,12 +28,10 @@ public class LoginPage implements ActionListener {
 	JLabel userPasswordLabel = new JLabel("password: ");
 	JLabel messageLabel = new JLabel();
 	
-	public static HashMap<String,String> logininfo = new HashMap<String, String>(); // temp storage of username, password
 	
-	private JLabel title = new JLabel(); // Tales Around the World
 	
 	/*Constructor*/
-	LoginPage(HashMap<String,String> loginInfo1){
+	LoginPage(){
 		
 		// title
 		title.setText("Tales Around the World");
@@ -39,7 +39,6 @@ public class LoginPage implements ActionListener {
 		title.setForeground(Color.black);
 		title.setBounds(50, 20, 300, 40);
 
-		logininfo = loginInfo1;
 		usernameLabel.setBounds(50, 100, 75, 25);
 		userPasswordLabel.setBounds(50, 150, 75, 25);
 
@@ -98,23 +97,16 @@ public class LoginPage implements ActionListener {
 		if (e.getSource() == loginButton) {
 			String username = usernameField.getText();
 			String password = String.valueOf(userPasswordField.getPassword());
-		
-			if (logininfo.containsKey(username)) { // refer to Hash Map
-				if (logininfo.get(username).equals(password)) {
-					messageLabel.setForeground(mintGreen);
-					messageLabel.setText("Welcome back!");
-					loginFrame.dispose();
-					Homepage homepage = new Homepage();
-					homepage.homepageFrame.setVisible(true);
-
-				} else {
-					messageLabel.setForeground(mintRed);
-					messageLabel.setText("Wrong password");
-				}
-				
+			
+			if(User.searchDataBase(username, password)) { // check if user and password are in the database
+				messageLabel.setForeground(mintRed);
+				messageLabel.setText("Welcome back!");
+				loginFrame.dispose();
+				Homepage homepage = new Homepage(username);
+				homepage.homepageFrame.setVisible(true);
 			} else {
 				messageLabel.setForeground(mintRed);
-				messageLabel.setText("Username not found");
+				messageLabel.setText("Wrong username or password");
 			}
 		}
 		if (e.getSource() == signupButton) {
