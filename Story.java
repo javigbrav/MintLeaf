@@ -17,6 +17,7 @@ public class Story{
 	public void increasePriority() {priority++;}
 	public int getPriority() {return priority;}
 	
+	
 	public int votes;
 	public LinkedList<Bookmark> bookmarkList;
 	public LinkedList<Annotation> annotationList;
