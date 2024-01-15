@@ -1,10 +1,12 @@
+package Homepage;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 26, 2023 
- * Last Modified: January 06, 2024
+ * Last Modified: January 14, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Allow a user to create an account
  ***********************************************************************************/
@@ -98,11 +100,11 @@ public class SignupPage implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == signupButton) {
-			System.out.println("test");
+			//System.out.println("test");
 			String username = usernameField.getText();
 			String userPassword = String.valueOf(userPasswordField.getPassword());
 
-			if (LoginPage.logininfo.containsKey(username)) {
+			if (User.searchForExistingUser(username)) {
 				usernameField.setText("");
 				userPasswordField.setText("");
 				// warning label
@@ -111,13 +113,13 @@ public class SignupPage implements ActionListener {
 				warningLabel.setText("Username already exists");
 				warningLabel.setBounds(154, 147, 159, 23);
 				signupFrame.getContentPane().add(warningLabel);
-				System.out.println("test2");
+				//System.out.println("test2");
 			}
-			else { 
-			/** Need to rework this based on User constructor**/	
-      newUser = new User(username, userPassword, false);
-				RecommendationQuiz rc = new RecommendationQuiz(newUser);
+			else {
+				newUser = new User(username, userPassword);
 				Homepage h = new Homepage(username);
+				h.homepageFrame.setVisible(false);
+				RecommendationQuiz rc = new RecommendationQuiz(newUser);
 				signupFrame.dispose();
 			}
 
