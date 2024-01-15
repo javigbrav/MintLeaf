@@ -3,7 +3,7 @@ package Homepage;
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 11, 2024
+ * Last Modified: January 09, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
@@ -159,12 +159,9 @@ public class RecommendationQuiz {
                     });
                 }
             }
-            public void changedUpdate(DocumentEvent e) {
-                // Not used for plain text components
-            }
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub				
-			}
+        	// Technically a requirement, but not necessary for functionality
+            public void changedUpdate(DocumentEvent e) {}
+			public void removeUpdate(DocumentEvent e) {}
         });
         Dimension fixedSize = new Dimension(submitButton3.getPreferredSize().width * 3, ageTextField.getPreferredSize().height);
         ageTextField.setMaximumSize(fixedSize);
@@ -250,9 +247,10 @@ public class RecommendationQuiz {
         finishedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	f.dispose();
-        		System.out.println(LoginPage.logininfo.entrySet());
+        		Tales.username = userToTrack.username;
         		Homepage.homepageFrame.setVisible(true);
         		userToTrack.updatePreferences(preferences);
+        		userToTrack.createConnection(userToTrack.username, userToTrack.password, userToTrack.genre, userToTrack.region, userToTrack.age, userToTrack.storyLength);
             }
         });
         finishedButton.setFont(new Font("Impact", Font.PLAIN, 15));
