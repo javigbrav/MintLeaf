@@ -1,17 +1,15 @@
-package mintLeaf;
-
 import java.util.List;
-import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.awt.print.Book;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
-class User {
+public class User {
 	public static String username;
 	public static String password;
 	public static String genre;
@@ -19,19 +17,35 @@ class User {
 	public static int age;
 	public static String storyLength;
 	
+	private static Connection con;
+	
+	// Constructor to create connection and stuff
+	User(String username, String password){
+			try {
+				this.username = username;
+				this.password = password;
+				/** When doing this locally, swap "MintLeaf" with your local password**/
+				con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+				System.out.println("Connection Successful");
+			} catch (SQLException e) {
+				System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
+			}
+	
+	}
+	
 	// add new account
 	void createConnection(String Username, String Password, String Genre, String Region, int Age,
 			String StoryLength) {
 		try {
 			// trying to connect to database
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
-					"Mlgnoscope106!");
+			/** Again, when doing this locally, swap "MintLeaf" with your local password**/
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
 			System.out.println("Database Connection Successful");
 
 			//saving user log in and preference info to the databae
 			Statement stat = con.createStatement();
-			stat.execute("INSERT INTO USERNAMES(users, passwords) VALUES('" + Username + "', '" + Password + "', '"
-					+ Genre + "', '" + Region + "', " + age + ", '" + StoryLength + "'");
+			stat.execute("INSERT INTO USERNAMES(users, passwords, genre, region, age, storylength) VALUES('" + Username + "', '" + Password + "', '"
+					+ Genre + "', '" + Region + "', " + Age + ", '" + StoryLength + "')");
 			stat.close();
 
 			// setting up this instance
@@ -44,43 +58,60 @@ class User {
 		} 
 		// error connecting to database
 		catch (SQLException e) {
-			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
 		}
 	}
 	
 	// search database and log in
 	static boolean searchDataBase(String Username, String Password) {
 		try {
+			/** Once again, when doing this locally, swap "MintLeaf" with your local password**/
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
-					"Mlgnoscope106!");
+					"MintLeaf");
+			System.out.println("Database Connection Successful");
 			Statement stat2 = con.createStatement();
 			ResultSet rs = stat2.executeQuery("SELECT * FROM USERNAMES WHERE users like '" + Username
 					+ "' and passwords like '" + Password + "'");
 			if (rs.next()) {
 				do {
-
 					username = rs.getString("users");
 					password = rs.getString("passwords");
 					genre = rs.getString("genre");
 					region = rs.getString("region");
 					age = rs.getInt("age");
 					storyLength = rs.getString("storyLength");
-
 				} while (rs.next());
 				return true;
 			} else {
 				System.out.println("user not found");
 			}
 		} catch (SQLException e) {
-			System.out.println("ERROR - CONNECTION UNSUCCESSFUL");
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Searching database");
 		}
 		return false;
 	}
 
+	// search for existing user
+	static boolean searchForExistingUser(String username) {
+		/** Once more again, when doing this locally, swap "MintLeaf" with your local password**/
+		try {
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+			System.out.println("Database Connection Successful");
+			Statement stat3 = con.createStatement();
+			ResultSet rs = stat3.executeQuery("SELECT * FROM USERNAMES WHERE users like '" + username + "'");
+			if(rs.next())	return true;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			System.out.println("ERROR - CONNECTION UNSUCCESSFUL; Finding existing user");
+			System.err.print(e);
+		}
+		return false;
+	}
+	
 	// update string columns
 	static void updateDataBase(String column, String New) {
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
 			// telling database to update a specific column and row
 			// only for strings
@@ -90,7 +121,7 @@ class User {
 		} 
 		// error connecting to database
 		catch (SQLException e) {
-			System.out.println("ERROR - NO CONNECTION");
+			System.err.println("ERROR - NO CONNECTION");
 		}
 	}
 	
@@ -98,7 +129,7 @@ class User {
 	static void updateDataBase(int Age) {
 		try {
 			// connecting to database
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root",
 					"Mlgnoscope106!");
 			Statement stat = con.createStatement();
 
@@ -156,6 +187,14 @@ class User {
 		updateDataBase("storyLength", StoryLength);
 	}
 
+	// To be used after the rec quiz
+	public static void updatePreferences(String[] preferences) {
+		genre = preferences[0];
+		region = preferences[1];
+		age = Integer.parseInt(preferences[2]);
+		storyLength = preferences[3];
+	}
+	
 //	private static void addBookToLibrary(book Book) {
 //		books.add(Book);
 //	}
