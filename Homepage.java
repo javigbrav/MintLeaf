@@ -6,8 +6,8 @@ import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 13, 2024
- * Last Modified by: Zainab Siddiqui
+ * Last Modified: January 12, 2024
+ * Last Modified by: Javiera Garrido
  * Description: A user's home page in the application
  ***********************************************************************************/
 
@@ -17,7 +17,7 @@ public class Homepage {
 	Color mintGreen2 = new Color(88, 153, 47);
     JMenu menu, libr;
     private JMenu mnUsername;
-    JMenuItem fav, user, settings, logOut;
+    JMenuItem bookshelf, fav, user, settings, logOut;
     JMenuBar mb = new JMenuBar();
     JTextArea textArea;
     
@@ -48,6 +48,10 @@ public class Homepage {
         bottomSpace.setPreferredSize(new Dimension(1, 75)); // Adjust as needed
 
         bookPanel.add(topSpace, BorderLayout.NORTH);
+        
+        JLabel welcome = new JLabel("Welcome home, " + username);
+        topSpace.add(welcome);
+        welcome.setFont(new Font("MV Boli", Font.BOLD, 20));
         bookPanel.add(bottomSpace, BorderLayout.SOUTH);
 
         JPanel leftSpace = new JPanel();
@@ -55,8 +59,8 @@ public class Homepage {
         leftSpace.setOpaque(false);
         rightSpace.setOpaque(false);
 
-        leftSpace.setPreferredSize(new Dimension(100, 1)); // Adjust as needed
-        rightSpace.setPreferredSize(new Dimension(100, 1)); // Adjust as needed
+        leftSpace.setPreferredSize(new Dimension(50, 1)); // Adjust as needed
+        rightSpace.setPreferredSize(new Dimension(50, 1)); // Adjust as needed
 
         bookPanel.add(leftSpace, BorderLayout.WEST);
         bookPanel.add(rightSpace, BorderLayout.EAST);
@@ -67,7 +71,8 @@ public class Homepage {
         
         bookPanel.add(bookGridPanel, BorderLayout.CENTER);
         bookPanel.setBackground(mintGreen);
-        //book buttons
+        
+        // Book buttons
         for (int i = 1; i <= 10; i++){
             JButton bookButton = new JButton("Book " + i);
             final int bookNumber = i; // Final variable to use in the ActionListener
@@ -146,7 +151,7 @@ public class Homepage {
             }
         });
         
-        //search button
+        // search button
         JButton searchButton = new JButton("");
         searchButton.setIcon(new ImageIcon("C:\\Users\\kashi\\Downloads\\15028-200.png"));
         searchButton.setFont(new Font("Segoe Print", Font.PLAIN, 18));
@@ -154,14 +159,15 @@ public class Homepage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
-                if (!searchTerm.equals("Looking for something...")) {
+                if (!(searchTerm.equals("Looking for something..."))) {
                     System.out.println("Searching for: " + searchTerm);
                 } else {
                     System.out.println("Check");
                 }
             }
         });
-        //implementing search panel
+        
+        // implementing search panel
         searchBarPanel.add(searchField);
         searchBarPanel.add(searchButton);
         searchBarPanel.setOpaque(false);
@@ -176,33 +182,38 @@ public class Homepage {
 		filter.setHorizontalAlignment(SwingConstants.TRAILING);
 		filter.setFont(new Font("MV Boli", Font.PLAIN, 18));
 		
+		// pad spaces
 		Label label_3 = new Label("");
 		label_3.setMaximumSize(new Dimension(900, 32767));
 		mb.add(label_3);
         
-        //menu
+        // menu
 		mnUsername = new JMenu("username");
+		mnUsername.setForeground(new Color(255, 255, 255));
 		mb.add(mnUsername);
 		mnUsername.setFont(new Font("Segoe Print", Font.BOLD, 15));
 		user = new JMenuItem("Profile");
 		libr = new JMenu("My Library");
+		bookshelf = new JMenuItem("Bookshelf");
 		fav = new JMenuItem("Favourites");
 		settings = new JMenuItem("Settings");
 		logOut = new JMenuItem("Log out");
+		
 		// set font
 		libr.setFont(new Font("Helvetica", Font.BOLD, 15));
+		bookshelf.setFont(new Font("Helvetica", Font.BOLD, 15));
 		fav.setFont(new Font("Helvetica", Font.BOLD, 15));
-		user.setFont(new Font("Dialog", Font.BOLD, 15));
+		user.setFont(new Font("Helvetica", Font.BOLD, 15));
 		settings.setFont(new Font("Helvetica", Font.BOLD, 15));
 		logOut.setFont(new Font("Helvetica", Font.BOLD, 15));
 		
-		//implementing action listeners to direct to other pages using the same frame
-		libr.addActionListener(new ActionListener() {
+		// implementing action listeners to direct to other pages using the same frame
+		bookshelf.addActionListener(new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		    	Tales.setFrame(homepageFrame);
 		    	new Library();
-		        System.out.println("Redirecting to your Library");
+		        System.out.println("Redirecting to your Bookshelf");
 		    }
 		});
 		
@@ -230,10 +241,25 @@ public class Homepage {
             }
         });
         
-        //adding items to menus
+        logOut.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Goodbye!");
+                logOut();
+            }
+
+            /*Log Out*/
+			private void logOut() {
+				homepageFrame.dispose();
+				new LoginPage();
+			}
+        });
+        
+        // adding items to menus
         mnUsername.add(user);
         mnUsername.add(libr);
         libr.add(fav);
+        libr.add(bookshelf);
         mnUsername.add(settings);
         mnUsername.add(logOut);
         
@@ -247,7 +273,7 @@ public class Homepage {
     	// setting menu panel font
     	menu.setFont(new Font("Helvetica", Font.BOLD, 15));
     	
-	    //setting up menu
+	    // setting up menu
 	    menu.setFont(new Font("Segoe Print", Font.PLAIN, 18));
 	    menu.setForeground(new Color(255, 255, 255));
         homepageFrame.setVisible(true);
