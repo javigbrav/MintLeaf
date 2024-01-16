@@ -1,75 +1,57 @@
 package StoryInteraction;
 
 import java.awt.Color;
-
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 
-public class TextAnnotationApp extends JFrame {
+public class Annotations extends JFrame {
     private JTextArea textArea;
-    private JTextField annotationField;
-
-    public TextAnnotationApp() {
-        super("Text Annotation App");
+    private JButton button;
+    
+    
+    public Annotations() {
+        super("Annotation");
         initComponents();
     }
 
     private void initComponents() {
         textArea = new JTextArea(10, 40);
         JScrollPane scrollPane = new JScrollPane(textArea);
-
-        annotationField = new JTextField(20);
-        JButton addAnnotationButton = new JButton("Add Annotation");
-        JButton connectToHomepageButton = new JButton("Connect to Homepage");
-
-        addAnnotationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addAnnotation();
-            }
-        });
-
-        connectToHomepageButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                connectToHomepage();
-            }
-        });
-
-        JPanel controlPanel = new JPanel();
-        controlPanel.add(new JLabel("Annotation:"));
-        controlPanel.add(annotationField);
-        controlPanel.add(addAnnotationButton);
-        controlPanel.add(connectToHomepageButton);
-
+        
+        button = new JButton ("Save Annotation");
+        
         setLayout(new BorderLayout());
         add(scrollPane, BorderLayout.CENTER);
-        add(controlPanel, BorderLayout.SOUTH);
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 300);
         setLocationRelativeTo(null);
         setVisible(true);
-    }
-
-    private void addAnnotation() {
-        String annotation = annotationField.getText();
-        textArea.append("\n[Annotation]: " + annotation + "\n");
-        annotationField.setText(""); // Clear the annotation field
-    }
-
-    
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
+        
+        add (button, BorderLayout.SOUTH);
+        button.addActionListener(new ActionListener() {
             @Override
-            public void run() {
-                new TextAnnotationApp();
+            public void actionPerformed(ActionEvent e) {
+            	String content = textArea.getText();
+            	System.out.println("Text: " + content);
+                //System.out.println("button works");
+                
+                
             }
+        });
+        
+    }
+    
+    public void addAnnotation(String selectedText) {// i need to save it to text files. What i'' do is that i'll take the index and save it in the textfile and that way it can be connected
+        textArea.append("\n[Annotation]: \"" + selectedText + "\"\n");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new Annotations();
         });
     }
 }
