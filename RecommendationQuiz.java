@@ -3,7 +3,7 @@ package Homepage;
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 11, 2024
+ * Last Modified: January 17, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
@@ -24,7 +24,7 @@ public class RecommendationQuiz {
     private static String genreResult;
 
 	/*Region tracking*/
-    private static String[] regionNames = {"Europe", "Latin America", "South-West Asia / North Africa", "West/East/South Africa", "South Asia", "East Asia", "South East Asia / Oceania", "Cental Asia"};
+    private static String[] regionNames = {"Europe", "Latin America", "Middle East", "Africa", "South Asia", "East Asia", "South East Asia / Oceania", "Cental Asia"};
     private static String regionResult;
 	
     /*Reading age range tracking*/
@@ -138,7 +138,7 @@ public class RecommendationQuiz {
 
         /*Question 3: Age Range*/
         contentPanel.add(Box.createRigidArea(new Dimension(0, 10))); // add 10 pixels of vertical space
-        JLabel question3 = new JLabel("What age range represents the stories you read?");
+        JLabel question3 = new JLabel("How old are you?");
         JTextField ageTextField = new JTextField(2);
         JButton submitButton3 = new JButton("Confirm choice");
         JLabel improperAge = new JLabel("Invalid Entry - Please enter a valid age");
@@ -250,7 +250,13 @@ public class RecommendationQuiz {
         		Tales.username = userToTrack.username;
         		Homepage.homepageFrame.setVisible(true);
         		userToTrack.updatePreferences(preferences);
-        		userToTrack.createConnection(userToTrack.username, userToTrack.password, userToTrack.genre, userToTrack.region, userToTrack.age, userToTrack.storyLength);
+        		if(!User.searchForExistingUser(userToTrack.username)) {
+            		userToTrack.createConnection(userToTrack.username, userToTrack.password, userToTrack.genre, userToTrack.region, userToTrack.age, userToTrack.storyLength);	
+        		}
+        		clearComponents(genres);
+        		clearComponents(regions);
+        		clearComponents(ageTextField);
+        		clearComponents(lengths);
             }
         });
         finishedButton.setFont(new Font("Impact", Font.PLAIN, 15));
@@ -310,5 +316,19 @@ public class RecommendationQuiz {
     			((JComponent) comp).setOpaque(false);
     		}
     	}
+    }
+
+    /**/
+    private static void clearComponents(JCheckBox[] boxesToClear) {
+    	for (int i = 0; i<boxesToClear.length; i++) {
+    		boxesToClear[i].setVisible(true);
+    		if(boxesToClear[i].isSelected()) {
+    			boxesToClear[i].setSelected(false);
+    		}
+    	}
+    }
+    private static void clearComponents(JTextField textFieldToClear) {
+    	textFieldToClear.setEditable(true);
+    	isThereAnAge = false;
     }
 }
