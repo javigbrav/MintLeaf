@@ -12,8 +12,8 @@ import user.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 16, 2024
- * Last Modified by: Zainab
+ * Last Modified: January 17, 2024
+ * Last Modified by: Victor Kosarev
  * Description: A user's home page in the application
  ***********************************************************************************/
 
