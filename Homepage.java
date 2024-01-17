@@ -1,13 +1,19 @@
+package mains;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.net.URI;
+
 import javax.swing.*;
+
+import library.*;
+import user.*;
 
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 12, 2024
- * Last Modified by: Javiera Garrido
+ * Last Modified: January 16, 2024
+ * Last Modified by: Zainab
  * Description: A user's home page in the application
  ***********************************************************************************/
 
@@ -20,10 +26,11 @@ public class Homepage {
     JMenuItem bookshelf, fav, user, settings, logOut;
     JMenuBar mb = new JMenuBar();
     JTextArea textArea;
-    
-    static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
+    public static JLabel filter = new JLabel("Explore");
 
-    Homepage(String username) {
+    public static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
+
+    public Homepage(String username) {
     	
     	// Create JTextArea
         textArea = new JTextArea(20, 40);
@@ -31,7 +38,7 @@ public class Homepage {
 
         // Create JScrollPane
         JScrollPane scrollPane = new JScrollPane(textArea);
-        JPanel titlePanel = new JPanel(); //it was being covered by the search bar, so it needs this
+        JPanel titlePanel = new JPanel();
         titlePanel.setOpaque(false);
         mb.setMargin(new Insets(30, 5, 0, 0));
         mb.setFont(new Font("Segoe Print", Font.PLAIN, 30));
@@ -124,6 +131,7 @@ public class Homepage {
         Label label_2 = new Label("");
         label_2.setMaximumSize(new Dimension(100, 32767));
         mb.add(label_2);
+        
         //FILTER SEARCHES
     	
         // set search bar panel
@@ -134,11 +142,11 @@ public class Homepage {
         searchBarPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         JTextField searchField = new JTextField(18);
         searchField.setFont(new Font("MV Boli", Font.PLAIN, 16));
-        searchField.setText("Looking for something...");
+        searchField.setText("Search for stories");
         searchField.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (searchField.getText().equals("Looking for something...")) {
+                if (searchField.getText().equals("Search for stories")) {
                     searchField.setText("");
                 }
             }
@@ -146,7 +154,7 @@ public class Homepage {
             @Override
             public void focusLost(FocusEvent e) {
                 if (searchField.getText().isEmpty()) {
-                    searchField.setText("Looking for something...");
+                    searchField.setText("Search for stories");
                 }
             }
         });
@@ -159,7 +167,7 @@ public class Homepage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String searchTerm = searchField.getText();
-                if (!(searchTerm.equals("Looking for something..."))) {
+                if (!(searchTerm.equals("Search for stories"))) {
                     System.out.println("Searching for: " + searchTerm);
                 } else {
                     System.out.println("Check");
@@ -176,11 +184,23 @@ public class Homepage {
 		label.setMaximumSize(new Dimension(100, 32767));
 		mb.add(label);
 		
-		// to filter searches - showing results for a specific genre
-		JLabel filter = new JLabel("Explore");
+		// filter searches - showing results for a specific genre
+        filter.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		mb.add(filter);
 		filter.setHorizontalAlignment(SwingConstants.TRAILING);
 		filter.setFont(new Font("MV Boli", Font.PLAIN, 18));
+		// Add a mouse listener to handle the click event
+        filter.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    // Open a webpage when the text is clicked
+            		new library.filterSearch();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
 		
 		// pad spaces
 		Label label_3 = new Label("");
