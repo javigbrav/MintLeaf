@@ -241,7 +241,7 @@ public class Homepage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Redirecting to your Profile");
-                new Profile();
+                new ProfilePage();
             }
         });
         
