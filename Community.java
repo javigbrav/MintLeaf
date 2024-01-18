@@ -41,12 +41,12 @@ public class Community{
 	 * Description: Makes a binary tree based on the user's answers to questions from the recommendation quiz, 
 	 * 				increase story priority based on matches to user preference, ADD OTHER THINGS HERE.
 	 * @Parameters: LinkedList<Story> booksToSort, User user
-	 * @Return Value: void???
-	 * Data Type: ???? 
+	 * @Return Value: LinkedList<Story>
+	 * Data Type: ???
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */    
-	public void tailoredRecomendations(LinkedList<Story> booksToSort, User user) {
+	public LinkedList<Story> tailoredRecomendations(LinkedList<Story> booksToSort, User user) {
 		// add each story in the linked list into a binary tree
   		for (Story story : booksToSort) {
   			// if root is null, make the root the only node in the tree
@@ -117,9 +117,10 @@ public class Community{
   			} // end while
   		} // end for loop
   		
-  		/** NEXT STEPS: Need to find a way to make this list back into the library class**/
+  		// sorts the binary tree of books to accomodate the user
   		LinkedList<Story> recommendedBooks = new LinkedList<Story>();
   		recommendedList(root, recommendedBooks);
+  		return recommendedBooks;
     }
 	/* Method Name: recommendedList 
 	 * Author: Fardin Abbassi 
@@ -142,36 +143,42 @@ public class Community{
 
   	
   	/**MAIN IDEA: Preface this by adding individual story pages, then add stars that act as buttons that lets a user do this.
-  				  Depending on input rating, change user rating of this story to match. (Basic idea as of now)**/
+  				  Depending on input rating, change user rating of the story to match. (Basic idea as of now)**/
 	/** Might take this idea and move it into the star buttons themselves if/when they become available **/
   	public void rateStory(double userRating) {
-        
+         
     }
     
-  	/**MAIN IDEA: ???**/
+  	/**MAIN IDEA: Based on the above method, take all user ratings for a given story and make an average rating for the given story.**/
     public double averageRating() {
         
         return rating;
     }
 
-  	/**MAIN IDEA: ???**/
+  	/**MAIN IDEA: Based on the above method, look through every story's ratings and create a top 10(?) list**/
     public void adjustRankings() {
         
     }
 
   	
-    /**MAIN IDEA: ???**/
-/* 	public void reportStory() {
+    /**MAIN IDEA: 	Preface this by having a story page for each story.
+    				Have a button that allows a user to add a report to a table in the database for reports. 
+    				Reports should track which user created the report, which story the report is in, and the contents of the report.
+    				(Basic idea as of now, could possibly just be a part of the story page's class instead)**/
+ 	public void reportStory(String user, String storyName, String report) {
         
     }
 
-  	/**MAIN IDEA: ???**/
+  	/**MAIN IDEA: 	Preface this by having a functioning profile page.
+  	  				Have a button that allows the user to suggest a book/story for us to potentially add to the currently available stories.
+  	  				Suggestions, like the reports above, should track user in addition to whichever story they want to track.
+  	  				(Basic idea as of now, could possibly just be a part of the profile class instead)**/
 /* 	public void suggestStory() {
         
     }
 
   	/**MAIN IDEA: ???**/
-    /**  **/
+    /** Maybe change this up so that it provides a message out to the user if their request is accepted/denied? **/
 /*	public boolean isApproved() {
     	
         boolean approved = false;
