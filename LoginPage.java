@@ -5,8 +5,8 @@ import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 20, 2023 
- * Last Modified: December 26, 2023
- * Last Modified by: Zainab Siddiqui
+ * Last Modified: January 15, 2024
+ * Last Modified by: Fardin Abbassi
  * Description: Allow a user to login to their account
  ***********************************************************************************/
 public class LoginPage implements ActionListener {
