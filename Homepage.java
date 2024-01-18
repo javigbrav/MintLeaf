@@ -12,7 +12,7 @@ import user.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui / Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 17, 2024
+ * Last Modified: January 18, 2024
  * Last Modified by: Victor Kosarev
  * Description: A user's home page in the application
  ***********************************************************************************/
@@ -26,6 +26,7 @@ public class Homepage {
     JMenuItem bookshelf, fav, user, settings, logOut;
     JMenuBar mb = new JMenuBar();
     JTextArea textArea;
+    public static JLabel welcome;
     public static JLabel filter = new JLabel("Explore");
 
     public static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
@@ -56,7 +57,7 @@ public class Homepage {
 
         bookPanel.add(topSpace, BorderLayout.NORTH);
         
-        JLabel welcome = new JLabel("Welcome home, " + username);
+        welcome = new JLabel("Welcome home, " + username);
         topSpace.add(welcome);
         welcome.setFont(new Font("MV Boli", Font.BOLD, 20));
         bookPanel.add(bottomSpace, BorderLayout.SOUTH);
@@ -319,7 +320,10 @@ public class Homepage {
 
          }
 	}
-
+	
+    public static void changeWelcomeMessage(String newUser) {
+    	welcome.setText("Welcome Home, " + newUser);
+    }
     // main
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
