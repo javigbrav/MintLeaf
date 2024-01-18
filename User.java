@@ -155,44 +155,50 @@ public class User {
 	}
 
 	// changing client username
-	private static void changeUsername(String Username) {
-		username = Username;
+	public static void changeUsername(String Username) {
 		updateDataBase("users", Username);
+		username = Username;
 	}
 
 	// changing client password
-	private static void changePassword(String Password) {
-		password = Password;
+	public static void changePassword(String Password) {
 		updateDataBase("passwords" , Password);
+		password = Password;
 	}
 
 	// methods from here on are used to update preferences
-	private static void changeGenre(String Genre) {
-		genre = Genre;
+	public static void changeGenre(String Genre) {
 		updateDataBase("genre", Genre);
-	}
-	
-	private static void changeRegion(String Region) {
-		region = Region;
-		updateDataBase("region", Region);
-	}
-	
-	private static void changeAge(int Age) {
-		age = Age;
-		updateDataBase(age);
-	}
-	
-	private static void changeStoryLength(String StoryLength) {
-		storyLength = StoryLength;
-		updateDataBase("storyLength", StoryLength);
+		genre = Genre;
 	}
 
+	// changing user region
+	public static void changeRegion(String Region) {
+		updateDataBase("region", Region);
+		region = Region;
+	}
+
+	//changing user age
+	public static void changeAge(int Age) {
+		updateDataBase(age);
+		age = Age;
+	}
+
+	//changing users preffered story length
+	public static void changeStoryLength(String StoryLength) {
+		updateDataBase("storyLength", StoryLength);
+		storyLength = StoryLength;
+	}
 	// To be used after the rec quiz
 	public static void updatePreferences(String[] preferences) {
 		genre = preferences[0];
 		region = preferences[1];
 		age = Integer.parseInt(preferences[2]);
 		storyLength = preferences[3];
+		updateDataBase(age);
+		updateDataBase("genre", genre);
+		updateDataBase("region", region);
+		updateDataBase("storyLength", storyLength);
 	}
 	
 //	private static void addBookToLibrary(book Book) {
