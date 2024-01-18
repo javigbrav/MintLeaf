@@ -1,12 +1,10 @@
-package Homepage;
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 26, 2023 
- * Last Modified: January 14, 2024
+ * Last Modified: January 18, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Allow a user to create an account
  ***********************************************************************************/
@@ -18,7 +16,8 @@ public class SignupPage implements ActionListener {
 	private JTextField usernameField;
 	private JPasswordField userPasswordField;
 	public JButton signupButton = new JButton("SIGN UP");
-	private JLabel warningLabel = new JLabel();
+	public JButton goBackButton = new JButton("GO BACK");
+	private JLabel warningLabel = new JLabel("Username already exists");
 	User newUser;
 	
 	/*Constructor*/
@@ -30,6 +29,7 @@ public class SignupPage implements ActionListener {
 		signupFrame.getContentPane().setBackground(new Color(220, 242, 206));
 		signupFrame.getContentPane().setLayout(null);
 		title.setBounds(20, 20, 100, 38);
+		
 		
 		// title
 		title.setText("Sign up");
@@ -83,9 +83,25 @@ public class SignupPage implements ActionListener {
 		signupButton.setBackground(new Color(115, 201, 61));
 		signupButton.setForeground(new Color(0, 0, 0));
 		signupButton.setFont(new Font("Impact", Font.PLAIN, 15));
-		signupButton.setBounds(160, 280, 100, 30);
+		signupButton.setBounds(110, 280, 100, 30);
 		signupFrame.getContentPane().add(signupButton);
 		signupButton.addActionListener(this);
+		
+		// go back button
+		goBackButton.setBackground(new Color(115, 201, 61));
+		goBackButton.setForeground(new Color(0, 0, 0));
+		goBackButton.setFont(new Font("Impact", Font.PLAIN, 15));
+		goBackButton.setBounds(210, 280, 100, 30);
+		signupFrame.getContentPane().add(goBackButton);
+		goBackButton.addActionListener(this);
+		
+		// warning label
+		warningLabel.setForeground(LoginPage.mintRed);
+		warningLabel.setFont(new Font(null, Font.PLAIN, 14));
+		warningLabel.setText("Username already exists");
+		warningLabel.setBounds(154, 147, 159, 23);
+		signupFrame.getContentPane().add(warningLabel);
+		warningLabel.setVisible(false);
 		
 		// set up frame
 		signupFrame.getContentPane().add(directionsLabel);
@@ -96,24 +112,18 @@ public class SignupPage implements ActionListener {
 		signupFrame.setVisible(true);	
 	} // end SignupPage
 
-	/**NEED TO REPLACE HASH MAP WITH MYSQL DATABASE -- that will make sure user info is saved**/
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == signupButton) {
-			//System.out.println("test");
 			String username = usernameField.getText();
 			String userPassword = String.valueOf(userPasswordField.getPassword());
+			
+			System.out.println(warningLabel.isVisible());
 
 			if (User.searchForExistingUser(username)) {
 				usernameField.setText("");
 				userPasswordField.setText("");
-				// warning label
-				warningLabel.setForeground(LoginPage.mintRed);
-				warningLabel.setFont(new Font(null, Font.PLAIN, 14));
-				warningLabel.setText("Username already exists");
-				warningLabel.setBounds(154, 147, 159, 23);
-				signupFrame.getContentPane().add(warningLabel);
-				//System.out.println("test2");
+				warningLabel.setVisible(true);
 			}
 			else {
 				newUser = new User(username, userPassword);
@@ -122,7 +132,10 @@ public class SignupPage implements ActionListener {
 				RecommendationQuiz rc = new RecommendationQuiz(newUser);
 				signupFrame.dispose();
 			}
-
+		}
+		if(e.getSource() == goBackButton) {
+			signupFrame.dispose();
+			new LoginPage();
 		}
 	}
 } // end SignupPage
