@@ -9,8 +9,8 @@ import java.sql.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 20, 2023 
- * Last Modified: 15 Jan
- * Last Modified by: 
+ * Last Modified: January 15, 2024
+ * Last Modified by: Zainab Siddiqui
  * Description: the main/driver for the application
  ***********************************************************************************/
 public class Tales {
