@@ -6,7 +6,8 @@ public class Story{
 	public String title;
 	public String author;
 	public String description;
-	public String country; // to make sense with recommendation quiz, maybe add region parameter as well?
+	public String country;
+	public float rating; // making sense with the table in the database
 	
 	public String genre;
 	public String region;
@@ -20,7 +21,7 @@ public class Story{
 	
 	public int votes;
 	public LinkedList<Bookmark> bookmarkList;
-	public LinkedList<Annotation> annotationList;
+	public LinkedList<Annotations> annotationList;
 	
 	public LinkedList<Bookmark> getBookmark(){
 		// add stuff here
@@ -30,7 +31,7 @@ public class Story{
 		// add stuff here
 	}
 	
-	public LinkedList<Annotation> getAnnotation(){
+	public LinkedList<Annotations> getAnnotation(){
 		// add stuff here
 		return annotationList;
 	}
