@@ -1,6 +1,17 @@
-import java.awt.*;
+package Community;
+
+/***********************************************************************************
+ * Author: Fardin Abbassi
+ * Date: December 20, 2023 
+ * Last Modified: January 18, 2024
+ * Last Modified by: Fardin Abbassi
+ * Description: A class full of methods for user/system interactions
+ ***********************************************************************************/
+
+import java.sql.*;
 import java.util.LinkedList;
-import javax.swing.*;
+import Homepage.*;
+import StoryInteraction.Story;
 
 public class Community{
 	private double rating = 0;
@@ -165,8 +176,27 @@ public class Community{
     				Have a button that allows a user to add a report to a table in the database for reports. 
     				Reports should track which user created the report, which story the report is in, and the contents of the report.
     				(Basic idea as of now, could possibly just be a part of the story page's class instead)**/
+	/* Method Name: reportStory 
+	 * Author: Fardin Abbassi 
+	 * Creation Date: January 18, 2024
+	 * Modified Date: January ??, 2024
+	 * Description: Creates a report from the user to be uploaded into a reports table in the database.
+	 * @Parameters: String user, String storyName, String report
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: ?????
+	 * Throws/Exceptions: ????
+	 */ 
  	public void reportStory(String user, String storyName, String report) {
-        
+		try {
+	 		/** When doing this locally, swap "MintLeaf" with your local password**/
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+			Statement stat = con.createStatement();
+			stat.execute("INSERT INTO REPORTS(User, StoryName, Report) VALUES('" + user + "', '" + storyName + "', '"+ report + "')");
+			stat.close();
+		} catch (SQLException e) {
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating Report");
+		}
     }
 
   	/**MAIN IDEA: 	Preface this by having a functioning profile page.
@@ -185,4 +215,3 @@ public class Community{
         return approved;
     }								*/
 }
-
