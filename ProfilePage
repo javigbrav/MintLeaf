@@ -1,3 +1,5 @@
+
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,59 +9,109 @@ import javax.swing.*;
 /* Author : Victor Kosarev
  * Date : January 15, 2024
  * Last Modified By : Victor Kosarev
- * Last Modified : 
+ * Last Modified : January 18th 2024
  * Description : creates profile page for the user
+ * 
+ * also allows for user to change preferences and username
  * 
  */
 
 public class ProfilePage implements ActionListener{
 	
 	JFrame frame;
-	JTextField username;
+	private JTextField Username;
 	
-	JLabel title = new JLabel();
-	JLabel genre = new JLabel("Preffered Genre : " + User.genre);
-	JLabel region = new JLabel("Preffered region : " + User.region);
-	JLabel age = new JLabel("Age : " + User.age);
-	JLabel length = new JLabel("Preffered Story Length : " + User.storyLength);
+	private JLabel usernameLabel;
+	private JLabel title = new JLabel();
 	
-	JButton changePreferences = new JButton("Change Preferences");
+	//showing all current preferences
+	private JLabel genre = new JLabel("Preffered Genre : " + User.genre);
+	private JLabel region = new JLabel("Preffered region : " + User.region);
+	private JLabel age = new JLabel("Age : " + User.age);
+	private JLabel length = new JLabel("Preffered Story Length : " + User.storyLength);
+	
+	//all buttons 
+	private JButton changePreferences = new JButton("Change Preferences"); // used for changing preferences
+	private JButton changeUsername = new JButton("Change Username"); // used for changing username
+	private JButton confirmUsername = new JButton("Confirm Username"); // confirming username change
 	
 	// constructor
 	ProfilePage() {
+		
+		//creating the frame
 		createFrame();
 		
+		
+		// creating welcome message for user
 		title.setText("Welcome, " + User.username);
 		title.setFont(new Font("Impact", Font.PLAIN, 30));
 		title.setForeground(Color.black);
 		title.setBounds(50, 20, 300, 40);
 		
 		
+		// setting bounds of preferences
 		genre.setBounds(50, 100, 200, 25);
 		region.setBounds(50, 150, 200, 25);
 		age.setBounds(50, 200, 200, 25);
 		length.setBounds(50, 250, 300, 25);
 		
+		//setting up all buttons
 		changePreferences.setFont(new Font("Impact", Font.PLAIN, 16));
 		changePreferences.setBackground(new Color(115, 201, 61));
-		changePreferences.setBounds(50, 300, 200, 25);
+		changePreferences.setBounds(25, 300, 175, 25);
+		changePreferences.addActionListener(this);
 		
+		changeUsername.setFont(new Font("Impact", Font.PLAIN, 16));
+		changeUsername.setBackground(new Color(115, 201, 61));
+		changeUsername.setBounds(225, 300, 175, 25);
+		changeUsername.addActionListener(this);
+		
+		//confirmUsername only appears when changeUsername is pressed
+		confirmUsername.setFont(new Font("Impact", Font.PLAIN, 16));
+		confirmUsername.setBackground(new Color(115, 201, 61));
+		confirmUsername.setBounds(100, 400, 175, 25);
+		confirmUsername.addActionListener(this);
+		
+		
+		//setting up label and textfield for user changing user name. 
+		// these will only appear when user clicks changeUsername
+		usernameLabel = new JLabel("New Username : ");
+		usernameLabel.setFont(new Font ("Impact", Font.PLAIN, 16));
+		usernameLabel.setForeground(Color.BLACK);
+		usernameLabel.setBounds(50, 350, 175, 25);
+		
+		Username = new JTextField();
+		Username.setFont(new Font ("Tahoma", Font.PLAIN, 14));
+		Username.setBounds(225, 350, 175, 25);
+		Username.setColumns(10);
+		
+		
+		// adding all components to frame
 		frame.getContentPane().add(title);
 		frame.getContentPane().add(genre);
 		frame.getContentPane().add(region);
 		frame.getContentPane().add(age);
 		frame.getContentPane().add(length);
 		frame.getContentPane().add(changePreferences);
+		frame.getContentPane().add(changeUsername);
+		frame.getContentPane().add(Username);
+		frame.getContentPane().add(usernameLabel);
+		frame.getContentPane().add(confirmUsername);
 		
+		
+		//these only appear when changeUsername is pressed
+		Username.setVisible(false);
+		usernameLabel.setVisible(false);
+		confirmUsername.setVisible(false);
 	}
 	
 	
 	// creating frame
-	public void createFrame(){
+	private void createFrame(){
 		frame = new JFrame("Profile");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		frame.setSize(300, 400);
+		frame.setSize(450, 500);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(null);
 		frame.setForeground(new Color(255, 255, 255));
@@ -69,8 +121,24 @@ public class ProfilePage implements ActionListener{
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		// launches recommendation quiz to change preferences
 		if(e.getSource() == changePreferences) {
 			new RecommendationQuiz(new User(User.username, User.password));
+			frame.dispose();
+		}
+		
+		//changing username
+		if(e.getSource() == changeUsername) {
+			Username.setVisible(true);
+			usernameLabel.setVisible(true);
+			confirmUsername.setVisible(true);
+		}
+		
+		// confirm username change
+		if(e.getSource() == confirmUsername) {
+			User.changeUsername(Username.getText());
+			Tales.username = Username.getText();
+			Homepage.changeWelcomeMessage(Username.getText());
 			frame.dispose();
 		}
 	}
