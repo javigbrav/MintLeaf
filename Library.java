@@ -1,7 +1,7 @@
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: January 10, 2024 
- * Last Modified: January 18, 2024
+ * Last Modified: January 19, 2024
  * Last Modified by: Fardin Abbassi
  * Description: A library that stores stories found in the database. (might need to elaborate)
  ***********************************************************************************/
@@ -16,7 +16,7 @@ import StoryInteraction.*;
 
 public class Library{
 	private static LinkedList<User> users = new LinkedList<User>();
-	private LinkedList<Story> stories = new LinkedList<Story>();
+	private static LinkedList<Story> stories = new LinkedList<Story>();
 	private Connection con;
 	
 	// constructor
@@ -78,18 +78,21 @@ public class Library{
 	/* Method Name: organizeBookshelf 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: January 18 2024
-	 * Modified Date: January ??, 2024
-	 * Description: ???
+	 * Modified Date: January 19, 2024
+	 * Description: Checks through each user to see which user to tailor to, sorts stories based on relevance to user
 	 * @Parameters: String usernameToSort
 	 * @Return Value: void
 	 * Data Type: n/a
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */ 
-	void organizeBookshelf(String usernameToSort) {
-		Community c = new Community();
+	static void organizeBookshelf(String usernameToSort) {
 		for (User user: users) {
-			// CONTINUE HERE
+			if(user.username == usernameToSort) {
+				user.searchDataBase(user.username, user.password);
+				Community.tailoredRecomendations(stories, user);
+				break;
+			}
 		}
 		// add stuff
 	}
