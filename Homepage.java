@@ -81,21 +81,12 @@ public class Homepage {
         bookPanel.setBackground(mintGreen);
         
         // Book buttons
+ 	// Book buttons
         for (int i = 1; i <= 10; i++){
-            JButton bookButton = new JButton("Book " + i);
-            final int bookNumber = i; // Final variable to use in the ActionListener
-            bookButton.setBackground(mintGreen2);
-            bookButton.setPreferredSize(new Dimension(25, 40)); // Adjust size as needed
-            bookButton.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // Handle reading from the corresponding text file
-                    String fileName = "book" + bookNumber; // will probably need to add private JTextArea textArea;
-                    readFile(fileName);
-                }
-            });
-            bookGridPanel.add(bookButton);
+        	Book bookButton = new Book ("book" + i + ".txt" );
+        	bookGridPanel.add(bookButton.getBookButton());
         }
+
 
         // Set frame
         Tales.setFrame(homepageFrame);
@@ -299,27 +290,6 @@ public class Homepage {
 	    menu.setForeground(new Color(255, 255, 255));
         homepageFrame.setVisible(true);
     }
-
-    public void readFile(String fileName) {
-    	 try {
-             BufferedReader reader = new BufferedReader(new FileReader(fileName));
-             StringBuilder content = new StringBuilder();
-             String line;
-             while ((line = reader.readLine()) != null) {
-                 content.append(line).append("\n");
-             }
-             reader.close();
-             textArea.setText(content.toString());
-             JOptionPane.showMessageDialog(null, new JScrollPane(textArea), "File Content", JOptionPane.PLAIN_MESSAGE);
-         } catch (FileNotFoundException e) {
-        	 e.printStackTrace();
-             JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
-         }
-    	 catch (IOException e) {
-    		 JOptionPane.showMessageDialog(null, "Error reading the file", e.toString(), JOptionPane.ERROR_MESSAGE);
-
-         }
-	}
 	
     public static void changeWelcomeMessage(String newUser) {
     	welcome.setText("Welcome Home, " + newUser);
