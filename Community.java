@@ -3,7 +3,7 @@ package Community;
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 20, 2023 
- * Last Modified: January 18, 2024
+ * Last Modified: January 19, 2024
  * Last Modified by: Fardin Abbassi
  * Description: A class full of methods for user/system interactions
  ***********************************************************************************/
@@ -156,8 +156,16 @@ public class Community{
   	/**MAIN IDEA: Preface this by adding individual story pages, then add stars that act as buttons that lets a user do this.
   				  Depending on input rating, change user rating of the story to match. (Basic idea as of now)**/
 	/** Might take this idea and move it into the star buttons themselves if/when they become available **/
-  	public void rateStory(double userRating) {
-         
+  	public void rateStory(double userRating, String title) {
+		try {
+	 		/** When doing this locally, swap "MintLeaf" with your local password**/
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+			Statement stat = con.createStatement();
+			stat.execute("UPDATE stories SET UserRating = " + userRating + " WHERE Title = '" + title + "'");
+			stat.close();
+		} catch (SQLException e) {
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Rating story");
+		}
     }
     
   	/**MAIN IDEA: Based on the above method, take all user ratings for a given story and make an average rating for the given story.**/
@@ -196,6 +204,7 @@ public class Community{
 			stat.close();
 		} catch (SQLException e) {
 			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating Report");
+			System.err.print(e);
 		}
     }
 
@@ -214,4 +223,10 @@ public class Community{
         boolean approved = false;
         return approved;
     }								*/
+
+ 	public static void main(String[] args) {
+ 		Community c = new Community();
+ 		c.rateStory(4.5, "Ramayana");
+ 		c.reportStory("test", "Aladdin", "Improper translation at line 8");
+ 	}
 }
