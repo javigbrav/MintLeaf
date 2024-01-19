@@ -1,22 +1,34 @@
-package storyInteraction;
-import java.util.*;
+import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Highlighter;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.lang.annotation.Annotation;
 
 public class StoryInteraction extends JFrame {
 	
 	//static Color initialColor = Color.yellow;
-	static boolean hasBeenClicked = false; //to check if the translator button has already been clicked
+	static boolean hasBeenClickedT = false; //to check if the translator button has already been clicked
 	private JScrollPane scrollPane;
     private static JTextPane textPane;
     private static String bookName = "book1.txt";
     JButton buttonHigh = new JButton ("Highlight");
     JButton translatorButton = new JButton ("Translator");
     JButton buttonChoose = new JButton ("Choose Highlighter Color");
-    static Color highlightColor=Color.yellow;
+    static Color highlightColor=Color.yellow;//default highlight color yellow
     
     private JButton annotateButton = new JButton("Add Annotation");
     private Annotations annotationFrame;
     public StoryInteraction(String bookName) {
-        super("File Viewer");
+        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 600);
         setLocationRelativeTo(null);
@@ -56,9 +68,11 @@ public class StoryInteraction extends JFrame {
         translatorButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	Transl.setPane (textPane);
-            	Transl.setScrollBar(scrollPane);
+            	Translator.setPane (textPane);
+            	Translator.setScrollBar(scrollPane);
+            	Translator.setHasBeenClicked(hasBeenClickedT);
             	new Translator(bookName);
+            	hasBeenClickedT = Translator.getHasBeenClicked ();
             }
         });
         
