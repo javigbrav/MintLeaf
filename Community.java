@@ -3,7 +3,7 @@ package Community;
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 20, 2023 
- * Last Modified: January 19, 2024
+ * Last Modified: January 18, 2024
  * Last Modified by: Fardin Abbassi
  * Description: A class full of methods for user/system interactions
  ***********************************************************************************/
@@ -57,7 +57,7 @@ public class Community{
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */    
-	public LinkedList<Story> tailoredRecomendations(LinkedList<Story> booksToSort, User user) {
+	public static LinkedList<Story> tailoredRecomendations(LinkedList<Story> booksToSort, User user) {
 		// add each story in the linked list into a binary tree
   		for (Story story : booksToSort) {
   			// if root is null, make the root the only node in the tree
@@ -144,7 +144,7 @@ public class Community{
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */ 
-	private void recommendedList(TreeNode node, LinkedList<Story> stories) {
+	private static void recommendedList(TreeNode node, LinkedList<Story> stories) {
 		if(node != null) {
 			recommendedList(node.left, stories);
 			stories.add(node.book);
@@ -156,7 +156,7 @@ public class Community{
   	/**MAIN IDEA: Preface this by adding individual story pages, then add stars that act as buttons that lets a user do this.
   				  Depending on input rating, change user rating of the story to match. (Basic idea as of now)**/
 	/** Might take this idea and move it into the star buttons themselves if/when they become available **/
-  	public void rateStory(double userRating, String title) {
+  	public static void rateStory(double userRating, String title) {
 		try {
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
@@ -195,7 +195,7 @@ public class Community{
 	 * Dependencies: ?????
 	 * Throws/Exceptions: ????
 	 */ 
- 	public void reportStory(String user, String storyName, String report) {
+ 	public static void reportStory(String user, String storyName, String report) {
 		try {
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
@@ -224,9 +224,10 @@ public class Community{
         return approved;
     }								*/
 
+
+	/** TEST AREA **/
  	public static void main(String[] args) {
- 		Community c = new Community();
- 		c.rateStory(4.5, "Ramayana");
- 		c.reportStory("test", "Aladdin", "Improper translation at line 8");
+ 		Community.rateStory(4.5, "Ramayana");
+ 		Community.reportStory("test", "Aladdin", "Improper translation at line 8");
  	}
 }
