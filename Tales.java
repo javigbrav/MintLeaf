@@ -31,7 +31,7 @@ public class Tales {
     	createConnection();
     	this.users = users;
 		User usernameAndPassword = new User(username, password);
-		LoginPage loginpage = new LoginPage(); //- add logogoooogogog
+		LoginPage loginpage = new LoginPage();
 		//SignupPage signuppage= new SignupPage();
 		//Homepage homepage = new Homepage(username);
 	}
