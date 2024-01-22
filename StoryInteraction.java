@@ -1,6 +1,11 @@
+package StoryInteraction;
+
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
+import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -12,6 +17,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import StoryInteraction.*;
+import Community.*;
+import Homepage.Tales;
 
 public class StoryInteraction extends JFrame {
 	
@@ -23,12 +31,14 @@ public class StoryInteraction extends JFrame {
     JButton buttonHigh = new JButton ("Highlight");
     JButton translatorButton = new JButton ("Translator");
     JButton buttonChoose = new JButton ("Choose Highlighter Color");
+    JButton reportButton = new JButton("Report An Issue");
     static Color highlightColor=Color.yellow;//default highlight color yellow
     
     private JButton annotateButton = new JButton("Add Annotation");
     private Annotations annotationFrame;
+    
+    
     public StoryInteraction(String bookName) {
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(700, 600);
         setLocationRelativeTo(null);
@@ -39,7 +49,6 @@ public class StoryInteraction extends JFrame {
         //textPane.setEditable(false);
         
         scrollPane = new JScrollPane(textPane);
-        
         add(scrollPane, BorderLayout.CENTER);
 
         openAndDisplayFile(bookName);
@@ -53,8 +62,8 @@ public class StoryInteraction extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("button works");
-                Highlight.setTextPane (textPane);
-                new Highlight (highlightColor);
+                Highlights.setTextPane (textPane);
+                new Highlights(highlightColor);
             }
         });
         annotateButton.addActionListener(new ActionListener() {
@@ -84,11 +93,19 @@ public class StoryInteraction extends JFrame {
 			}
         });
         
+        reportButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reportStoryFrame(bookName);
+			}
+        });
+        
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(buttonChoose);
         buttonPanel.add(buttonHigh);
         buttonPanel.add(annotateButton);
         buttonPanel.add(translatorButton);
+        buttonPanel.add(reportButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
 
@@ -145,6 +162,7 @@ public class StoryInteraction extends JFrame {
             textPane.replaceSelection(line + "\n");
         }
     }
+
 //    private void highlightSelectedText(Color highlightColor) {
 //        int start = textPane.getSelectionStart();
 //        int end = textPane.getSelectionEnd();
@@ -158,6 +176,7 @@ public class StoryInteraction extends JFrame {
 //            }
 //        }
 //    }
+    
     private void showAnnotationFrame() {
         if (textPane.getSelectedText() != null) {
             String selectedText = textPane.getSelectedText();
@@ -173,6 +192,73 @@ public class StoryInteraction extends JFrame {
 		highlightColor = color;
 		return color;
     }
+    
+    
+    /** NOT FINISHED YET **/
+    private void reportStoryFrame(String storyName) {
+    	setLocationRelativeTo(null);
+    	
+    	JFrame reportFrame = new JFrame();
+		reportFrame.setLayout(new FlowLayout());
+		JLabel desc = new JLabel("Please enter your report here:");
+		JTextArea reportTextArea = new JTextArea(5, 30);
+		JButton cancelReport = new JButton("Cancel report");
+		JButton submitReport = new JButton("Submit report");
+		
+		reportTextArea.getDocument().addDocumentListener(new DocumentListener() {
+        	public void insertUpdate(DocumentEvent e) {
+                Document doc = e.getDocument();
+                int length = doc.getLength();
+                if (length > 200) {
+                    SwingUtilities.invokeLater(() -> {
+                        try {doc.remove(e.getOffset(), e.getLength());}
+                        catch (BadLocationException ex) {ex.printStackTrace();}
+                    });
+                }
+            }
+        	// Technically a requirement, but not necessary for functionality
+            public void changedUpdate(DocumentEvent e) {}
+			public void removeUpdate(DocumentEvent e) {}
+        });
+		Dimension fixedSize = new Dimension(300, 150);
+		reportTextArea.setMaximumSize(fixedSize);
+		reportTextArea.setPreferredSize(fixedSize);
+        reportTextArea.setLineWrap(true);
+        reportTextArea.setWrapStyleWord(true);
+        reportTextArea.setFont(new Font("Serif", Font.PLAIN, 14));
+        reportTextArea.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
+        cancelReport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// just dispose of report frame to go back
+				reportFrame.dispose();
+			}
+        });
+        submitReport.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// add report to table in database
+				String report = reportTextArea.getText();
+				/** ALMOST DONE: Need to find a way to add username into report **/
+				// TALES.USERNAME COULD WORK HERE, NEED TO CHECK
+				Community.reportStory(Tales.username, storyName, report);
+			}
+        });
+        
+        
+        
+		reportFrame.add(desc, BorderLayout.NORTH);
+		reportFrame.add(reportTextArea);
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(cancelReport, BorderLayout.SOUTH);
+		buttonPanel.add(submitReport, BorderLayout.SOUTH);
+		reportFrame.add(buttonPanel);
+		
+		reportFrame.setSize(400, 265);
+		reportFrame.setVisible(true);
+    }    
     
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
