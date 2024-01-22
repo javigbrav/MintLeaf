@@ -1,26 +1,18 @@
-
+package LogIn;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.text.BadLocationException;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Document;
-import javax.swing.text.Highlighter;
-import javax.swing.text.SimpleAttributeSet;
-import javax.swing.text.Style;
-import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
+import javax.swing.text.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.awt.event.*;
+import java.io.*;
 import java.lang.annotation.Annotation;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 
 public class StoryInteraction extends JFrame {
@@ -66,6 +58,7 @@ public class StoryInteraction extends JFrame {
         setLocationRelativeTo(Homepage.homepageFrame);
         setVisible(true);
         textPane = new JTextPane();
+        textPane.setEditable(false); // Set editable to false
         setDefaultFont();  // Set default font for the JTextPane
 
         //textPane.setEditable(false);
@@ -320,6 +313,22 @@ public class StoryInteraction extends JFrame {
     }
     public static int getScrollPosition () {
     	return viewPosition.y;
+    }
+    
+    public int getBookmark (String storyName) {
+    	try {
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");
+	    	Statement stat = con.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM annotations WHERE username like '" + Tales.username
+					+ "' and story like '" + storyName + "'");
+			while(rs.next()) {
+				
+			}
+			return ;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
     }
     
 //    public static void main(String[] args) {
