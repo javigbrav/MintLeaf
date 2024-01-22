@@ -37,15 +37,25 @@ public class Annotations extends JFrame {
             public void actionPerformed(ActionEvent e) {
             	String content = textArea.getText();
             	System.out.println("Text: " + content);
-                //System.out.println("button works");
-                
-                
+                //System.out.println("button works");      
             }
         });
         
     }
     
-    public void addAnnotation(String selectedText) {// i need to save it to text files. What i'' do is that i'll take the index and save it in the textfile and that way it can be connected
+	/* Method Name: addAnnotation 
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January ??, 2024
+	 * Modified Date: January ??, 2024
+	 * Description: (ADD DESCRIPTION HERE)
+	 * @Parameters: n/a
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: ?????
+	 * Throws/Exceptions: ????
+	 */    
+    public void addAnnotation(String selectedText) {
+    	// i need to save it to text files. What i'' do is that i'll take the index and save it in the textfile and that way it can be connected
         textArea.append("\n[Annotation]: \"" + selectedText + "\"\n");
     }
 

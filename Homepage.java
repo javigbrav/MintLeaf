@@ -1,26 +1,30 @@
-package mains;
+package Homepage;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.net.URI;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.LinkedList;
 import javax.swing.*;
 
-import library.*;
-import user.*;
+import StoryInteraction.*;
 
 /***********************************************************************************
- * Author: Zainab Siddiqui / Javiera Garrido Bravo
+ * Authors: Zainab Siddiqui, Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 18, 2024
- * Last Modified by: Victor Kosarev
+ * Last Modified: January 21, 2024
+ * Last Modified by: Fardin Abbassi
  * Description: A user's home page in the application
  ***********************************************************************************/
 
 public class Homepage {
 
     Color mintGreen = new Color(220, 242, 206);
-	Color mintGreen2 = new Color(88, 153, 47);
+	public static Color mintGreen2 = new Color(88, 153, 47);
     JMenu menu, libr;
     private JMenu mnUsername;
     JMenuItem bookshelf, fav, user, settings, logOut;
@@ -30,8 +34,29 @@ public class Homepage {
     public static JLabel filter = new JLabel("Explore");
 
     public static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
+    private Connection con;
+	private LinkedList<Book> stories = new LinkedList<Book>();
 
     public Homepage(String username) {
+    	/** Need to figure out author and country stuff **/
+    	try {
+    		/** When doing this locally, swap "MintLeaf" with your local password**/
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");			
+			Statement stat = con.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM stories");
+			while(rs.next()) {
+				Book storyToAdd = new Book();
+			    storyToAdd.setTitle(rs.getString("Title"));
+			    //storyToAdd.setAuthor (rs.getString("Author"));
+			    //storyToAdd.setCountry (rs.getString("Country"));
+			    storyToAdd.setRating (rs.getFloat("Rating"));
+			    storyToAdd.setLanguage (rs.getString("Region"));
+				stories.add(storyToAdd);
+			}
+    	}catch(Exception e) {
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
+    	}
+    	
     	
     	// Create JTextArea
         textArea = new JTextArea(20, 40);
@@ -81,12 +106,10 @@ public class Homepage {
         bookPanel.setBackground(mintGreen);
         
         // Book buttons
- 	// Book buttons
         for (int i = 1; i <= 10; i++){
-        	Book bookButton = new Book ("book" + i + ".txt" );
-        	bookGridPanel.add(bookButton.getBookButton());
+            Book bookButton = new Book("book" + i + ".txt");
+            bookGridPanel.add(bookButton.getBookButton());
         }
-
 
         // Set frame
         Tales.setFrame(homepageFrame);
@@ -187,7 +210,7 @@ public class Homepage {
             public void mouseClicked(MouseEvent e) {
                 try {
                     // Open a webpage when the text is clicked
-            		new library.filterSearch();
+            		new Library.filterSearch();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -241,6 +264,7 @@ public class Homepage {
              @Override
              public void actionPerformed(ActionEvent e) {
                  System.out.println("Redirecting to your Favourites");
+                 // If anyone has this class, please upload to GitHub ASAP
                  new Favourites();
              }
          });
@@ -249,6 +273,7 @@ public class Homepage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Redirecting to Settings");
+                // If anyone has this class, please upload to GitHub ASAP
                 new Settings();
             }
         });
@@ -290,6 +315,27 @@ public class Homepage {
 	    menu.setForeground(new Color(255, 255, 255));
         homepageFrame.setVisible(true);
     }
+
+    public void readFile(String fileName) {
+    	 try {
+             BufferedReader reader = new BufferedReader(new FileReader(fileName));
+             StringBuilder content = new StringBuilder();
+             String line;
+             while ((line = reader.readLine()) != null) {
+                 content.append(line).append("\n");
+             }
+             reader.close();
+             textArea.setText(content.toString());
+             JOptionPane.showMessageDialog(null, new JScrollPane(textArea), "File Content", JOptionPane.PLAIN_MESSAGE);
+         } catch (FileNotFoundException e) {
+        	 e.printStackTrace();
+             JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
+         }
+    	 catch (IOException e) {
+    		 JOptionPane.showMessageDialog(null, "Error reading the file", e.toString(), JOptionPane.ERROR_MESSAGE);
+
+         }
+	}
 	
     public static void changeWelcomeMessage(String newUser) {
     	welcome.setText("Welcome Home, " + newUser);
