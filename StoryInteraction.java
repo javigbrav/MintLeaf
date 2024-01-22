@@ -1,4 +1,3 @@
-package StoryInteraction;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -8,68 +7,91 @@ import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
 import javax.swing.text.Highlighter;
 import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import StoryInteraction.*;
-import Community.*;
-import Homepage.Tales;
+import java.util.LinkedList;
 
 public class StoryInteraction extends JFrame {
 	
 	//static Color initialColor = Color.yellow;
 	static boolean hasBeenClickedT = false; //to check if the translator button has already been clicked
-	private JScrollPane scrollPane;
+	private static JScrollPane scrollPane;
     private static JTextPane textPane;
-    private static String bookName = "book1.txt";
+    JButton reportButton = new JButton("Report An Issue");
     JButton buttonHigh = new JButton ("Highlight");
     JButton translatorButton = new JButton ("Translator");
     JButton buttonChoose = new JButton ("Choose Highlighter Color");
-    JButton reportButton = new JButton("Report An Issue");
     static Color highlightColor=Color.yellow;//default highlight color yellow
-    
+    //int ScrollBarPosition = 0; //default value, at the top
+    private static Point viewPosition;
     private JButton annotateButton = new JButton("Add Annotation");
     private Annotations annotationFrame;
+    public LinkedList <Annotations> notes = new LinkedList <Annotations>();
     
-    
-    public StoryInteraction(String bookName) {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(700, 600);
-        setLocationRelativeTo(null);
+    public StoryInteraction(String bookName, String storyText, String storyOriginalText, String language) {
+    	
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE  );
+        
+        //when the window is closed, the point at which the scroll bar was is retrieved
+        //this way functioning as a bookmark
+        addWindowListener((WindowListener) new WindowAdapter()
+        {
+            @Override
+            public void windowClosing(WindowEvent e)
+            {
+            	JViewport viewport = scrollPane.getViewport();
 
+                // Get the current view position
+                viewPosition = viewport.getViewPosition();
+
+                // Print the scroll position
+                System.out.println("Scroll Position: " + viewPosition.y);
+                
+              e.getWindow().dispose();
+            }
+        });
+        setSize(700, 600);
+        setLocationRelativeTo(Homepage.homepageFrame);
+        setVisible(true);
         textPane = new JTextPane();
         setDefaultFont();  // Set default font for the JTextPane
 
         //textPane.setEditable(false);
         
         scrollPane = new JScrollPane(textPane);
+        
         add(scrollPane, BorderLayout.CENTER);
 
-        openAndDisplayFile(bookName);
+        displayStory(bookName, storyText);
 
-        SwingUtilities.invokeLater(() -> {
-            // Set the scroll position to the top
-            scrollPane.getVerticalScrollBar().setValue(0);
-        });
+        scrollPosition ();
         
         buttonHigh.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("button works");
-                Highlights.setTextPane (textPane);
-                new Highlights(highlightColor);
+                Highlight.setTextPane (textPane);
+                new Highlight (highlightColor);
             }
         });
         annotateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	annotationFrame = new Annotations();
+            	Annotations.setUsername (User.username);
+            	Annotations.setStory(bookName);
+            	annotationFrame = new Annotations( );
                 showAnnotationFrame();
             }
         });
@@ -80,11 +102,20 @@ public class StoryInteraction extends JFrame {
             	Translator.setPane (textPane);
             	Translator.setScrollBar(scrollPane);
             	Translator.setHasBeenClicked(hasBeenClickedT);
-            	new Translator(bookName);
+            	if (storyOriginalText!= null)
+            		new Translator(bookName, storyOriginalText, storyText);
+            	
+            	else
+            		JOptionPane.showMessageDialog(null, "We are working hard on finding the right translation", "Sorry!", JOptionPane.ERROR_MESSAGE);
             	hasBeenClickedT = Translator.getHasBeenClicked ();
             }
         });
-        
+        reportButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reportStoryFrame(bookName);
+			}
+        });
         buttonChoose.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,19 +124,14 @@ public class StoryInteraction extends JFrame {
 			}
         });
         
-        reportButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				reportStoryFrame(bookName);
-			}
-        });
-        
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(buttonChoose);
         buttonPanel.add(buttonHigh);
         buttonPanel.add(annotateButton);
-        buttonPanel.add(translatorButton);
         buttonPanel.add(reportButton);
+        if (language.equals("English"));
+        else
+        	buttonPanel.add(translatorButton);
         add(buttonPanel, BorderLayout.SOUTH);
 
 
@@ -118,51 +144,85 @@ public class StoryInteraction extends JFrame {
 
         //setJMenuBar(menuBar);
     }
-
     private void setDefaultFont() {
         // Set default font for the JTextPane (replace this with your desired default font)
         Font defaultFont = new Font("Serif", Font.PLAIN, 14);
         textPane.setFont(defaultFont);
     }
+    
+    public static void scrollPosition () {
+		SwingUtilities.invokeLater(() -> {
+            // Set the scroll position to the top
+			if (viewPosition == null)
+				scrollPane.getVerticalScrollBar().setValue(0);
+			else
+				scrollPane.getVerticalScrollBar().setValue(viewPosition.y);
+        });
+	}
 
-    static void openAndDisplayFile(String filePath) {
+    static void displayStory(String title, String story) {
+        StyledDocument styledDoc = textPane.getStyledDocument();
+
+        // Title Style
+        Style titleStyle = styledDoc.addStyle("TitleStyle", null);
+        StyleConstants.setBold(titleStyle, true);
+        StyleConstants.setFontSize(titleStyle, 18);
+        StyleConstants.setForeground(titleStyle, Color.BLUE);
+
+        // Body Style
+        Style bodyStyle = styledDoc.addStyle("BodyStyle", null);
+        StyleConstants.setFontSize(bodyStyle, 14);
+        StyleConstants.setForeground(bodyStyle, Color.BLACK);
+
+        // Insert title
         try {
-            String[] fileLines = readFile(filePath);
-            displayFileContent(fileLines);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
+            styledDoc.insertString(styledDoc.getLength(), title + "\n\n", titleStyle);
+        } catch (BadLocationException e) {
+            e.printStackTrace();
         }
-    }
+        
+        // Insert story with new lines every 10 words
+        String[] words = story.split("\\s+");
+        int wordCount = 0;
+        for (String word : words) {
+            try {
+                styledDoc.insertString(styledDoc.getLength(), word + " ", bodyStyle);
+                wordCount++;
 
-    private static String[] readFile(String filePath) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            return reader.lines().toArray(String[]::new);
-        }
-    }
-
-    private static void displayFileContent(String[] fileLines) {
-        textPane.setText(""); // Clear existing text
-
-        for (int i = 0; i < fileLines.length; i++) {
-            String line = fileLines[i];
-            SimpleAttributeSet attributes = new SimpleAttributeSet();
-
-            // Set different font for the first line (replace this with your desired first-line font)
-            if (i == 0) {
-                StyleConstants.setBold(attributes, true);
-                StyleConstants.setFontFamily(attributes, "SansSerif");
-                StyleConstants.setFontSize(attributes, 16);
-            } else {
-                StyleConstants.setBold(attributes, false);
-                StyleConstants.setFontFamily(attributes, "Serif");
-                StyleConstants.setFontSize(attributes, 14);
+                // Insert new line after 10 words
+                if (wordCount % 10 == 0) {
+                    styledDoc.insertString(styledDoc.getLength(), "\n", bodyStyle);
+                }
+            } catch (BadLocationException e) {
+                e.printStackTrace();
             }
-
-            textPane.setCharacterAttributes(attributes, true);
-            textPane.replaceSelection(line + "\n");
         }
     }
-
+//    private static void displayFileContent(String storyText) {
+//        textPane.setText(""); // Clear existing text
+//
+//        // Split the story into lines
+//        String[] lines = storyText.split("\n");
+//
+//        SimpleAttributeSet titleAttributes = new SimpleAttributeSet();
+//        StyleConstants.setBold(titleAttributes, true);
+//        StyleConstants.setFontFamily(titleAttributes, "Helvetica");
+//        StyleConstants.setFontSize(titleAttributes, 16);
+//
+//        SimpleAttributeSet bodyAttributes = new SimpleAttributeSet();
+//        StyleConstants.setBold(bodyAttributes, false);
+//        StyleConstants.setFontFamily(bodyAttributes, "Serif");
+//        StyleConstants.setFontSize(bodyAttributes, 14);
+//
+//        for (int i = 0; i < lines.length; i++) {
+//            String line = lines[i];
+//            SimpleAttributeSet attributes = (i == 0) ? titleAttributes : bodyAttributes;
+//
+//            textPane.setCharacterAttributes(attributes, true);
+//            textPane.replaceSelection(line + "\n");
+//        }
+//    }
+    
 //    private void highlightSelectedText(Color highlightColor) {
 //        int start = textPane.getSelectionStart();
 //        int end = textPane.getSelectionEnd();
@@ -176,23 +236,6 @@ public class StoryInteraction extends JFrame {
 //            }
 //        }
 //    }
-    
-    private void showAnnotationFrame() {
-        if (textPane.getSelectedText() != null) {
-            String selectedText = textPane.getSelectedText();
-            annotationFrame.addAnnotation(selectedText);
-            annotationFrame.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(this, "No text selected for annotation", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    public static Color chooseColor (){
-		Color color=JColorChooser.showDialog(null,"Select a color",highlightColor);    
-		highlightColor = color;
-		return color;
-    }
-    
     
     /** NOT FINISHED YET **/
     private void reportStoryFrame(String storyName) {
@@ -260,10 +303,29 @@ public class StoryInteraction extends JFrame {
 		reportFrame.setVisible(true);
     }    
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            StoryInteraction StoryInteraction = new StoryInteraction(bookName);
-            StoryInteraction.setVisible(true);
-        });
+    private void showAnnotationFrame() {
+        if (textPane.getSelectedText() != null) {
+            String selectedText = textPane.getSelectedText();
+            annotationFrame.addAnnotation(selectedText);
+            annotationFrame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No text selected for annotation", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
+    
+    public static Color chooseColor (){
+		Color color=JColorChooser.showDialog(null,"Select a color",highlightColor);    
+		highlightColor = color;
+		return color;
+    }
+    public static int getScrollPosition () {
+    	return viewPosition.y;
+    }
+    
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(() -> {
+//            StoryInteraction StoryInteraction = new StoryInteraction(bookName);
+//            StoryInteraction.setVisible(true);
+//        });
+//    }
 }
