@@ -4,7 +4,7 @@ package StoryInteraction;
  * Author: Javiera Garrido Bravo
  * Date: December ??, 2023 
  * Last Modified: January 21, 2024
- * Last Modified by: Fardin Abbassi
+ * Last Modified by: Javiera Garrido Bravo
  * Description: Class that represents a book
  ***********************************************************************************/
 
@@ -76,22 +76,9 @@ public class Book extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				// Handle reading from the corresponding text file
-                //String fileName = "book" + bookNumber; 
+                // String fileName = "book" + bookNumber; 
 				// will probably need to add private JTextArea textArea;
-				int result = JOptionPane.showOptionDialog(book,
-					    "Languages avalaible: English and " + language+
-					    "\nGenre: " + genre,
-					    "Book: " + bookName,
-					    JOptionPane.YES_NO_OPTION,
-					    JOptionPane.QUESTION_MESSAGE,
-					    null,     //do not use a custom Icon
-					    options,  //the titles of buttons
-					    options[0]); //default button title
-				if (result == JOptionPane.YES_OPTION) {
-					rateBook();
-				}
-	            else if (result == JOptionPane.NO_OPTION)
-	                new StoryInteraction (bookName);
+				showThis(bookName);
 			}
         });
 	}
@@ -100,7 +87,7 @@ public class Book extends JFrame{
 	 * Author: Javiera Garrido Bravo
 	 * Creation Date: January ??, 2024
 	 * Modified Date: January ??, 2024
-	 * Description: creates a frame for the user to rate the given book(?)
+	 * Description: (ADD DESC HERE)
 	 * @Parameters: n/a
 	 * @Return Value: void
 	 * Data Type: n/a
@@ -151,9 +138,32 @@ public class Book extends JFrame{
         });
 	}
 	
-	// AGAIN, WHAT DOES THIS DO???
-	public void showThis() {
-		
+	/* Method Name: showThis 
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January ??, 2024
+	 * Modified Date: January ??, 2024
+	 * Description: (ADD DESC HERE)
+	 * @Parameters: n/a
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: ?????
+	 * Throws/Exceptions: ????
+	 */    
+	public void showThis(String bookName) {
+		int result = JOptionPane.showOptionDialog(book,
+			    "Languages avalaible: English and " + language+
+			    "\nGenre: " + genre,
+			    "Book: " + bookName,
+			    JOptionPane.YES_NO_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,     //do not use a custom Icon
+			    options,  //the titles of buttons
+			    options[0]); //default button title
+		if (result == JOptionPane.YES_OPTION) {
+			rateBook();
+		}
+        else if (result == JOptionPane.NO_OPTION)
+            new StoryInteraction (bookName);
 	}
 	
 //    public Book(String bookName) {
