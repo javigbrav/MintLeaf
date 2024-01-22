@@ -50,9 +50,14 @@ public class Book extends JFrame{
 //	}
 	
 	//setters and getters for variables
+    public void setStoryOriginalText (String storyOriginalText) {this.storyOriginalText = storyOriginalText;}
+	public void setStoryText (String storyText) {this.storyText = storyText;}
+	public void setGenre (String genre) {this.genre = genre;}
+	public void setAge (String age) {this.age = age;}
+	public void setLength (String storyLength) {this.storyLength = storyLength;}
     public void setTitle (String title) {this.title = title;}
     public void setAuthor (String author) {this.author = author;}
-    public void setCountry (String country) {this.country = country;}
+    public void setRegion (String region) {this.region = region;}
     public void setLanguage (String language) {this.language = language;}
     public void setRating (float rating) {this.rating = rating;}
     
@@ -82,14 +87,78 @@ public class Book extends JFrame{
 			}
         });
 	}
-	public Book() {
-		title = "";
-		genre = "";
-		ageGroup = "";
-		rating = 0;
-		region = "";
-		storyLength = "";
+	//		title = "";
+//		genre = "";
+//		age = "";
+//		rating = 0;
+//		region = "";
+//		storyLength = "";
+		System.out.println(title);
+		textPane = new JTextPane();
+		book = new JButton (title);
+		book.setBackground(Homepage.mintGreen2);
+        book.setPreferredSize(new Dimension(25, 4)); 
+        book.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				// Handle reading from the corresponding text file
+                //String fileName = "book" + bookNumber; 
+				// will probably need to add private JTextArea textArea;
+				showThis(title);
+			}
+        });
 	}
+	/* Method Name: showThis 
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January ??, 2024
+	 * Modified Date: January ??, 2024
+	 * Description: (ADD DESC HERE)
+	 * @Parameters: n/a
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: ?????
+	 * Throws/Exceptions: ????
+	 */   
+	public void showThis(String bookName) {
+		int result = 0;
+		// so  it doesn't say English and English
+		if (language.equals("English")) {
+			result = JOptionPane.showOptionDialog(book,
+				    "Languages avalaible: English"+
+				    "\nGenre: " + genre +
+				    //"\nAuthor " + author +
+				    "\nRegion: "+ region +
+				    "\nRating " + rating,
+				    bookName,
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,     //do not use a custom Icon
+				    options,  //the bookNames of buttons
+				    options[0]); //default button bookName
+		}
+		else {
+			result = JOptionPane.showOptionDialog(book,
+				    "Languages avalaible: English and " + language+
+				    "\nGenre: " + genre +
+				    //"\nAuthor " + author +
+				    "\nRegion: "+ region +
+				    "\nRating " + rating,
+				    bookName,
+				    JOptionPane.YES_NO_OPTION,
+				    JOptionPane.QUESTION_MESSAGE,
+				    null,     //do not use a custom Icon
+				    options,  //the bookNames of buttons
+				    options[0]); //default button bookName
+		}
+		if (result == JOptionPane.YES_OPTION) {
+			rateBook();
+			System.out.println("works");}
+        else if (result == JOptionPane.NO_OPTION)
+            new StoryInteraction (bookName, storyText, storyOriginalText, language);
+	}
+	
 	
 	/* Method Name: rateBook 
 	 * Author: Javiera Garrido Bravo
@@ -145,81 +214,9 @@ public class Book extends JFrame{
             }
         });
 	}
-	
-	/* Method Name: showThis 
-	 * Author: Javiera Garrido Bravo
-	 * Creation Date: January ??, 2024
-	 * Modified Date: January ??, 2024
-	 * Description: (ADD DESC HERE)
-	 * @Parameters: n/a
-	 * @Return Value: void
-	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
-	 */    
-	public void showThis(String bookName) {
-		int result = JOptionPane.showOptionDialog(book,
-			    "Languages avalaible: English and " + language+
-			    "\nGenre: " + genre,
-			    "Book: " + bookName,
-			    JOptionPane.YES_NO_OPTION,
-			    JOptionPane.QUESTION_MESSAGE,
-			    null,     //do not use a custom Icon
-			    options,  //the titles of buttons
-			    options[0]); //default button title
-		if (result == JOptionPane.YES_OPTION) {
-			rateBook();
-		}
-        else if (result == JOptionPane.NO_OPTION)
-            new StoryInteraction (bookName);
-	}
-	
-//    public Book(String bookName) {
-//    	
-//        textPane = new JTextPane();
-//        setDefaultFont();
-//
-//        book = new JButton(bookName);
-//        book.setBackground(Homepage.mintGreen2);
-//        book.setPreferredSize(new Dimension(25, 4));
-//
-//        openAndDisplayFile(bookName);
-//
-//        book.addActionListener(e -> {
-//            try {
-//                readFile(bookName);
-//                Homepage.updateTextArea(textPane.getText());
-//            } catch (IOException ex) {
-//                ex.printStackTrace();
-//                JOptionPane.showMessageDialog(null, "Error reading file", "Error", JOptionPane.ERROR_MESSAGE);
-//            }
-//        });
-//
-//        JPanel buttonPanel = new JPanel();
-//        buttonPanel.add(book);
-//        // Add buttonPanel to your frame or panel as needed
-//    }
 
-//  public void readFile(String fileName) {
-//	 try {
-//        BufferedReader reader = new BufferedReader(new FileReader(fileName));
-//        StringBuilder content = new StringBuilder();
-//        String line;
-//        while ((line = reader.readLine()) != null) {
-//            content.append(line).append("\n");
-//        }
-//        reader.close();
-//        textPane.setText(content.toString());
-//        JOptionPane.showMessageDialog(null, new JScrollPane(textPane), "File Content", JOptionPane.PLAIN_MESSAGE);
-//    } catch (FileNotFoundException e) {
-//   	 e.printStackTrace();
-//        JOptionPane.showMessageDialog(null, "File not found", "Error", JOptionPane.ERROR_MESSAGE);
-//    }
-//	 catch (IOException e) {
-//		 JOptionPane.showMessageDialog(null, "Error reading the file", e.toString(), JOptionPane.ERROR_MESSAGE);
-//
-//    }
-//}
+	
+
     public JButton getBookButton() {
         return book;
     }
