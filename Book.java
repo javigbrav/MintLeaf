@@ -1,5 +1,13 @@
 package StoryInteraction;
 
+/***********************************************************************************
+ * Author: Javiera Garrido Bravo
+ * Date: December ??, 2023 
+ * Last Modified: January 21, 2024
+ * Last Modified by: Fardin Abbassi
+ * Description: Class that represents a book
+ ***********************************************************************************/
+
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -14,7 +22,7 @@ import Community.*;
 public class Book extends JFrame{
     private JTextPane textPane;
     private static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
-	public static String BookLength = null;
+    public static String BookLength = null; // someone please tell me what this does
     private JButton book;
     public String title;
 	public String author;
@@ -23,6 +31,7 @@ public class Book extends JFrame{
 	public String language;
 	public float rating; // making sense with the table in the database
 	private double userRating = 0;
+	private boolean chosenByUser = false;
 
 	public String genre;
 	public String region;
@@ -32,7 +41,7 @@ public class Book extends JFrame{
 	
 	Object[] options = {"Rate", "Open"};
 	
-	public int votes;
+	public int votes; // again, someone please tell me what this does
 //    Book (String bookName){
 //		book = new JButton (bookName);
 //		book.setBackground(Homepage.mintGreen2);
@@ -46,6 +55,12 @@ public class Book extends JFrame{
     public void setCountry (String country) {this.country = country;}
     public void setLanguage (String language) {this.language = language;}
     public void setRating (float rating) {this.rating = rating;}
+    
+	public void increasePriority() {priority++;}
+	public int getPriority() {return priority;}
+	
+	public void bookChosen() {chosenByUser = true;}
+	public boolean isChosen() {return chosenByUser;}
     
 	public Book (String bookName){
 //		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,8 +95,6 @@ public class Book extends JFrame{
 			}
         });
 	}
-	static void increasePriority() {priority++;}
-	public int getPriority() {return priority;}
 	
 	/* Method Name: rateBook 
 	 * Author: Javiera Garrido Bravo
@@ -138,7 +151,7 @@ public class Book extends JFrame{
         });
 	}
 	
-	
+	// AGAIN, WHAT DOES THIS DO???
 	public void showThis() {
 		
 	}
