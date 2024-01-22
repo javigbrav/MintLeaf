@@ -11,7 +11,6 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import javax.swing.*;
 
-import StoryInteraction.*;
 
 /***********************************************************************************
  * Authors: Zainab Siddiqui, Javiera Garrido Bravo
@@ -22,7 +21,7 @@ import StoryInteraction.*;
  ***********************************************************************************/
 
 public class Homepage {
-
+	
     Color mintGreen = new Color(220, 242, 206);
 	public static Color mintGreen2 = new Color(88, 153, 47);
     JMenu menu, libr;
@@ -38,39 +37,8 @@ public class Homepage {
 	private LinkedList<Book> stories = new LinkedList<Book>();
 
     public Homepage(String username) {
-    	/** Need to figure out author and country stuff **/
-    	try {
-    		/** When doing this locally, swap "MintLeaf" with your local password**/
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");			
-			Statement stat = con.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM stories");
-			while(rs.next()) {
-				Book storyToAdd = new Book();
-			    storyToAdd.setTitle(rs.getString("Title"));
-			    //storyToAdd.setAuthor (rs.getString("Author"));
-			    //storyToAdd.setCountry (rs.getString("Country"));
-			    storyToAdd.setRating (rs.getFloat("Rating"));
-			    storyToAdd.setLanguage (rs.getString("Region"));
-				stories.add(storyToAdd);
-			}
-    	}catch(Exception e) {
-			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
-    	}
     	
-    	
-    	// Create JTextArea
-        textArea = new JTextArea(20, 40);
-        textArea.setEditable(false);
-
-        // Create JScrollPane
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        JPanel titlePanel = new JPanel();
-        titlePanel.setOpaque(false);
-        mb.setMargin(new Insets(30, 5, 0, 0));
-        mb.setFont(new Font("Segoe Print", Font.PLAIN, 30));
-        mb.setBackground(mintGreen2);
-
-        //create a panel for book buttons with separation from sides, top, and bottom
+    	//create a panel for book buttons with separation from sides, top, and bottom
         JPanel bookPanel = new JPanel(new BorderLayout());
         JPanel topSpace = new JPanel();
         JPanel bottomSpace = new JPanel();
@@ -99,17 +67,57 @@ public class Homepage {
         bookPanel.add(rightSpace, BorderLayout.EAST);
 
         JPanel bookGridPanel = new JPanel();
-        bookGridPanel.setLayout(new GridLayout(2, 5, 50, 70)); // Adjust the last two parameters for spacing
+        bookGridPanel.setLayout(new GridLayout(0, 6, 50, 70)); // Adjust the last two parameters for spacing
         bookGridPanel.setBackground(mintGreen);
         
         bookPanel.add(bookGridPanel, BorderLayout.CENTER);
         bookPanel.setBackground(mintGreen);
         
+    	
+    	/** Need to figure out author and country stuff **/
+    	try {
+    		/** When doing this locally, swap "MintLeaf" with your local password**/
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");			
+			Statement stat = con.createStatement();
+			ResultSet rs = stat.executeQuery("SELECT * FROM stories");
+			while(rs.next()) {
+				Book storyToAdd = new Book(rs.getString("Title"));
+			    //storyToAdd.setTitle(rs.getString("Title"));
+			    //storyToAdd.setAuthor (rs.getString("Author"));
+				storyToAdd.setAge(rs.getString("Age"));
+				storyToAdd.setGenre(rs.getString("Genre"));
+			    storyToAdd.setRegion (rs.getString("Region"));
+			    storyToAdd.setRating (rs.getFloat("Rating"));
+			    storyToAdd.setLanguage (rs.getString("Language"));
+			    storyToAdd.setLength (rs.getString("Length"));
+			    storyToAdd.setStoryText(rs.getString("StoryText"));
+			    storyToAdd.setStoryOriginalText(rs.getString("StoryOriginalText"));
+				stories.add(storyToAdd);
+				bookGridPanel.add(storyToAdd.getBookButton());
+			}
+    	}catch(Exception e) {
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
+    	}
+    	
+    	
+    	// Create JTextArea
+        textArea = new JTextArea(20, 40);
+        textArea.setEditable(false);
+
+        // Create JScrollPane
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        JPanel titlePanel = new JPanel();
+        titlePanel.setOpaque(false);
+        mb.setMargin(new Insets(30, 5, 0, 0));
+        mb.setFont(new Font("Segoe Print", Font.PLAIN, 30));
+        mb.setBackground(mintGreen2);
+
+        
         // Book buttons
-        for (int i = 1; i <= 10; i++){
-            Book bookButton = new Book("book" + i + ".txt");
-            bookGridPanel.add(bookButton.getBookButton());
-        }
+//        for (int i = 1; i <= 10; i++){
+//            Book bookButton = new Book("book" + i + ".txt");
+//            bookGridPanel.add(bookButton.getBookButton());
+//        }
 
         // Set frame
         Tales.setFrame(homepageFrame);
@@ -210,7 +218,7 @@ public class Homepage {
             public void mouseClicked(MouseEvent e) {
                 try {
                     // Open a webpage when the text is clicked
-            		new Library.filterSearch();
+            		new filterSearch();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
