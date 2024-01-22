@@ -1,5 +1,3 @@
-package Community;
-
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 20, 2023 
@@ -10,16 +8,9 @@ package Community;
 
 import java.sql.*;
 import java.util.LinkedList;
-import Homepage.*;
-import StoryInteraction.Book;
 
 public class Community{
-	private double rating = 0;
-  
-	public Community(){
-		this.rating = 0;
-	}
-
+	
 	/**A TreeNode object represents a single book node in a binary(?) tree. **/
 	private static class TreeNode {
 		Book book; 			// The book.
@@ -35,7 +26,6 @@ public class Community{
 	}  // end TreeNode class
 	private static TreeNode root;
  
-	/**MAIN IDEA: Make a binary tree based on questions from rec quiz, increase story priority based on matches to user preference**/
 	/* Method Name: tailoredReccomendations 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: January 09, 2024
@@ -44,9 +34,9 @@ public class Community{
 	 * 				increase story priority based on matches to user preference, then sends the tailored list back.
 	 * @Parameters: LinkedList<Book> booksToSort, User user
 	 * @Return Value: LinkedList<Book>
-	 * Data Type: ???
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Data Type: LinkedList<Book>, User
+	 * Dependencies: Book, User
+	 * Throws/Exceptions: n/a
 	 */    
 	public static LinkedList<Book> tailoredRecomendations(LinkedList<Book> booksToSort, User user) {
 		// add each story in the linked list into a binary tree
@@ -76,8 +66,7 @@ public class Community{
   						break;
 					  
   					case 2: // comparing to user's age
-  						/** For future reference, each story's age group should be something like "00-13" **/
-  						String ages = book.ageGroup;
+  						String ages = book.age;
   						int age1 = 0;
   						int age2 = 0;
   						switch (ages) {
@@ -136,6 +125,7 @@ public class Community{
   		recommendedList(root, recommendedBooks);
   		return recommendedBooks;
     }
+	
 	/* Method Name: recommendedList 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: January 12, 2024
@@ -144,8 +134,8 @@ public class Community{
 	 * @Parameters: TreeNode node, LinkedList<Book> stories
 	 * @Return Value: void
 	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Dependencies: TreeNode, Book, LinkedList
+	 * Throws/Exceptions: n/a
 	 */ 
 	private static void recommendedList(TreeNode node, LinkedList<Book> stories) {
 		if(node != null) {
@@ -155,10 +145,17 @@ public class Community{
 		}
 	}
 
-  	
-  	/**MAIN IDEA: Preface this by adding individual book pages, then add stars that act as buttons that lets a user do this.
-  				  Depending on input rating, change user rating of the book to match. (Basic idea as of now)**/
-	/** Might take this idea and move it into the star buttons themselves if/when they become available **/
+	/* Method Name: rateStory 
+	 * Author: Fardin Abbassi 
+	 * Creation Date: January 19, 2024
+	 * Modified Date: January 19, 2024
+	 * Description: Connects to the database, then edits the stories table to add the user's personal rating of the story
+	 * @Parameters: double userRating, String title
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: java.sql.Connection, java.sql.DriverManager, java.sql.Statement, java.sql.SQLException
+	 * Throws/Exceptions: n/a
+	 */ 
   	public static void rateStory(double userRating, String title) {
 		try {
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
@@ -172,31 +169,25 @@ public class Community{
     }
     
   	/**MAIN IDEA: Based on the above method, take all user ratings for a given story and make an average rating for the given story.**/
-    public double averageRating() {
+    /*public double averageRating() {
         
         return rating;
-    }
-
+    }*/
   	/**MAIN IDEA: Based on the above method, look through every story's ratings and create a top 10(?) list**/
-    public void adjustRankings() {
+    /*public void adjustRankings() {
         
-    }
+    }*/
 
-  	
-    /**MAIN IDEA: 	Preface this by having a book page for each story.
-    				Have a button that allows a user to add a report to a table in the database for reports. 
-    				Reports should track which user created the report, which story the report is in, and the contents of the report.
-    				(Basic idea as of now, could possibly just be a part of the story page's class instead)**/
 	/* Method Name: reportStory 
 	 * Author: Fardin Abbassi 
 	 * Creation Date: January 18, 2024
-	 * Modified Date: January ??, 2024
+	 * Modified Date: January 18, 2024
 	 * Description: Creates a report from the user to be uploaded into a reports table in the database.
 	 * @Parameters: String user, String storyName, String report
 	 * @Return Value: void
 	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Dependencies: java.sql.Connection, java.sql.DriverManager, java.sql.Statement, java.sql.SQLException
+	 * Throws/Exceptions: n/a
 	 */ 
  	public static void reportStory(String user, String storyName, String report) {
 		try {
@@ -211,6 +202,8 @@ public class Community{
 		}
     }
 
+ 	
+ 	
   	/**MAIN IDEA: 	Preface this by having a functioning profile page.
   	  				Have a button that allows the user to suggest a book/story for us to potentially add to the currently available stories.
   	  				Suggestions, like the reports above, should track user in addition to whichever story they want to track.
@@ -221,19 +214,8 @@ public class Community{
 
   	/**MAIN IDEA: ???**/
     /** Maybe change this up so that it provides a message out to the user if their request is accepted/denied? **/
-/*	public boolean isApproved() {
-    	
+ 	/*public boolean isApproved() {
         boolean approved = false;
         return approved;
-    }								*/
-
- 	
- 	
- 	/** TEST AREA **/
- 	public static void main(String[] args) {
- 		Community.rateStory(4.5, "Ramayana");
- 		Community.reportStory("test", "Aladdin", "Improper translation at line 8");
- 	}
- 	
- 	
+    }*/
 }
