@@ -22,20 +22,25 @@ import Community.*;
 public class Book extends JFrame{
     private JTextPane textPane;
     private static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
-    public static String BookLength = null; // someone please tell me what this does
+	public static String BookLength = null;
     private JButton book;
     public String title;
 	public String author;
 	public String description;
-	public String country;
-	public String language;
-	public float rating; // making sense with the table in the database
-	private double userRating = 0;
-	private boolean chosenByUser = false;
-
-	public String genre;
 	public String region;
-	public String ageGroup; // change from UML: String instead of int
+	public String language;
+	public String StoryOriginalText;
+
+	public float rating; // making sense with the table in the database
+	public int saved;
+	private double userRating;
+	private String storyText;
+	private String storyOriginalText;
+    private String storiesCol;
+    private boolean chosenByUser = false;
+    
+	public String genre;
+	public String age; // change from UML: String instead of int
 	public String storyLength;
 	private static int priority = 1;
 	
