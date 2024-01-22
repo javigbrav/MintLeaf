@@ -191,45 +191,7 @@ public class StoryInteraction extends JFrame {
             }
         }
     }
-//    private static void displayFileContent(String storyText) {
-//        textPane.setText(""); // Clear existing text
-//
-//        // Split the story into lines
-//        String[] lines = storyText.split("\n");
-//
-//        SimpleAttributeSet titleAttributes = new SimpleAttributeSet();
-//        StyleConstants.setBold(titleAttributes, true);
-//        StyleConstants.setFontFamily(titleAttributes, "Helvetica");
-//        StyleConstants.setFontSize(titleAttributes, 16);
-//
-//        SimpleAttributeSet bodyAttributes = new SimpleAttributeSet();
-//        StyleConstants.setBold(bodyAttributes, false);
-//        StyleConstants.setFontFamily(bodyAttributes, "Serif");
-//        StyleConstants.setFontSize(bodyAttributes, 14);
-//
-//        for (int i = 0; i < lines.length; i++) {
-//            String line = lines[i];
-//            SimpleAttributeSet attributes = (i == 0) ? titleAttributes : bodyAttributes;
-//
-//            textPane.setCharacterAttributes(attributes, true);
-//            textPane.replaceSelection(line + "\n");
-//        }
-//    }
-    
-//    private void highlightSelectedText(Color highlightColor) {
-//        int start = textPane.getSelectionStart();
-//        int end = textPane.getSelectionEnd();
-//
-//        if (start != end) {
-//            try {
-//                Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(highlightColor);
-//                textPane.getHighlighter().addHighlight(start, end, painter);
-//            } catch (BadLocationException ex) {
-//                ex.printStackTrace();
-//            }
-//        }
-//    }
-    
+
     /** NOT FINISHED YET **/
     private void reportStoryFrame(String storyName) {
     	setLocationRelativeTo(null);
