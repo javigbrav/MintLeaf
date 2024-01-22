@@ -15,8 +15,8 @@ import javax.swing.*;
 /***********************************************************************************
  * Authors: Zainab Siddiqui, Javiera Garrido Bravo
  * Date: December 20, 2023 
- * Last Modified: January 21, 2024
- * Last Modified by: Fardin Abbassi
+ * Last Modified: January 22, 2024
+ * Last Modified by: Victor Kosarev
  * Description: A user's home page in the application
  ***********************************************************************************/
 
@@ -79,7 +79,7 @@ public class Homepage {
     		/** When doing this locally, swap "MintLeaf" with your local password**/
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");			
 			Statement stat = con.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM stories");
+			ResultSet rs = stat.executeQuery("SELECT * FROM STORIES ORDER BY ABS(Total - " + User.total));
 			while(rs.next()) {
 				Book storyToAdd = new Book(rs.getString("Title"));
 			    //storyToAdd.setTitle(rs.getString("Title"));
