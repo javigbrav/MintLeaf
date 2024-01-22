@@ -3,7 +3,7 @@ package Homepage;
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 29, 2023 
- * Last Modified: January 17, 2024
+ * Last Modified: January 22, 2024
  * Last Modified by: Fardin Abbassi
  * Description: Creates a quiz that tracks a user's preferences throughout the program
  ***********************************************************************************/
@@ -20,11 +20,11 @@ import java.awt.event.*;
 public class RecommendationQuiz {	
 	
 	/*Genre tracking*/
-    private static String[] genreNames = {"Fantasy", "Horror", "Romance", "Adventure", "Mystery", "Historical", "Non-Fiction", "Drama", "Sci-Fi"};
+    private static String[] genreNames = {"Fantasy", "Horror", "Romance", "Adventure", "Mystery", "Historical", "Non-Fiction", "Drama", "Sci-Fi", "Fairy Tale"};
     private static String genreResult;
 
 	/*Region tracking*/
-    private static String[] regionNames = {"Europe", "Latin America", "Middle East", "Africa", "South Asia", "East Asia", "South East Asia / Oceania", "Cental Asia"};
+    private static String[] regionNames = {"Europe", "Latin America", "Middle East", "Africa", "South Asia", "East Asia", "South East Asia / Oceania", "Central Asia"};
     private static String regionResult;
 	
     /*Reading age range tracking*/
@@ -246,17 +246,26 @@ public class RecommendationQuiz {
         contentPanel.add(finishedButton);
         finishedButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	f.dispose();
-        		Tales.username = userToTrack.username;
-        		Homepage.homepageFrame.setVisible(true);
-        		userToTrack.updatePreferences(preferences);
-        		if(!User.searchForExistingUser(userToTrack.username)) {
-            		userToTrack.createConnection(userToTrack.username, userToTrack.password, userToTrack.genre, userToTrack.region, userToTrack.age, userToTrack.storyLength);	
-        		}
-        		clearComponents(genres);
-        		clearComponents(regions);
-        		clearComponents(ageTextField);
-        		clearComponents(lengths);
+            	if(Integer.parseInt(ageRangeResult) < 0 ) {
+                	ageRangeResult = "";
+                    ageTextField.setEditable(true);
+                    preferences[2] = ageRangeResult;
+                    improperAge.setVisible(true);
+                    
+            	}
+            	else {
+	            	f.dispose();
+	        		Tales.username = userToTrack.username;
+	        		Homepage.homepageFrame.setVisible(true);
+	        		userToTrack.updatePreferences(preferences);
+	        		if(!User.searchForExistingUser(userToTrack.username)) {
+	            		userToTrack.createConnection(userToTrack.username, userToTrack.password, userToTrack.genre, userToTrack.region, userToTrack.age, userToTrack.storyLength);	
+	        		}
+	        		clearComponents(genres);
+	        		clearComponents(regions);
+	        		clearComponents(ageTextField);
+	        		clearComponents(lengths);
+            	}
             }
         });
         finishedButton.setFont(new Font("Impact", Font.PLAIN, 15));
