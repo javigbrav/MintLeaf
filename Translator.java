@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.SwingUtilities;
+import javax.swing.text.BadLocationException;
 
 public class Translator {
 	private static JTextPane pane;
@@ -33,14 +34,16 @@ public class Translator {
             scrollPane.getVerticalScrollBar().setValue(0);
         });
 	}
-	Translator (String bookName){
+	Translator (String bookName, String storyOriginalText, String storyText){
 		
 		pane.setText("");
+		
 		if ( ! hasBeenClicked ) {
-			StoryInteraction.openAndDisplayFile(bookName + "Trans");
+
+			StoryInteraction.displayStory(bookName, storyOriginalText);		
 			scrollPosition();
         } else {
-        	StoryInteraction.openAndDisplayFile(bookName.replace("Trans",""));
+        	StoryInteraction.displayStory(bookName, storyText);
         	scrollPosition();
         }
         hasBeenClicked = ! hasBeenClicked;
