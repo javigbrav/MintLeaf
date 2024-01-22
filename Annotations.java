@@ -1,4 +1,3 @@
-package StoryInteraction;
 
 import javax.swing.*;
 
@@ -48,8 +47,10 @@ public class Annotations extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         
-        add (buttonSave, BorderLayout.SOUTH);
-        add (buttonSee, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(buttonSave);
+        buttonPanel.add(buttonSee);
+        add (buttonPanel, BorderLayout.SOUTH);
         
         buttonSave.addActionListener(new ActionListener() {
             
@@ -67,7 +68,7 @@ public class Annotations extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				seeAnnotations();
 			}
         });
     }
@@ -94,9 +95,11 @@ public class Annotations extends JFrame {
 		try {
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");
 	    	Statement stat = con.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM Annotations");
+			ResultSet rs = stat.executeQuery("SELECT * FROM annotations WHERE username like '" + username
+					+ "' and story like '" + story + "'");
 			while(rs.next()) {
-				
+				textArea.append("\n");
+				textArea.append(rs.getString("annotation"));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -104,6 +107,7 @@ public class Annotations extends JFrame {
 		}			
 		
     }
+    
     
     public void addAnnotation(String selectedText) {
         textArea.append("\n[Annotation]: \"" + selectedText + "\"\n");
