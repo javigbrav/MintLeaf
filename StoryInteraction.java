@@ -315,21 +315,7 @@ public class StoryInteraction extends JFrame {
     	return viewPosition.y;
     }
     
-    public int getBookmark (String storyName) {
-    	try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");
-	    	Statement stat = con.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM annotations WHERE username like '" + Tales.username
-					+ "' and story like '" + storyName + "'");
-			while(rs.next()) {
-				
-			}
-			return ;
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-    }
+    
     
 //    public static void main(String[] args) {
 //        SwingUtilities.invokeLater(() -> {
