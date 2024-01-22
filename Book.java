@@ -4,7 +4,7 @@ package StoryInteraction;
  * Author: Javiera Garrido Bravo
  * Date: December ??, 2023 
  * Last Modified: January 21, 2024
- * Last Modified by: Javiera Garrido Bravo
+ * Last Modified by: Fardin Abbassi
  * Description: Class that represents a book
  ***********************************************************************************/
 
@@ -81,6 +81,14 @@ public class Book extends JFrame{
 				showThis(bookName);
 			}
         });
+	}
+	public Book() {
+		title = "";
+		genre = "";
+		ageGroup = "";
+		rating = 0;
+		region = "";
+		storyLength = "";
 	}
 	
 	/* Method Name: rateBook 
