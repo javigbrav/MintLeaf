@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.LinkedList;
 import javax.swing.*;
 
+import StoryInteraction.Book;
 
 /***********************************************************************************
  * Authors: Zainab Siddiqui, Javiera Garrido Bravo
@@ -22,6 +23,7 @@ import javax.swing.*;
 
 public class Homepage {
 	
+	/* Global Instances*/
     Color mintGreen = new Color(220, 242, 206);
 	public static Color mintGreen2 = new Color(88, 153, 47);
     JMenu menu, libr;
@@ -31,7 +33,6 @@ public class Homepage {
     JTextArea textArea;
     public static JLabel welcome;
     public static JLabel filter = new JLabel("Explore");
-
     public static JFrame homepageFrame = new JFrame("Tales Around the World - HOME");
     private Connection con;
 	private LinkedList<Book> stories = new LinkedList<Book>();
@@ -74,18 +75,18 @@ public class Homepage {
         bookPanel.setBackground(mintGreen);
         
     	
-    	/** Need to figure out author and country stuff **/
     	try {
     		/** When doing this locally, swap "MintLeaf" with your local password**/
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");			
+			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");			
 			Statement stat = con.createStatement();
-			ResultSet rs = stat.executeQuery("SELECT * FROM STORIES ORDER BY ABS(Total - " + User.total));
+			ResultSet rs = stat.executeQuery("SELECT * FROM STORIES ORDER BY ABS(Total - " + User.total);
+			
 			while(rs.next()) {
 				Book storyToAdd = new Book(rs.getString("Title"));
 			    //storyToAdd.setTitle(rs.getString("Title"));
 			    //storyToAdd.setAuthor (rs.getString("Author"));
-				storyToAdd.setAge(rs.getString("Age"));
 				storyToAdd.setGenre(rs.getString("Genre"));
+				storyToAdd.setAge(rs.getString("Age"));
 			    storyToAdd.setRegion (rs.getString("Region"));
 			    storyToAdd.setRating (rs.getFloat("Rating"));
 			    storyToAdd.setLanguage (rs.getString("Language"));
@@ -94,10 +95,10 @@ public class Homepage {
 			    storyToAdd.setStoryOriginalText(rs.getString("StoryOriginalText"));
 				stories.add(storyToAdd);
 				bookGridPanel.add(storyToAdd.getBookButton());
-			}
+			} // end while loop
     	}catch(Exception e) {
-			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating User");
-    	}
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Adding user to homepage");
+    	} // end try/catch
     	
     	
     	// Create JTextArea
@@ -111,13 +112,6 @@ public class Homepage {
         mb.setMargin(new Insets(30, 5, 0, 0));
         mb.setFont(new Font("Segoe Print", Font.PLAIN, 30));
         mb.setBackground(mintGreen2);
-
-        
-        // Book buttons
-//        for (int i = 1; i <= 10; i++){
-//            Book bookButton = new Book("book" + i + ".txt");
-//            bookGridPanel.add(bookButton.getBookButton());
-//        }
 
         // Set frame
         Tales.setFrame(homepageFrame);
@@ -231,7 +225,7 @@ public class Homepage {
 		mb.add(label_3);
         
         // menu
-		mnUsername = new JMenu("username");
+		mnUsername = new JMenu(username);
 		mnUsername.setForeground(new Color(255, 255, 255));
 		mb.add(mnUsername);
 		mnUsername.setFont(new Font("Segoe Print", Font.BOLD, 15));
@@ -348,11 +342,12 @@ public class Homepage {
     public static void changeWelcomeMessage(String newUser) {
     	welcome.setText("Welcome Home, " + newUser);
     }
-    // main
+    
+    /* testing main */
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new Homepage(Tales.username);
+                new Homepage("MintLeaf");
             }
         });
     }
