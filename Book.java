@@ -2,9 +2,9 @@ package StoryInteraction;
 
 /***********************************************************************************
  * Author: Javiera Garrido Bravo
- * Date: December ??, 2023 
- * Last Modified: January 21, 2024
- * Last Modified by: Fardin Abbassi
+ * Date: December 20, 2023 
+ * Last Modified: January 22, 2024
+ * Last Modified by: Javiera Garrido
  * Description: Class that represents a book
  ***********************************************************************************/
 
@@ -20,11 +20,11 @@ import Homepage.*;
 import Community.*;
 
 public class Book extends JFrame{
-    private JTextPane textPane;
-    private static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14);
-	public static String BookLength = null;
-    private JButton book;
-    public String title;
+   	private JTextPane textPane;
+    	private static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14); //default font for the body of the story
+	public static String BookLength = null; //length from the
+    	private JButton book;
+    	public String title;
 	public String author;
 	public String description;
 	public String region;
@@ -36,8 +36,8 @@ public class Book extends JFrame{
 	private double userRating;
 	private String storyText;
 	private String storyOriginalText;
-    private String storiesCol;
-    private boolean chosenByUser = false;
+	private String storiesCol;
+    	private boolean chosenByUser = false;
     
 	public String genre;
 	public String age; // change from UML: String instead of int
@@ -46,25 +46,17 @@ public class Book extends JFrame{
 	
 	Object[] options = {"Rate", "Open"};
 	
-	public int votes; // again, someone please tell me what this does
-//    Book (String bookName){
-//		book = new JButton (bookName);
-//		book.setBackground(Homepage.mintGreen2);
-//        book.setPreferredSize(new Dimension(25, 40));
-//        
-//	}
-	
 	//setters and getters for variables
-    public void setStoryOriginalText (String storyOriginalText) {this.storyOriginalText = storyOriginalText;}
+    	public void setStoryOriginalText (String storyOriginalText) {this.storyOriginalText = storyOriginalText;}
 	public void setStoryText (String storyText) {this.storyText = storyText;}
 	public void setGenre (String genre) {this.genre = genre;}
 	public void setAge (String age) {this.age = age;}
 	public void setLength (String storyLength) {this.storyLength = storyLength;}
-    public void setTitle (String title) {this.title = title;}
-    public void setAuthor (String author) {this.author = author;}
-    public void setRegion (String region) {this.region = region;}
-    public void setLanguage (String language) {this.language = language;}
-    public void setRating (float rating) {this.rating = rating;}
+    	public void setTitle (String title) {this.title = title;}
+    	public void setAuthor (String author) {this.author = author;}
+    	public void setRegion (String region) {this.region = region;}
+    	public void setLanguage (String language) {this.language = language;}
+    	public void setRating (float rating) {this.rating = rating;}
     
 	public void increasePriority() {priority++;}
 	public int getPriority() {return priority;}
@@ -73,58 +65,43 @@ public class Book extends JFrame{
 	public boolean isChosen() {return chosenByUser;}
     
 	public Book (String bookName){
-//		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		setSize (250, 175);
-//		setLocationRelativeTo(book);
 		textPane = new JTextPane();
 		book = new JButton (bookName);
 		book.setBackground(Homepage.mintGreen2);
-        book.setPreferredSize(new Dimension(25, 4)); 
-        book.addActionListener(new ActionListener() {
+        	book.setPreferredSize(new Dimension(25, 4)); 
+        	book.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				// Handle reading from the corresponding text file
-                // String fileName = "book" + bookNumber; 
-				// will probably need to add private JTextArea textArea;
 				showThis(bookName);
 			}
-        });
+        	});
 	}
-	//		title = "";
-//		genre = "";
-//		age = "";
-//		rating = 0;
-//		region = "";
-//		storyLength = "";
-		System.out.println(title);
+		
 		textPane = new JTextPane();
 		book = new JButton (title);
 		book.setBackground(Homepage.mintGreen2);
-        book.setPreferredSize(new Dimension(25, 4)); 
-        book.addActionListener(new ActionListener() {
+        	book.setPreferredSize(new Dimension(25, 4)); 
+       		book.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				// Handle reading from the corresponding text file
-                //String fileName = "book" + bookNumber; 
-				// will probably need to add private JTextArea textArea;
 				showThis(title);
 			}
-        });
+        	});
 	}
 	/* Method Name: showThis 
 	 * Author: Javiera Garrido Bravo
-	 * Creation Date: January ??, 2024
-	 * Modified Date: January ??, 2024
-	 * Description: (ADD DESC HERE)
-	 * @Parameters: n/a
-	 * @Return Value: void
-	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Creation Date: January 20, 2024
+	 * Modified Date: January 20, 2024
+	 * Description: shows a pop up that tell a general description of the book that's being read
+	 * @Parameters: String bookName
+	 * @Return Value: n/a
+	 * Data Type: void
+	 * Dependencies: n/a
+	 * Throws/Exceptions: n/a
 	 */   
 	public void showThis(String bookName) {
 		int result = 0;
@@ -167,14 +144,14 @@ public class Book extends JFrame{
 	
 	/* Method Name: rateBook 
 	 * Author: Javiera Garrido Bravo
-	 * Creation Date: January ??, 2024
-	 * Modified Date: January ??, 2024
-	 * Description: (ADD DESC HERE)
+	 * Creation Date: January 19, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: user can rate the book that is being read
 	 * @Parameters: n/a
-	 * @Return Value: void
-	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * @Return Value: n/a
+	 * Data Type: void
+	 * Dependencies: Community.rateStories()
+	 * Throws/Exceptions: n/a
 	 */    
 	private void rateBook() {
 		// sets up components
@@ -182,50 +159,45 @@ public class Book extends JFrame{
 		rateFrame.setLayout(new FlowLayout());
 		JLabel desc = new JLabel("Rate this story out of 5:");
 		JCheckBox[] ratings = new JCheckBox[5];
-        ButtonGroup ratingGroup = new ButtonGroup();
-        JButton submitButton = new JButton("Confirm rating");
-        
-        // adds everything to frame
-        rateFrame.add(desc);
-        for (int i = 0; i < 5; i++) {
-        	ratings[i] = new JCheckBox(String.valueOf(i+1));
-        	ratingGroup.add(ratings[i]);
-            rateFrame.add(ratings[i]);
-            ratings[i].setFont(new Font("Calibri", Font.PLAIN, 15));
-        }
-        rateFrame.add(submitButton);
-        submitButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
-        rateFrame.setVisible(true);
-        rateFrame.setPreferredSize(new Dimension(25, 4)); 
-        rateFrame.setSize(500,75);
-        rateFrame.setLocationRelativeTo(book);
-        
-        // submit button listener
-        submitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-            	// looks through each checkbox to find user rating
-                for (int i = 0; i < ratings.length; i++) {
-                    if (ratings[i].isSelected()) {
-                        userRating = Double.parseDouble(ratings[i].getText());
-                        break;
-                    }
-                }
-
-                // if user adds a rating, dispose frame, add user rating to database
-                if (userRating != 0) {
-                    rateFrame.dispose();
-                    Community.rateStory(userRating, title);;
-                }
-            }
-        });
-	}
-
+	        ButtonGroup ratingGroup = new ButtonGroup();
+	        JButton submitButton = new JButton("Confirm rating");
+	        
+	        // adds everything to frame
+	        rateFrame.add(desc);
+	        for (int i = 0; i < 5; i++) {
+	        	ratings[i] = new JCheckBox(String.valueOf(i+1));
+	        	ratingGroup.add(ratings[i]);
+	            rateFrame.add(ratings[i]);
+	            ratings[i].setFont(new Font("Calibri", Font.PLAIN, 15));
+	        }
+	        rateFrame.add(submitButton);
+	        submitButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+	        rateFrame.setVisible(true);
+	        rateFrame.setPreferredSize(new Dimension(25, 4)); 
+	        rateFrame.setSize(500,75);
+	        rateFrame.setLocationRelativeTo(book);
+	        
+	        // submit button listener
+	        submitButton.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	// looks through each checkbox to find user rating
+	                for (int i = 0; i < ratings.length; i++) {
+	                    if (ratings[i].isSelected()) {
+	                        userRating = Double.parseDouble(ratings[i].getText());
+	                        break;
+	                    }
+	                }
 	
-
+	                // if user adds a rating, dispose frame, add user rating to database
+	                if (userRating != 0) {
+	                    rateFrame.dispose();
+	                    Community.rateStory(userRating, title);;
+	                }
+	            }
+	        });
+	}	
+	//getter for the button to add in the button grid in the homepage
     public JButton getBookButton() {
         return book;
-    }
-    public JTextPane getTextPane() {
-        return textPane;
     }
 }
