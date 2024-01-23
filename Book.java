@@ -69,7 +69,7 @@ public class Book extends JFrame{
 		bookName = bookName.replaceAll(" ", "");
 		bookName = bookName.replaceAll("\\p{Punct}", "").toUpperCase();
 		
-		Icon icon = new ImageIcon(bookName + ".png");
+		Icon icon = new ImageIcon(bookName + ".PNG");
 		
 		textPane = new JTextPane();
 		book = new JButton (icon);
@@ -86,7 +86,7 @@ public class Book extends JFrame{
 	}
 		
 		textPane = new JTextPane();
-		icon = new ImageIcon(title.toUpperCase().replaceAll(" ", "").replaceAll("\\p{Punct}", ""));
+		icon = new ImageIcon(title.toUpperCase().replaceAll(" ", "").replaceAll("\\p{Punct}", "") + ".PNG");
 		book = new JButton (icon);
 		book.setBackground(Homepage.mintGreen2);
         	book.setPreferredSize(new Dimension(25, 4)); 
