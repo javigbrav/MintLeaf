@@ -7,23 +7,23 @@
  ***********************************************************************************/
 
 import java.awt.Color;
-
 import javax.swing.JColorChooser;
 import javax.swing.JTextPane;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
-public class Highlight {
+public class Highlights {
 	//static Color initialColor;
-	static JTextPane textPane; //text pane
-	Highlight (Color highlightColor) { //constructor
-		highlightSelectedText (highlightColor); //call method
+	static JTextPane textPane;
+	
+	Highlights(Color highlightColor) {
+		highlightSelectedText (highlightColor);
 	}
+	
 	//setter for text pane
-	public static void setTextPane(JTextPane textPane1) {
-		textPane = textPane1;
-	}
+	public static void setTextPane(JTextPane textPane1) {textPane = textPane1;}
+	
 	/* Method Name: highlightSelectedText
 	 * Author: Javiera Garrido Bravo
 	 * Creation Date: December 20, 2023
@@ -39,13 +39,13 @@ public class Highlight {
         int start = textPane.getSelectionStart();
         int end = textPane.getSelectionEnd();
 
-	if (start != end) {
-		try {
-	        	Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(highlightColor); 
-	                textPane.getHighlighter().addHighlight(start, end, painter);
-			} catch (BadLocationException ex) {
-	                ex.printStackTrace();
-		}
-        } 
+        if (start != end) {
+            try {
+                Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(highlightColor);
+                textPane.getHighlighter().addHighlight(start, end, painter);
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            } // end try/catch
+        } // end if  
     }
 }

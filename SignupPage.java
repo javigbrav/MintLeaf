@@ -1,6 +1,3 @@
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 26, 2023 
@@ -8,6 +5,10 @@ import javax.swing.*;
  * Last Modified by: Fardin Abbassi
  * Description: Allow a user to create an account
  ***********************************************************************************/
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
 public class SignupPage implements ActionListener {
 	
 	/*Globals*/

@@ -1,5 +1,3 @@
-package Community;
-
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 20, 2023 
@@ -10,8 +8,6 @@ package Community;
 
 import java.sql.*;
 import java.util.LinkedList;
-import Homepage.*;
-import StoryInteraction.Book;
 
 public class Community{
 	
@@ -163,7 +159,7 @@ public class Community{
   	public static void rateStory(double userRating, String title) {
 		try {
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+			Connection con = DriverManager.getConnection(Tales.conPath, Tales.dbUsername, Tales.dbPassword);
 			Statement stat = con.createStatement();
 			stat.execute("UPDATE stories SET UserRating = " + userRating + " WHERE Title = '" + title + "'");
 			stat.close();
@@ -196,7 +192,7 @@ public class Community{
  	public static void reportStory(String user, String storyName, String report) {
 		try {
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+			Connection con = DriverManager.getConnection(Tales.conPath, Tales.dbUsername, Tales.dbPassword);
 			Statement stat = con.createStatement();
 			stat.execute("INSERT INTO REPORTS(User, StoryName, Report) VALUES('" + user + "', '" + storyName + "', '"+ report + "')");
 			stat.close();
