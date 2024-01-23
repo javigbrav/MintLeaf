@@ -1,6 +1,5 @@
 //Zainab
 package library;
-
 import javax.swing.*;
 import mains.*;
 import java.awt.*;
@@ -15,15 +14,15 @@ import javax.swing.border.MatteBorder;
 
 public class filterSearch {
 	JFrame filterFrame = new JFrame();
-	String image1Path = "C:\\Users\\kashi\\Downloads\\filter.png";
+	String image1Path = "C:\\Users\\kashi\\Downloads\\filter.png"; // download the images branch in github and change the path
 	Connection con;
 	JPanel genrePanel = new JPanel(), agegroupPanel = new JPanel(), ratingPanel = new JPanel(),
 			regionPanel = new JPanel(), lengthPanel = new JPanel(), languagePanel = new JPanel();
-	String[] categories = { "Genre", "Age", "Rating", "Region", "Length", "Language", "Translate" }; // Define the
-																										// categories
+	String[] categories = { "Genre", "Age", "Rating", "Region", "Length", "Language", "Translate" }; // Define the categories
 	String[][] selectedOptions = new String[categories.length][]; // to store selected options
 	JCheckBox[] checkboxes = new JCheckBox[40]; // array of 40 checkboxes (options for filter)
 
+	/*Constructor*/
 	public filterSearch() {
 		filterFrame.setBackground(new Color(255, 255, 255));
 		filterFrame.setForeground(new Color(220, 242, 206));
@@ -222,11 +221,6 @@ public class filterSearch {
 		ageGroupAdultCheckbox.setBounds(358, 11, 85, 23);
 		agegroupPanel.add(ageGroupAdultCheckbox);
 
-		JLabel lblAgeGroup = new JLabel("Age:");
-		lblAgeGroup.setBounds(10, 2, 62, 32);
-		agegroupPanel.add(lblAgeGroup);
-		lblAgeGroup.setFont(new Font("Segoe Print", Font.BOLD, 15));
-
 		// Story Rating options
 		JCheckBox ratingCheckbox1 = new JCheckBox("1");
 		ratingCheckbox1.setPreferredSize(new Dimension(100, 25));
@@ -353,12 +347,6 @@ public class filterSearch {
 		languagePanel.add(languageCheckbox7);
 		languageCheckbox7.setFont(new Font("Dialog", Font.PLAIN, 14));
 
-		JLabel lblLanguage = new JLabel("Language:");
-		lblLanguage.setSize(85, 32);
-		lblLanguage.setLocation(10, 2);
-		languagePanel.add(lblLanguage);
-		lblLanguage.setFont(new Font("Segoe Print", Font.BOLD, 15));
-
 		// Initialize panels
 		JPanel[] panels = { genrePanel, agegroupPanel, ratingPanel, regionPanel, lengthPanel, languagePanel };
 
@@ -389,37 +377,33 @@ public class filterSearch {
 			public void actionPerformed(ActionEvent e) {
 				boolean selected = false;
 
-				// Check if at least one checkbox (other than languageCheckbox1) is selected
-				for (JCheckBox checkBox : checkboxes) {
-					if (checkBox != languageCheckbox1 && checkBox.isSelected()) {
+				for (JCheckBox checkBox : checkboxes) { // check if at least one checkbox (other than languageCheckbox1) is selected
+					if (checkBox != languageCheckbox1 && checkBox.isSelected()) { 
 						selected = true;
-						break; // No need to continue checking if one checkbox (other than languageCheckbox1)
-								// is selected
+						break; // stop searching if found
 					}
 				}
 
-				if (!selected) {
-					filterFrame.dispose();
+				if (!selected) { // if no checkbox is selected
+					filterFrame.dispose(); // close the frame/return to homepage
 					// Display an error message
 //			    JOptionPane.showMessageDialog(filterFrame, "Help us find what you're looking for! Please select at least one filter.", "Filter Error", JOptionPane.ERROR_MESSAGE);
 				} else {
-					// At least one checkbox (other than languageCheckbox1) is selected, proceed
-					// with generating the query and searching the database
+					// if at least one checkbox is selected, build a query to search the database with selected filters
 					String query = getSelectedFilters(panels, checkboxes);
 
-					// Print the generated query (for debugging purposes)
-					System.out.println(query);
+					// print the generated query
+					// System.out.println(query);
 
-					// Execute the search only if the query is not empty
+					// search if the query is not empty
 					searchDatabase(query);
 
-					// Save filter options
+					// Save filter options (still working on it)
 					// saveFilters(); // when the user reloads, their previous filters will be there
 					// and they can change them
-
 				}
 
-				// Close frame after applying filters
+				// close frame after applying filters
 				filterFrame.dispose();
 
 			}
@@ -439,7 +423,7 @@ public class filterSearch {
 			public void actionPerformed(ActionEvent e) {
 				for (int i = 0; i < checkboxes.length; i++) {
 					if (checkboxes[i] != languageCheckbox1) {
-						checkboxes[i].setSelected(false);
+						checkboxes[i].setSelected(false); // unselect all but the "English" checkbox in Language
 					}
 				}
 			}
@@ -447,6 +431,7 @@ public class filterSearch {
 
 		filterFrame.getContentPane().setLayout(null);
 
+		// Spacing
 		JSeparator separator = new JSeparator();
 		separator.setBounds(0, 150, 714, 8);
 		filterFrame.getContentPane().add(separator);
@@ -467,6 +452,7 @@ public class filterSearch {
 		separator_4.setBounds(-30, 426, 714, 8);
 		filterFrame.getContentPane().add(separator_4);
 
+		// Setting frame
 		JLabel lblNewLabel = new JLabel("What are you looking for?");
 		lblNewLabel.setForeground(new Color(128, 128, 128));
 		lblNewLabel.setFont(new Font("Segoe Print", Font.BOLD, 16));
@@ -484,33 +470,34 @@ public class filterSearch {
 		int selectedIndex = 0;
 		boolean isOnlyFilter = true;
 
-		for (int i = 0; i < panels.length; i++) {
+		for (int i = 0; i < panels.length; i++) { // search panels/categories
 			Component[] panelComponents = panels[i].getComponents();
-			boolean isOnlyCheckboxInPanel = true;
+			boolean isOnlyCheckboxInPanel = true; // is only selected checkbox
 
 			for (int j = 0; j < panelComponents.length; j++) {
 				Component component = panelComponents[j];
 
-				if (component instanceof JCheckBox) {
+				if (component instanceof JCheckBox) { // if there is a checkbox in a panel
 					JCheckBox checkBox = (JCheckBox) component;
 
-					if (checkBox.isSelected()) {
-						selected[selectedIndex++] = checkBox;
+					if (checkBox.isSelected()) { // and it is selected
+						selected[selectedIndex++] = checkBox; // store in array
 
-						// Build query string
-						if (!isOnlyFilter) {
-							if (isOnlyCheckboxInPanel) {
-								queryBuilder.append(" AND");
-							} else {
-								queryBuilder.append(" OR");
+						// build query string to search database
+						if (!isOnlyFilter) { // if it is not the only selected checkbox
+							if (isOnlyCheckboxInPanel) { // if it is the only checkbox in the panel
+								queryBuilder.append(" AND"); // search for titles that match both cateogries (ex. Rating is 4 and Language is Spanish)
+							} else { // if there is another checkbox in the same panel
+								queryBuilder.append(" OR"); // search for titles that match either cateogry (ex. Genre is Fantasy or Historical)
 							}
-						} else {
-							isOnlyFilter = false;
+						} else { // if it is the only selected checkbox
+							isOnlyFilter = false; // move on to next selected checkbox
 						}
 
-						for (Component labelComponent : panelComponents) {
+						for (Component labelComponent : panelComponents) { // for each label in the panel
 							if (labelComponent instanceof JLabel) {
 								JLabel label = (JLabel) labelComponent;
+								// build a query that matches the labels to the table headings in database
 								queryBuilder.append(" ").append(label.getText().replace(':', ' ').trim()).append(" = '")
 										.append(checkBox.getText()).append("'");
 								System.out
@@ -518,23 +505,24 @@ public class filterSearch {
 							}
 						}
 
-						isOnlyCheckboxInPanel = false;
+						isOnlyCheckboxInPanel = false; // move on to next panel/category
 					}
 				}
 			}
 		}
 
-		return queryBuilder.toString();
-	}
+		return queryBuilder.toString(); // the query to search the database
+	} // end getSelectedFilters()
 
 	private void searchDatabase(String query) {
 		try (Connection con = DriverManager.getConnection(Tales.conPath, Tales.dbUsername, Tales.dbPassword)) {
-			PreparedStatement prep = con.prepareStatement(query);
+			PreparedStatement prep = con.prepareStatement(query); // execute the query
 			try (ResultSet res = prep.executeQuery()) {
-				if (!res.isBeforeFirst())
+				System.out.println();
+				if (!res.isBeforeFirst()) // if no titles matched filters
 					System.out.println("Hmm...couldn't find anything.");
 
-				while (res.next()) {
+				while (res.next()) { // print out matched titles
 					String title = res.getString("Title");
 					System.out.println(title);
 				}
@@ -542,9 +530,9 @@ public class filterSearch {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}
+	} // end searchDatabase
 
 	public static void main(String[] args) {
 		new filterSearch();
-	}
-}
+	} // end main
+} // end filterSearch 
