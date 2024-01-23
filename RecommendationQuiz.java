@@ -57,8 +57,8 @@ public class RecommendationQuiz {
 	 * Description: Creates a JPanel that contains all the question panels for the user to interact with, and updates a user's preference list.
 	 * @Parameters: User userToTrack
 	 * @Return Value: JPanel
-	 * Data Type: ???? 
-	 * Dependencies: ?????
+	 * Data Type: JPanel, User 
+	 * Dependencies: User, questionPanel
 	 * Throws/Exceptions: ????
 	 */    
     private static JPanel createContentPanel(User userToTrack) {
@@ -172,10 +172,9 @@ public class RecommendationQuiz {
         submitButton3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
             	String potentialAge = ageTextField.getText();
-            	int age;
             	try {
             		// parse to find a number to use as an age
-            		age = Integer.parseInt(potentialAge);
+                	int age = Integer.parseInt(potentialAge);
             		isThereAnAge = true;
             	}catch(NumberFormatException ex) {
             		// if there are non-numerical characters, make the user input numbers
@@ -285,9 +284,9 @@ public class RecommendationQuiz {
 	 * Description: Creates a JPanel that has a question, choices with checkboxes, and a button to confirm choice
 	 * @Parameters: JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames
 	 * @Return Value: JPanel
-	 * Data Type: ????
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Data Type: JPanel
+	 * Dependencies: java.awt, javax.swing
+	 * Throws/Exceptions: n/a
 	 */
     private static JPanel questionPanel(JLabel question, JCheckBox[] choices, ButtonGroup choiceGroup, JButton submitButton, String[] choiceNames) {
     	JPanel questionPanel = new JPanel();
@@ -315,8 +314,8 @@ public class RecommendationQuiz {
 	 * @Parameters: JPanel panel
 	 * @Return Value: void
 	 * Data Type: n/a
-	 * Dependencies: ?????
-	 * Throws/Exceptions: ????
+	 * Dependencies: java.awt, javax.swing
+	 * Throws/Exceptions: n/a
 	 */
     private static void clearComponentBackground(JPanel panel) {
     	for(int j = panel.getComponentCount() - 1; j > 0; j--) {
@@ -327,7 +326,17 @@ public class RecommendationQuiz {
     	}
     }
 
-    /**/
+    /* Method Name: clearComponents 
+	 * Author: Fardin Abbassi 
+	 * Creation Date: January 17, 2024
+	 * Modified Date: January 17, 2024
+	 * Description: Makes the given JCheckbox array's checkboxes clear
+	 * @Parameters: JCheckBox[] boxesToClear
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: java.awt, javax.swing
+	 * Throws/Exceptions: n/a
+	 */
     private static void clearComponents(JCheckBox[] boxesToClear) {
     	for (int i = 0; i<boxesToClear.length; i++) {
     		boxesToClear[i].setVisible(true);
@@ -336,8 +345,20 @@ public class RecommendationQuiz {
     		}
     	}
     }
+    /* Method Name: clearComponents 
+	 * Author: Fardin Abbassi 
+	 * Creation Date: January 17, 2024
+	 * Modified Date: January 17, 2024
+	 * Description: Clears the given text field
+	 * @Parameters: JTextField textFieldToClear
+	 * @Return Value: void
+	 * Data Type: n/a
+	 * Dependencies: java.awt, javax.swing
+	 * Throws/Exceptions: n/a
+	 */
     private static void clearComponents(JTextField textFieldToClear) {
     	textFieldToClear.setEditable(true);
+    	textFieldToClear.setText("");
     	isThereAnAge = false;
     }
 }
