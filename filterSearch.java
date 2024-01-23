@@ -14,7 +14,7 @@ import javax.swing.border.MatteBorder;
 
 public class filterSearch {
 	JFrame filterFrame = new JFrame();
-	String image1Path = "C:\\Users\\kashi\\Downloads\\filter.png"; // download the images branch in github and change the path
+	String image1Path = "C:\\Users\\kashi\\Downloads\\filter.png"; // download from the images branch in github and change the path
 	Connection con;
 	JPanel genrePanel = new JPanel(), agegroupPanel = new JPanel(), ratingPanel = new JPanel(),
 			regionPanel = new JPanel(), lengthPanel = new JPanel(), languagePanel = new JPanel();
