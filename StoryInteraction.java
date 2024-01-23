@@ -1,4 +1,11 @@
-package LogIn;
+/***********************************************************************************
+ * Authors: Zainab Siddiqui, Javiera Garrido Bravo
+ * Date: December 20, 2023 
+ * Last Modified: January 22, 2024
+ * Last Modified by: Fardin Abbassi
+ * Description: A user's home page in the application
+ ***********************************************************************************/
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,23 +25,24 @@ import java.util.LinkedList;
 public class StoryInteraction extends JFrame {
 	
 	//static Color initialColor = Color.yellow;
-	static boolean hasBeenClickedT = false; //to check if the translator button has already been clicked
-	private static JScrollPane scrollPane;
-    private static JTextPane textPane;
-    JButton reportButton = new JButton("Report An Issue");
-    JButton buttonHigh = new JButton ("Highlight");
-    JButton translatorButton = new JButton ("Translator");
-    JButton buttonChoose = new JButton ("Choose Highlighter Color");
-    static Color highlightColor=Color.yellow;//default highlight color yellow
-    //int ScrollBarPosition = 0; //default value, at the top
-    private static Point viewPosition;
-    private JButton annotateButton = new JButton("Add Annotation");
-    private Annotations annotationFrame;
-    public LinkedList <Annotations> notes = new LinkedList <Annotations>();
-    
+	static boolean hasBeenClickedT = false; //to check if the translator button has already been clicked, default at false
+	private static JScrollPane scrollPane; //scroll bar to move up and down the story
+   	private static JTextPane textPane;//where the text is
+
+	//initialize buttons
+    	JButton reportButton = new JButton("Report An Issue"); 
+    	JButton buttonHigh = new JButton ("Highlight");
+    	JButton translatorButton = new JButton ("Translator");
+    	JButton buttonChoose = new JButton ("Choose Highlighter Color");
+	private JButton annotateButton = new JButton("Add Annotation");
+	
+    	static Color highlightColor=Color.yellow;//default highlight color yellow
+    	private static Point viewPosition;//to get the position of the scroll bar
+    	private Annotations annotationFrame;//frame for the annotations
+    //constructor
     public StoryInteraction(String bookName, String storyText, String storyOriginalText, String language) {
     	
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE  );
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE );
         
         //when the window is closed, the point at which the scroll bar was is retrieved
         //this way functioning as a bookmark
@@ -60,8 +68,6 @@ public class StoryInteraction extends JFrame {
         textPane = new JTextPane();
         textPane.setEditable(false); // Set editable to false
         setDefaultFont();  // Set default font for the JTextPane
-
-        //textPane.setEditable(false);
         
         scrollPane = new JScrollPane(textPane);
         
@@ -69,9 +75,10 @@ public class StoryInteraction extends JFrame {
 
         displayStory(bookName, storyText);
 
-        scrollPosition ();
-        
-        buttonHigh.addActionListener(new ActionListener() {
+        scrollPosition ();//call method
+
+	//add action listeners to all the buttons
+        buttonHigh.addActionListener(new ActionListener() {//creates a new highlight method
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("button works");
@@ -79,7 +86,7 @@ public class StoryInteraction extends JFrame {
                 new Highlight (highlightColor);
             }
         });
-        annotateButton.addActionListener(new ActionListener() {
+        annotateButton.addActionListener(new ActionListener() {//creates a new frame and a new annotation methodf
             @Override
             public void actionPerformed(ActionEvent e) {
             	Annotations.setUsername (User.username);
@@ -89,27 +96,26 @@ public class StoryInteraction extends JFrame {
             }
         });
         
-        translatorButton.addActionListener(new ActionListener() {
+        translatorButton.addActionListener(new ActionListener() {//creates a new object translator 
             @Override
             public void actionPerformed(ActionEvent e) {
             	Translator.setPane (textPane);
             	Translator.setScrollBar(scrollPane);
             	Translator.setHasBeenClicked(hasBeenClickedT);
-            	if (storyOriginalText!= null)
+            	if (storyOriginalText!= null)//makes sure the translation exists in the database
             		new Translator(bookName, storyOriginalText, storyText);
-            	
             	else
-            		JOptionPane.showMessageDialog(null, "We are working hard on finding the right translation", "Sorry!", JOptionPane.ERROR_MESSAGE);
-            	hasBeenClickedT = Translator.getHasBeenClicked ();
+            		JOptionPane.showMessageDialog(null, "Sorry!\n"+"We are working hard on finding the right translation", "Translation not found", JOptionPane.ERROR_MESSAGE);//error message if translation is not available
+            	hasBeenClickedT = Translator.getHasBeenClicked ();//check if the button has already been clicked
             }
         });
         reportButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reportStoryFrame(bookName);
-			}
+			}//calls report
         });
-        buttonChoose.addActionListener(new ActionListener() {
+        buttonChoose.addActionListener(new ActionListener() {//button for choosing highlight color
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -122,27 +128,37 @@ public class StoryInteraction extends JFrame {
         buttonPanel.add(buttonHigh);
         buttonPanel.add(annotateButton);
         buttonPanel.add(reportButton);
-        if (language.equals("English"));
+        if (language.equals("English"));//if the book only has english available, the translator button is not shown
         else
-        	buttonPanel.add(translatorButton);
+        	buttonPanel.add(translatorButton); //if not, it is
         add(buttonPanel, BorderLayout.SOUTH);
-
-
-//        JMenuBar menuBar = new JMenuBar();
-//        JMenu fileMenu = new JMenu("File");
-//        JMenuItem openItem = new JMenuItem("Open");
-        //openItem.addActionListener(e -> openAndDisplayFile("book1.txt"));  // Replace with the actual path
-        //fileMenu.add(openItem);
-        ///menuBar.add(fileMenu);
-
-        //setJMenuBar(menuBar);
     }
+	/* Method Name: setDefaultFont
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January 10, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: sets the default font for the body of the text
+	 * @Parameters: n/a
+	 * @Return Value: n/a
+	 * Data Type: void
+	 * Dependencies: n/a
+	 * Throws/Exceptions:n/a
+	 */  
     private void setDefaultFont() {
-        // Set default font for the JTextPane (replace this with your desired default font)
         Font defaultFont = new Font("Serif", Font.PLAIN, 14);
         textPane.setFont(defaultFont);
     }
-    
+    /* Method Name: scrollPosition
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January 10, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: gets the scroll position
+	 * @Parameters: n/a
+	 * @Return Value: n/a of the scrollPane
+	 * Data Type: void
+	 * Dependencies: n/a
+	 * Throws/Exceptions:n/a
+	 */  
     public static void scrollPosition () {
 		SwingUtilities.invokeLater(() -> {
             // Set the scroll position to the top
@@ -152,24 +168,33 @@ public class StoryInteraction extends JFrame {
 				scrollPane.getVerticalScrollBar().setValue(viewPosition.y);
         });
 	}
-
-    static void displayStory(String title, String story) {
+/* Method Name: displayStory
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January 16, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: displays story from a string
+	 * @Parameters: String title: title of the story, String story: story to be displayed
+	 * @Return Value: n/a
+	 * Data Type: void
+	 * Dependencies: n/a
+	 * Throws/Exceptions: if there's an error while creating document
+	 */  
+    static void displayStory(String title, String story) { 
         StyledDocument styledDoc = textPane.getStyledDocument();
 
         // Title Style
-        Style titleStyle = styledDoc.addStyle("TitleStyle", null);
+        Style titleStyle = styledDoc.addStyle("TitleStyle", null); //format for the title
         StyleConstants.setBold(titleStyle, true);
         StyleConstants.setFontSize(titleStyle, 18);
         StyleConstants.setForeground(titleStyle, Color.BLUE);
 
         // Body Style
-        Style bodyStyle = styledDoc.addStyle("BodyStyle", null);
+        Style bodyStyle = styledDoc.addStyle("BodyStyle", null); //format for the body
         StyleConstants.setFontSize(bodyStyle, 14);
         StyleConstants.setForeground(bodyStyle, Color.BLACK);
 
-        // Insert title
         try {
-            styledDoc.insertString(styledDoc.getLength(), title + "\n\n", titleStyle);
+            styledDoc.insertString(styledDoc.getLength(), title + "\n\n", titleStyle); //inserts the string in the document
         } catch (BadLocationException e) {
             e.printStackTrace();
         }
@@ -177,7 +202,7 @@ public class StoryInteraction extends JFrame {
         // Insert story with new lines every 10 words
         String[] words = story.split("\\s+");
         int wordCount = 0;
-        for (String word : words) {
+        for (String word : words) { //goes through all the words
             try {
                 styledDoc.insertString(styledDoc.getLength(), word + " ", bodyStyle);
                 wordCount++;
@@ -191,7 +216,17 @@ public class StoryInteraction extends JFrame {
             }
         }
     }
-
+	 /* Method Name: reportStoryFrame
+	 * Author: Fardin Abbasi
+	 * Creation Date: January ??, 2024
+	 * Modified Date: January ??, 2024
+	 * Description: 
+	 * @Parameters: n/a
+	 * @Return Value: 
+	 * Data Type:
+	 * Dependencies: 
+	 * Throws/Exceptions:n/a
+	 */  
     /** NOT FINISHED YET **/
     private void reportStoryFrame(String storyName) {
     	setLocationRelativeTo(null);
@@ -257,7 +292,17 @@ public class StoryInteraction extends JFrame {
 		reportFrame.setSize(400, 265);
 		reportFrame.setVisible(true);
     }    
-    
+    /* Method Name: showAnnotationFrame
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January 16, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: shows the annotation frame
+	 * @Parameters: n/a
+	 * @Return Value: n/a
+	 * Data Type: void
+	 * Dependencies: n/a
+	 * Throws/Exceptions:n/a
+	 */  
     private void showAnnotationFrame() {
         if (textPane.getSelectedText() != null) {
             String selectedText = textPane.getSelectedText();
@@ -267,22 +312,25 @@ public class StoryInteraction extends JFrame {
             JOptionPane.showMessageDialog(this, "No text selected for annotation", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+    /* Method Name: chooseColor
+	 * Author: Javiera Garrido Bravo
+	 * Creation Date: January 10, 2024
+	 * Modified Date: January 21, 2024
+	 * Description: allows the user to set a color for the highlights
+	 * @Parameters: n/a
+	 * @Return Value: chosen color
+	 * Data Type: Color
+	 * Dependencies: JColorChooser
+	 * Throws/Exceptions:n/a
+	 */  
     public static Color chooseColor (){
 		Color color=JColorChooser.showDialog(null,"Select a color",highlightColor);    
 		highlightColor = color;
 		return color;
     }
+//getter for the scroll position
     public static int getScrollPosition () {
     	return viewPosition.y;
     }
     
-    
-    
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            StoryInteraction StoryInteraction = new StoryInteraction(bookName);
-//            StoryInteraction.setVisible(true);
-//        });
-//    }
 }
