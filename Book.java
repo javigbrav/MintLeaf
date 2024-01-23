@@ -4,13 +4,16 @@ package StoryInteraction;
  * Author: Javiera Garrido Bravo
  * Date: December 20, 2023 
  * Last Modified: January 22, 2024
- * Last Modified by: Javiera Garrido
+ * Last Modified by: Victor Kosarev
  * Description: Class that represents a book and allows to interact with it
  ***********************************************************************************/
 
 import javax.swing.*;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -39,6 +42,8 @@ public class Book extends JFrame{
 	public String age; // change from UML: String instead of int
 	public String storyLength; //length of the story
 	private static int priority = 1; //nitial priority of the book for the user
+	public Icon icon;
+	
 	
 	Object[] options = {"Rate", "Open"};
 	
@@ -61,8 +66,13 @@ public class Book extends JFrame{
 	public boolean isChosen() {return chosenByUser;}//getter for the boolean chosenByUser
     
 	public Book (String bookName){
+		bookName = bookName.replaceAll(" ", "");
+		bookName = bookName.replaceAll("\\p{Punct}", "").toUpperCase();
+		
+		Icon icon = new ImageIcon(bookName + ".png");
+		
 		textPane = new JTextPane();
-		book = new JButton (bookName);
+		book = new JButton (icon);
 		book.setBackground(Homepage.mintGreen2);
         	book.setPreferredSize(new Dimension(25, 4)); 
         	book.addActionListener(new ActionListener() {
@@ -76,7 +86,8 @@ public class Book extends JFrame{
 	}
 		
 		textPane = new JTextPane();
-		book = new JButton (title);
+		icon = new ImageIcon(title.toUpperCase().replaceAll(" ", "").replaceAll("\\p{Punct}", ""));
+		book = new JButton (icon);
 		book.setBackground(Homepage.mintGreen2);
         	book.setPreferredSize(new Dimension(25, 4)); 
        		book.addActionListener(new ActionListener() {
