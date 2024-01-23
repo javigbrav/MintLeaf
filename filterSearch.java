@@ -76,6 +76,17 @@ public class filterSearch {
 		lblLength.setBounds(10, 2, 85, 32);
 		lengthPanel.add(lblLength);
 
+		JLabel lblAgeGroup = new JLabel("Age:");
+		lblAgeGroup.setBounds(10, 2, 62, 32);
+		agegroupPanel.add(lblAgeGroup);
+		lblAgeGroup.setFont(new Font("Segoe Print", Font.BOLD, 15));
+
+		JLabel lblLanguage = new JLabel("Language:");
+		lblLanguage.setSize(85, 32);
+		lblLanguage.setLocation(10, 2);
+		languagePanel.add(lblLanguage);
+		lblLanguage.setFont(new Font("Segoe Print", Font.BOLD, 15));
+
 		// Story Length options
 
 		// Short Story
