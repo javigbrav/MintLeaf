@@ -5,7 +5,7 @@ package StoryInteraction;
  * Date: December 20, 2023 
  * Last Modified: January 22, 2024
  * Last Modified by: Javiera Garrido
- * Description: Class that represents a book
+ * Description: Class that represents a book and allows to interact with it
  ***********************************************************************************/
 
 import javax.swing.*;
@@ -22,27 +22,23 @@ import Community.*;
 public class Book extends JFrame{
    	private JTextPane textPane;
     	private static final Font DEFAULT_FONT = new Font("Serif", Font.PLAIN, 14); //default font for the body of the story
-	public static String BookLength = null; //length from the
-    	private JButton book;
-    	public String title;
-	public String author;
-	public String description;
-	public String region;
-	public String language;
-	public String StoryOriginalText;
-
-	public float rating; // making sense with the table in the database
-	public int saved;
-	private double userRating;
-	private String storyText;
-	private String storyOriginalText;
-	private String storiesCol;
-    	private boolean chosenByUser = false;
-    
-	public String genre;
+	public static String BookLength = null; //length of the book
+    	private JButton book;//button of the book that is made for the homepage
+    	public String title;//title of the book
+	public String author;//author of the book
+	public String region;//regien from where the book is from
+	public String language;//language available for the book apart from english
+	public float rating; // rating of the book
+	public int saved;// is the book saved
+	private double userRating; //rating of the user for the book
+	private String storyText;//story in english
+	private String storyOriginalText;//story in its original language
+	private String storiesCol;//column where the story is
+    	private boolean chosenByUser = false; //to save the story to the library
+	public String genre; //genre of the book
 	public String age; // change from UML: String instead of int
-	public String storyLength;
-	private static int priority = 1;
+	public String storyLength; //length of the story
+	private static int priority = 1; //nitial priority of the book for the user
 	
 	Object[] options = {"Rate", "Open"};
 	
@@ -58,11 +54,11 @@ public class Book extends JFrame{
     	public void setLanguage (String language) {this.language = language;}
     	public void setRating (float rating) {this.rating = rating;}
     
-	public void increasePriority() {priority++;}
-	public int getPriority() {return priority;}
+	public void increasePriority() {priority++;} //increases priority of the book for the user
+	public int getPriority() {return priority;}//getter for the int priority
 	
-	public void bookChosen() {chosenByUser = true;}
-	public boolean isChosen() {return chosenByUser;}
+	public void bookChosen() {chosenByUser = true;} //if the user saves the book this method is used
+	public boolean isChosen() {return chosenByUser;}//getter for the boolean chosenByUser
     
 	public Book (String bookName){
 		textPane = new JTextPane();
@@ -104,7 +100,7 @@ public class Book extends JFrame{
 	 * Throws/Exceptions: n/a
 	 */   
 	public void showThis(String bookName) {
-		int result = 0;
+		int result = 0; //initialize variable before
 		// so  it doesn't say English and English
 		if (language.equals("English")) {
 			result = JOptionPane.showOptionDialog(book,
@@ -127,18 +123,17 @@ public class Book extends JFrame{
 				    //"\nAuthor " + author +
 				    "\nRegion: "+ region +
 				    "\nRating " + rating,
-				    bookName,
+				    bookName, //title
 				    JOptionPane.YES_NO_OPTION,
 				    JOptionPane.QUESTION_MESSAGE,
-				    null,     //do not use a custom Icon
+				    null, 
 				    options,  //the bookNames of buttons
 				    options[0]); //default button bookName
 		}
-		if (result == JOptionPane.YES_OPTION) {
-			rateBook();
-			System.out.println("works");}
-        else if (result == JOptionPane.NO_OPTION)
-            new StoryInteraction (bookName, storyText, storyOriginalText, language);
+		if (result == JOptionPane.YES_OPTION)
+			rateBook(); // if the user decided to rate the story, calls this method
+        	else if (result == JOptionPane.NO_OPTION)
+            		new StoryInteraction (bookName, storyText, storyOriginalText, language); //create a new story interaction if the user decides to open the book
 	}
 	
 	
@@ -155,7 +150,7 @@ public class Book extends JFrame{
 	 */    
 	private void rateBook() {
 		// sets up components
-		JFrame rateFrame = new JFrame();
+		JFrame rateFrame = new JFrame(); //create a new frame to rate
 		rateFrame.setLayout(new FlowLayout());
 		JLabel desc = new JLabel("Rate this story out of 5:");
 		JCheckBox[] ratings = new JCheckBox[5];
@@ -164,6 +159,7 @@ public class Book extends JFrame{
 	        
 	        // adds everything to frame
 	        rateFrame.add(desc);
+		//creates 5 check boxes and adds numbers from 1 to 5 to them
 	        for (int i = 0; i < 5; i++) {
 	        	ratings[i] = new JCheckBox(String.valueOf(i+1));
 	        	ratingGroup.add(ratings[i]);
@@ -197,7 +193,7 @@ public class Book extends JFrame{
 	        });
 	}	
 	//getter for the button to add in the button grid in the homepage
-    public JButton getBookButton() {
-        return book;
+    	public JButton getBookButton() {
+       		return book;
     }
 }
