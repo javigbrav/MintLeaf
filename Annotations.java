@@ -1,27 +1,31 @@
+package StoryInteraction;
+
 /***********************************************************************************
  * Author: Javiera Garrido
  * Date: December 20, 2023 
  * Last Modified: 22 Jan, 2024
- * Description: creates a frame to interact with the annotations
+ * Description: Creates a frame to interact with the annotations
  ***********************************************************************************/
 
 import javax.swing.*;
-
 import java.sql.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import Homepage.Tales;
 
 public class Annotations extends JFrame {
-    private static JTextArea textArea; //tex area to write in
-    private JButton buttonSave;// save button
-    private JButton buttonSee; //button to see annotations
-    private static String username; //username
-    private static String story;// name of the story
-	
-    public static void setUsername (String username1) {username = username1;} //set username of the user reading the book
-    public static void setStory(String story1) {story = story1;} //set name of the story
+	/* Global variables */
+	private static JTextArea textArea;
+    private JButton buttonSave;
+    private JButton buttonSee;
+    private static String username;
+    private static String story;
+    
+    // setters for username and story
+    public static void setUsername (String username1) {username = username1;}
+    public static void setStory(String story1) {story = story1;}
     
     public Annotations() {
         super("Annotation");
@@ -30,23 +34,23 @@ public class Annotations extends JFrame {
 
     private void initComponents() {
         textArea = new JTextArea(10, 40);
-        JScrollPane scrollPane = new JScrollPane(textArea); //initialize a scroll bar in case annotations exceed the size of the frame
+        JScrollPane scrollPane = new JScrollPane(textArea);
         
-        buttonSave = new JButton ("Save Annotation"); //initialize button save
-        buttonSee = new JButton ("See Annotation History"); //initialize button see
+        buttonSave = new JButton ("Save Annotation"); 
+        buttonSee = new JButton ("See Annotation History");
         
-        setLayout(new BorderLayout()); //create layout
-        add(scrollPane, BorderLayout.CENTER); //add scrollpane
+        setLayout(new BorderLayout());
+        add(scrollPane, BorderLayout.CENTER);
 
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); //dont close everything, only this frame
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(500, 300);
         setLocationRelativeTo(null);
         setVisible(true);
         
         JPanel buttonPanel = new JPanel();
         buttonPanel.add(buttonSave);
-        buttonPanel.add(buttonSee); //add buttons to panel
-        add (buttonPanel, BorderLayout.SOUTH);//put panel at the bottom
+        buttonPanel.add(buttonSee);
+        add (buttonPanel, BorderLayout.SOUTH);
         
         buttonSave.addActionListener(new ActionListener() {
             
@@ -54,17 +58,19 @@ public class Annotations extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				String content = textArea.getText();
-                		addAnnotation (username, story, content); //adds the annotation to the database
+                addAnnotation (username, story, content); //adds the annotation to the database
 			}
-        	});
+        });
         buttonSee.addActionListener(new ActionListener() {
+            
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				seeAnnotations(); //shows all annotations that the user has made in this book 
+				seeAnnotations();
 			}
         });
     }
+    
 	/* Method Name: seeAnnotations
 	 * Author: Javiera Garrido Bravo
 	 * Creation Date: January 22, 2024
@@ -77,10 +83,9 @@ public class Annotations extends JFrame {
 	 * Throws/Exceptions: error when connecting to mysql 
 	 */  
     public void seeAnnotations () {
-    	
 		try {
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");
-	    		Statement stat = con.createStatement();
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
+	    	Statement stat = con.createStatement();
 			ResultSet rs = stat.executeQuery("SELECT * FROM annotations WHERE username like '" + username
 					+ "' and story like '" + story + "'");
 			while(rs.next()) {
@@ -88,11 +93,11 @@ public class Annotations extends JFrame {
 				textArea.append(rs.getString("annotation"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Finding annotations");
+			System.err.print(e);
 		}			
-		
-    }
+    }    
+    
     /* Method Name: addAnnotations
 	 * Author: Javiera Garrido Bravo
 	 * Creation Date: January 20, 2024
@@ -107,19 +112,17 @@ public class Annotations extends JFrame {
 	 */  
     public static void addAnnotation(String user, String storyName, String annotation) {
 		try {
-			
 	 		/** When doing this locally, swap "MintLeaf" with your local password**/
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "root");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");
 			Statement stat = con.createStatement();
-			String insertQuery ="INSERT INTO Annotations(username, story, annotation) VALUES('" + user + "', '" + storyName + "', '"+ annotation + "')";
+			String insertQuery = "INSERT INTO Annotations(username, story, annotation) VALUES('" + user + "', '" + storyName + "', '"+ annotation + "')";
 			stat.execute(insertQuery);
-			textArea.append("\nAnnotation saved");
+			textArea.append("\nAnnotation saved!");
 			
 		} catch (SQLException e) {
-			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating Report");
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Saving annotation");
 			System.err.print(e);
 		}
 		
     }
-
 }
