@@ -15,7 +15,6 @@ import javax.swing.border.MatteBorder;
 
 public class filterSearch {
 	JFrame filterFrame = new JFrame();
-	String databasePath = "jdbc:mysql://your_database_host:your_database_port/your_database_name";
 	String image1Path = "C:\\Users\\kashi\\Downloads\\filter.png";
 	Connection con;
 	JPanel genrePanel = new JPanel(), agegroupPanel = new JPanel(), ratingPanel = new JPanel(),
