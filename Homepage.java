@@ -1,4 +1,10 @@
-package Homepage;
+/***********************************************************************************
+ * Authors: Zainab Siddiqui, Javiera Garrido Bravo
+ * Date: December 20, 2023 
+ * Last Modified: January 22, 2024
+ * Last Modified by: Victor Kosarev
+ * Description: A user's home page in the application
+ ***********************************************************************************/
 
 import java.awt.*;
 import java.awt.event.*;
@@ -10,16 +16,6 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.LinkedList;
 import javax.swing.*;
-
-import StoryInteraction.Book;
-
-/***********************************************************************************
- * Authors: Zainab Siddiqui, Javiera Garrido Bravo
- * Date: December 20, 2023 
- * Last Modified: January 22, 2024
- * Last Modified by: Victor Kosarev
- * Description: A user's home page in the application
- ***********************************************************************************/
 
 public class Homepage {
 	
@@ -76,8 +72,7 @@ public class Homepage {
         
     	
     	try {
-    		/** When doing this locally, swap "MintLeaf" with your local password**/
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mintleafdb", "root", "MintLeaf");			
+			con = DriverManager.getConnection(Tales.conPath, Tales.dbUsername, Tales.dbPassword);
 			Statement stat = con.createStatement();
 			ResultSet rs = stat.executeQuery("SELECT * FROM STORIES ORDER BY ABS(Total - " + User.total);
 			
@@ -97,7 +92,7 @@ public class Homepage {
 				bookGridPanel.add(storyToAdd.getBookButton());
 			} // end while loop
     	}catch(Exception e) {
-			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Adding user to homepage");
+			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Adding books to homepage");
     	} // end try/catch
     	
     	

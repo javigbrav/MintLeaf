@@ -1,10 +1,12 @@
-package LogIn;
+/***********************************************************************************
+ * Author: Javiera Garrido Bravo 
+ * Date: January 15, 2023 
+ * Last Modified: January 22, 2024
+ * Last Modified by: Javiera Garrido
+ * Description: Translates story into original language
+ ***********************************************************************************/
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.text.BadLocationException;
 
 public class Translator {
@@ -34,20 +36,16 @@ public class Translator {
             scrollPane.getVerticalScrollBar().setValue(0);
         });
 	}
-	Translator (String bookName, String storyOriginalText, String storyText){
-		
+	
+	Translator (String bookName, String storyOriginalText, String storyText){	
 		pane.setText("");
-		
 		if ( ! hasBeenClicked ) {
-
 			StoryInteraction.displayStory(bookName, storyOriginalText);		
 			scrollPosition();
         } else {
         	StoryInteraction.displayStory(bookName, storyText);
         	scrollPosition();
         }
-        hasBeenClicked = ! hasBeenClicked;
-		
+        hasBeenClicked = !hasBeenClicked;	
 	}
-
 }

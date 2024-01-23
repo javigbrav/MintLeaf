@@ -1,10 +1,8 @@
-package StoryInteraction;
-
 /***********************************************************************************
  * Author: Javiera Garrido
  * Date: December 20, 2023 
  * Last Modified: 22 Jan, 2024
- * Description: Creates a frame to interact with the annotations
+ * Description: creates a frame to interact with the annotations
  ***********************************************************************************/
 
 import javax.swing.*;
@@ -13,7 +11,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import Homepage.Tales;
 
 public class Annotations extends JFrame {
 	/* Global variables */

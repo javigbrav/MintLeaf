@@ -1,5 +1,10 @@
-package Homepage;
-
+/***********************************************************************************
+ * Author: Victor Kosarev
+ * Date: January 15, 2024
+ * Last Modified: January 22, 2024
+ * Last Modified by: Fardin Abbassi
+ * Description: Creates profile page for the user
+ ***********************************************************************************/
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,15 +14,6 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 
-import Community.Community;
-
-/***********************************************************************************
- * Author: Victor Kosarev
- * Date: January 15, 2024
- * Last Modified: January 22, 2024
- * Last Modified by: Fardin Abbassi
- * Description: Creates profile page for the user
- ***********************************************************************************/
 public class ProfilePage implements ActionListener{
 	
 	JFrame frame;

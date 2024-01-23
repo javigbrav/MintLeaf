@@ -1,7 +1,3 @@
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
 /***********************************************************************************
  * Author: Zainab Siddiqui 
  * Date: December 20, 2023 
@@ -9,6 +5,11 @@ import javax.swing.*;
  * Last Modified by: Fardin Abbassi
  * Description: Allow a user to login to their account
  ***********************************************************************************/
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
+
 public class LoginPage implements ActionListener {
 	
 	static Color mintGreen = new Color(88, 153, 47);

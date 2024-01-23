@@ -1,4 +1,3 @@
-package StoryInteraction;
 /***********************************************************************************
  * Authors: Zainab Siddiqui, Javiera Garrido Bravo
  * Date: December 20, 2023 
@@ -11,16 +10,12 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.*;
 
-import Community.Community;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 import java.lang.annotation.Annotation;
 import java.sql.*;
 import java.util.LinkedList;
-
-import Homepage.*;
 
 public class StoryInteraction extends JFrame {
 	

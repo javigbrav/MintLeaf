@@ -1,5 +1,3 @@
-package StoryInteraction;
-
 /***********************************************************************************
  * Author: Javiera Garrido Bravo
  * Date: December 20, 2023 
@@ -15,9 +13,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-
-import Homepage.*;
-import Community.*;
 
 public class Book extends JFrame{
 	private JTextPane textPane;
