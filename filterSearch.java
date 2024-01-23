@@ -1,15 +1,16 @@
-//Zainab
+/***********************************************************************************
+ * Name: Zainab Siddiqui 
+ * Date: December 20, 2023 
+ * Last Modified: January 22
+ * Description: Allow user to filter searches
+ ***********************************************************************************/
+
 package library;
 import javax.swing.*;
 import mains.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
 import java.sql.*;
-import java.util.*;
-
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 
 public class filterSearch {
@@ -75,7 +76,7 @@ public class filterSearch {
 		lblLength.setFont(new Font("Segoe Print", Font.BOLD, 15));
 		lblLength.setBounds(10, 2, 85, 32);
 		lengthPanel.add(lblLength);
-
+		
 		JLabel lblAgeGroup = new JLabel("Age:");
 		lblAgeGroup.setBounds(10, 2, 62, 32);
 		agegroupPanel.add(lblAgeGroup);
