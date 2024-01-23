@@ -1,3 +1,5 @@
+package Community;
+
 /***********************************************************************************
  * Author: Fardin Abbassi
  * Date: December 20, 2023 
@@ -8,6 +10,8 @@
 
 import java.sql.*;
 import java.util.LinkedList;
+import Homepage.*;
+import StoryInteraction.Book;
 
 public class Community{
 	
@@ -200,16 +204,6 @@ public class Community{
 			System.err.println("ERROR - CONNECTION UNSUCCESSFUL; Creating Report");
 			System.err.print(e);
 		}
-    }
-
- 	
- 	
-  	/**MAIN IDEA: 	Preface this by having a functioning profile page.
-  	  				Have a button that allows the user to suggest a book/story for us to potentially add to the currently available stories.
-  	  				Suggestions, like the reports above, should track user in addition to whichever story they want to track.
-  	  				(Basic idea as of now, could possibly just be a part of the profile class instead)**/
-/* 	public void suggestStory() {
-        
     }
 
   	/**MAIN IDEA: ???**/
